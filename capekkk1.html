@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Operational System Auditor</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+    --bg-dark: #0b0e14;
+    --bg-sidebar: #06080c;
+    --bg-card: #0f141c;
+    --bg-input: #0b0e14;
+    --border-color: #1e2836;
+    --accent-gold: #ffb800;
+    --text-muted: #8b9bb4;
+    --text-light: #f1f5f9;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* === LANDING / LOGIN PAGE === */
+#loginPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #151d2a 0%, #06080c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.login-card {
+    background: rgba(15, 20, 28, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 184, 0, 0.2);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 440px;
+    padding: 40px 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 184, 0, 0.05);
+    text-align: center;
+}
+
+.login-brand-icon {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 184, 0, 0.1);
+    border: 1px solid var(--accent-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    font-size: 32px;
+    color: var(--accent-gold);
+    box-shadow: 0 0 20px rgba(255, 184, 0, 0.2);
+}
+
+.login-title {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.login-title span { color: var(--accent-gold); }
+
+.login-quote {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.form-control-custom {
+    background: #0b0e14 !important;
+    border: 1px solid var(--border-color) !important;
+    color: #fff !important;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+.form-control-custom:focus {
+    border-color: var(--accent-gold) !important;
+    box-shadow: 0 0 10px rgba(255, 184, 0, 0.2);
+}
+
+.btn-login-submit {
+    background: var(--accent-gold);
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+}
+.btn-login-submit:hover {
+    background: #e6a600;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 184, 0, 0.3);
+}
+
+/* === MAIN DASHBOARD LAYOUT === */
+#appLayout { display: none; }
+
+#sidebar {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    padding: 20px 15px;
+    overflow-y: auto;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+.brand-logo i {
+    font-size: 28px;
+    color: var(--accent-gold);
+}
+.brand-title {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    line-height: 1.2;
+}
+.brand-title span {
+    color: var(--accent-gold);
+    display: block;
+}
+
+.user-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #111722;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 25px;
+}
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.user-info { font-size: 12px; }
+.user-info .name {
+    font-weight: bold;
+    color: #fff;
+    line-height: 1.2;
+}
+.user-info .role-badge {
+    font-size: 11px;
+    color: var(--accent-gold);
+    font-weight: 600;
+    display: block;
+}
+.user-info .status {
+    font-size: 10px;
+    color: #00ff88;
+    margin-top: 2px;
+}
+
+.sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 15px 0 8px 8px;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.nav-item { margin-bottom: 5px; }
+.nav-link-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--text-muted);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.nav-link-btn:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+.nav-link-btn.active {
+    background: var(--accent-gold);
+    color: #000;
+    font-weight: 700;
+    border-color: var(--accent-gold);
+}
+.nav-link-btn.active-outline-amber {
+    border: 1px solid #ffaa00;
+    color: #ffaa00;
+    background: rgba(255, 170, 0, 0.05);
+}
+
+.logout-container {
+    margin-top: auto;
+    padding-top: 20px;
+}
+.btn-logout-sidebar {
+    width: 100%;
+    padding: 10px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+.btn-logout-sidebar:hover {
+    background: #ef4444;
+    color: #fff;
+}
+
+/* MAIN CONTENT WRAPPER */
+#content {
+    margin-left: 260px;
+    padding: 20px 30px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+}
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.clock-display {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.user-badge-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* STATISTIC CARDS */
+.stat-card-group {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.stat-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.stat-box .icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+.stat-box.blue .icon-box { background: #1e3a8a; color: #3b82f6; }
+.stat-box.green .icon-box { background: #064e3b; color: #10b981; }
+.stat-box.red .icon-box { background: #7f1d1d; color: #ef4444; }
+.stat-box.thumbs-up .icon-box { background: #1e3a8a; color: #3b82f6; }
+.stat-box.thumbs-down .icon-box { background: #7f1d1d; color: #ef4444; }
+
+.stat-box .details h6 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+.stat-box .details h3 {
+    margin: 4px 0 0 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* MAIN PANEL */
+.dashboard-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.panel-header i {
+    font-size: 24px;
+    color: var(--accent-gold);
+}
+.panel-header h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+.panel-header p {
+    margin: 2px 0 0 0;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* INPUT BOX CARDS */
+.input-card-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.input-box-card {
+    background: #090d14;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+.input-box-card .card-title-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+}
+.input-box-card .card-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+.input-box-card textarea {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #e2e8f0 !important;
+    font-size: 12px;
+    border-radius: 6px;
+    resize: none;
+    flex-grow: 1;
+}
+
+.btn-reset-card {
+    width: 100%;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.btn-reset-card:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.action-bar-bottom {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+.btn-primary-amber {
+    background: var(--accent-gold);
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+.btn-primary-amber:hover {
+    background: #e6a600;
+    color: #000;
+}
+.btn-secondary-dark {
+    background: #1e2836;
+    color: #fff;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+.btn-secondary-dark:hover {
+    background: #2a3749;
+    color: #fff;
+}
+
+/* TABLES & STICKY HEADER FIX */
+.table-responsive-custom {
+    background: #111622;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow-y: auto;
+    position: relative;
+}
+.table {
+    margin: 0;
+    color: #ffffff;
+    font-size: 13px;
+    border-color: #263346;
+}
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.table th {
+    background: #182232 !important;
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 14px 12px;
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    background: #111622 !important;
+    color: #e2e8f0;
+    border-bottom: 1px solid #1e2836;
+}
+.table tbody tr:hover td {
+    background-color: #1a2332 !important;
+}
+
+/* BADGE KECUALI HIGH DEPO */
+.depo-high-badge {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 12px;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+    border: 1px solid #ff7b7b;
+}
+
+.empty-table-placeholder {
+    text-align: center;
+    padding: 40px !important;
+    color: var(--text-muted);
+}
+.empty-table-placeholder i {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* FOOTER */
+.footer-text {
+    margin-top: auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.view-page { display: none; }
+.view-page.active { display: block; }
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 10px;
+    display: inline-block;
+}
+.status-badge.benar { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
+.status-badge.salah { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+
+</style>
+</head>
+<body>
+
+<!-- 1. LANDING PAGE SEBELUM LOGIN -->
+<div id="loginPage">
+    <div class="login-card">
+        <div class="login-brand-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="login-title">
+            OPERATIONAL SYSTEM <span>AUDITOR</span>
+        </div>
+        <div class="login-quote">
+            "Selamat Bekerja Dan Menanti Waktu Penantian Cuti! ✨<br>
+            Tetap teliti, jaga fokus, dan selesaikan tugas dengan sempurna."
+        </div>
+
+        <form onsubmit="event.preventDefault(); loginAdmin();">
+            <div class="mb-3 text-start">
+                <label class="form-label small text-muted ms-1"><i class="fa-solid fa-user me-1"></i> Username</label>
+                <input type="text" id="adminUser" class="form-control form-control-custom" placeholder="Masukkan Username..." required autocomplete="off">
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label small text-muted ms-1"><i class="fa-solid fa-key me-1"></i> Password</label>
+                <input type="password" id="adminPass" class="form-control form-control-custom" placeholder="Masukkan Password..." required>
+            </div>
+            <div id="loginError" class="text-danger small mb-3 fw-bold" style="display: none;">
+                <i class="fa-solid fa-triangle-exclamation me-1"></i> Username atau Password salah!
+            </div>
+            <button type="submit" class="btn btn-login-submit">
+                MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- 2. DASHBOARD LAYOUT -->
+<div id="appLayout">
+    
+    <!-- SIDEBAR LEFT -->
+    <div id="sidebar">
+        <div class="brand-logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div class="brand-title">
+                OPERATIONAL SYSTEM
+                <span>AUDITOR</span>
+            </div>
+        </div>
+
+        <!-- PROFILE SIDEBAR DINAMIS -->
+        <div class="user-profile-card">
+            <div class="user-avatar">
+                <img id="displayUserAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=SYALALA88" alt="Avatar" width="100%">
+            </div>
+            <div class="user-info">
+                <div class="name" id="displayUsername">SYALALA88</div>
+                <div class="role-badge" id="displayUserRole">Master Admin</div>
+                <div class="status"><i class="fa-solid fa-circle me-1" style="font-size:8px;"></i>Online</div>
+            </div>
+        </div>
+
+        <div class="sidebar-label">DASHBOARD</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link-btn active" onclick="showPage('pageReconciliation', this)">
+                    <i class="fa-solid fa-house"></i> Beranda
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-label">PENGATURAN</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="openPasswordModal()">
+                    <i class="fa-solid fa-lock"></i> Ubah Password
+                </a>
+            </li>
+            <li class="nav-item" id="menuMasterAdmin" style="display: none;">
+                <a class="nav-link-btn" onclick="openMasterUserModal()">
+                    <i class="fa-solid fa-users-gear text-warning"></i> Manajemen User Admin
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-label">TOOLS CHECKER</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageDeposit', this)">
+                    <i class="fa-solid fa-money-bill-transfer"></i> Checker Manual Deposit
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageTO', this)">
+                    <i class="fa-solid fa-chart-line"></i> Checker Deposit VS TO
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageBonus', this)">
+                    <i class="fa-solid fa-gift"></i> Bonus & Data Massal
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn active-outline-amber" onclick="showPage('pageReconciliation', this)">
+                    <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
+                </a>
+            </li>
+        </ul>
+
+        <div class="logout-container">
+            <button class="btn-logout-sidebar" onclick="logoutAdmin()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT RIGHT -->
+    <div id="content">
+        
+        <!-- TOP HEADER -->
+        <div class="topbar">
+            <div>
+                <i class="fa-solid fa-bars text-muted me-3" style="cursor:pointer;"></i>
+            </div>
+            <div class="topbar-right">
+                <div class="clock-display">
+                    <i class="fa-regular fa-clock"></i> <span id="liveClock">14:35:42</span>
+                </div>
+                <div class="user-badge-header">
+                    <div class="user-avatar" style="width:30px; height:30px;">
+                        <img id="headerUserAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=SYALALA88" alt="Avatar" width="100%">
+                    </div>
+                    <div style="font-size:12px; line-height:1.1;">
+                        <div class="fw-bold" style="color:#fff;" id="headerUsername">SYALALA88</div>
+                        <div style="font-size:10px; color:var(--text-muted);" id="headerRole">Master Admin</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WELCOME TEXT (BERANDA) -->
+        <div class="mb-4">
+            <h4 class="fw-bold text-white m-0">Selamat datang, <span style="color:var(--accent-gold);" id="welcomeUsername">SYALALA88</span> 👋</h4>
+            <p class="text-muted small m-0">Selamat Bekerja Dan Menanti Waktu Penantian Cuti ✨</p>
+        </div>
+
+        <!-- PAGE RECONCILIATION / MAIN DASHBOARD -->
+        <div id="pageReconciliation" class="view-page active">
+            
+            <!-- STATISTIC CARDS -->
+            <div class="stat-card-group">
+                <div class="stat-box blue">
+                    <div class="icon-box"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="details">
+                        <h6>TOTAL DEPOSIT EXCEL</h6>
+                        <h3 id="reconTotalDeposit">0</h3>
+                    </div>
+                </div>
+                <div class="stat-box green">
+                    <div class="icon-box"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="details">
+                        <h6>DEPOSIT BALANCE</h6>
+                        <h3 id="reconDepositBalance">0</h3>
+                    </div>
+                </div>
+                <div class="stat-box red">
+                    <div class="icon-box"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="details">
+                        <h6>DEPOSIT TIDAK BALANCE</h6>
+                        <h3 id="reconDepositNotBalance">0</h3>
+                    </div>
+                </div>
+                <div class="stat-box thumbs-up">
+                    <div class="icon-box"><i class="fa-solid fa-thumbs-up"></i></div>
+                    <div class="details">
+                        <h6>BONUS SLOT COCOK</h6>
+                        <h3 id="reconSlotBalance">0</h3>
+                    </div>
+                </div>
+                <div class="stat-box thumbs-down">
+                    <div class="icon-box"><i class="fa-solid fa-thumbs-down"></i></div>
+                    <div class="details">
+                        <h6>BONUS SLOT TIDAK COCOK</h6>
+                        <h3 id="reconSlotNotBalance">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESULT TABLE -->
+            <div class="table-responsive-custom mb-4" style="max-height:280px;">
+                <table class="table align-middle text-center">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>UserID</th>
+                            <th>Deposit Excel</th>
+                            <th>Bonus Mahjong</th>
+                            <th>Bonus Slot</th>
+                            <th>Detail</th>
+                            <th>Status Deposit</th>
+                            <th>Status Bonus Slot</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reconResultBody">
+                        <tr>
+                            <td colspan="9" class="empty-table-placeholder">
+                                <i class="fa-solid fa-box-archive"></i>
+                                <div>Belum ada data diproses.</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FORM INPUT SECTION PANEL -->
+            <div class="dashboard-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <div>
+                        <h5>Pengecekan Deposit Balance</h5>
+                        <p>Cocokkan data deposit dengan bonus untuk memastikan balance</p>
+                    </div>
+                </div>
+
+                <div class="input-card-group">
+                    <div class="input-box-card">
+                        <div class="card-title-custom">
+                            <i class="fa-solid fa-font-awesome text-danger"></i> Bonus Mahjong
+                        </div>
+                        <div class="card-subtitle">
+                            Masukkan data manual Bonus Mahjong.<br>
+                            Format: <span style="color:var(--accent-gold);">UserID + Nominal</span>
+                        </div>
+                        <textarea id="reconManualData" rows="7" class="form-control" placeholder="Contoh:&#10;jaguar99 50000&#10;puputmela 25000"></textarea>
+                        <button class="btn-reset-card" onclick="document.getElementById('reconManualData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Mahjong</button>
+                    </div>
+
+                    <div class="input-box-card">
+                        <div class="card-title-custom">
+                            <i class="fa-solid fa-file-excel text-success"></i> Data Excel Deposit
+                        </div>
+                        <div class="card-subtitle">
+                            Copy seluruh data Excel hasil download lalu paste di sini.
+                        </div>
+                        <textarea id="reconExcelData" rows="7" class="form-control" placeholder="Paste data Excel di sini..."></textarea>
+                        <button class="btn-reset-card" onclick="document.getElementById('reconExcelData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Excel</button>
+                    </div>
+
+                    <div class="input-box-card">
+                        <div class="card-title-custom">
+                            <i class="fa-solid fa-gift text-warning"></i> Bonus Harian Slot
+                        </div>
+                        <div class="card-subtitle">
+                            Copy data Bonus Harian Slot di sini.<br>
+                            Script otomatis mengambil: UserID, Game Name, Total Bonus
+                        </div>
+                        <textarea id="reconSlotData" rows="7" class="form-control" placeholder="Paste data Slot di sini..."></textarea>
+                        <button class="btn-reset-card" onclick="document.getElementById('reconSlotData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Slot</button>
+                    </div>
+                </div>
+
+                <div class="action-bar-bottom">
+                    <button class="btn btn-primary-amber" onclick="prosesReconciliation()"><i class="fa-solid fa-rotate me-1"></i> Proses Pencocokan</button>
+                    <button class="btn btn-secondary-dark" onclick="resetReconciliation()"><i class="fa-solid fa-rotate me-1"></i> Reset Semua</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CHECKER MANUAL DEPOSIT -->
+        <div id="pageDeposit" class="view-page">
+            <div class="dashboard-panel">
+                <h5 class="text-warning mb-3"><i class="fa-solid fa-money-bill-transfer me-2"></i>Checker Manual Deposit</h5>
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="fw-bold mb-1 small text-muted">Paste UserID</label>
+                        <textarea id="userid" rows="5" class="form-control" placeholder="pacell23&#10;bahari8e..."></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fw-bold mb-1 small text-muted">Paste Nominal Deposit</label>
+                        <textarea id="nominal" rows="5" class="form-control" placeholder="50000&#10;25000..."></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="fw-bold mb-1 small text-muted">Upload / Paste History Koin</label>
+                        <input type="file" id="csvFileInput" accept=".csv, .xlsx, .xls, .txt" class="form-control form-control-sm mb-2" onchange="handleFileUpload(event)">
+                        <textarea id="historytext" rows="3" class="form-control" placeholder="Atau paste data teks manual di sini..."></textarea>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button class="btn btn-primary-amber btn-sm" onclick="prosesDeposit()">PROSES</button>
+                    <button class="btn btn-secondary-dark btn-sm" onclick="resetDeposit()"><i class="fa-solid fa-rotate-left me-1"></i> RESET</button>
+                    <button class="btn btn-success btn-sm px-3" onclick="downloadExcelDeposit()">DOWNLOAD EXCEL</button>
+                </div>
+                <div class="table-responsive-custom mt-3" style="max-height: 380px;">
+                    <table class="table align-middle text-center" id="hasilDepositTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>UserID</th>
+                                <th>Nominal</th>
+                                <th>Status</th>
+                                <th>Admin</th>
+                                <th>Tanggal & Jam</th>
+                                <th>Depo/Hari</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHECKER DEPOSIT VS TO -->
+        <div id="pageTO" class="view-page">
+            <div class="dashboard-panel">
+                <h5 class="text-warning mb-3"><i class="fa-solid fa-chart-line me-2"></i>Checker Deposit VS Turnover</h5>
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="fw-bold mb-1 small text-muted">History Koin</label>
+                        <input type="file" id="toHistoryFileInput" accept=".csv, .xlsx, .xls, .txt" class="form-control form-control-sm mb-2" onchange="handleTOHistoryFileUpload(event)">
+                        <textarea id="historyTO" rows="5" class="form-control" placeholder="Paste teks History Koin..."></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="fw-bold mb-1 small text-muted">Data TO</label>
+                        <input type="file" id="toDataFileInput" accept=".csv, .xlsx, .xls, .txt" class="form-control form-control-sm mb-2" onchange="handleTODataFileUpload(event)">
+                        <textarea id="toDataText" rows="5" class="form-control" placeholder="Paste Data Turnover..."></textarea>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button class="btn btn-primary-amber btn-sm" onclick="prosesTO()">PROSES CHECK TO</button>
+                    <button class="btn btn-secondary-dark btn-sm" onclick="resetTO()"><i class="fa-solid fa-rotate-left me-1"></i> RESET</button>
+                    <button class="btn btn-success btn-sm px-3" onclick="downloadExcelTO()">DOWNLOAD EXCEL TO</button>
+                </div>
+                <div class="table-responsive-custom mt-3" style="max-height: 380px;">
+                    <table class="table align-middle text-center">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal & Jam</th>
+                                <th>UserID</th>
+                                <th>Deposit / Coin</th>
+                                <th>TurnOver</th>
+                                <th>Player Menang/Kalah</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hasilTOBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- BONUS & DATA MASSAL -->
+        <div id="pageBonus" class="view-page">
+            <div class="dashboard-panel">
+                <h5 class="text-warning mb-3"><i class="fa-solid fa-gift me-2"></i>Pengecek Bonus & Data Massal</h5>
+                <div class="mb-2">
+                    <label class="fw-bold mb-1 small text-muted">Smart Paste Data Excel</label>
+                    <textarea id="textPasteAll" class="form-control" rows="4" placeholder="Paste data tabel dari Excel di sini..."></textarea>
+                </div>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button onclick="prosesDataMassal()" class="btn btn-primary-amber btn-sm">PROSES DATA MASSAL</button>
+                    <button onclick="resetBonus()" class="btn btn-secondary-dark btn-sm"><i class="fa-solid fa-rotate-left me-1"></i> RESET</button>
+                    <button onclick="downloadExcelBonus()" class="btn btn-success btn-sm px-3">DOWNLOAD EXCEL</button>
+                </div>
+                <div class="table-responsive-custom mt-3" style="max-height: 400px;">
+                    <table class="table align-middle text-center">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>User ID</th>
+                                <th>Nama Rek</th>
+                                <th>No Rekening</th>
+                                <th>Permainan</th>
+                                <th>Kode Ticket</th>
+                                <th>Total Win</th>
+                                <th>Taruhan</th>
+                                <th>Bonus Dibagi</th>
+                                <th>Bonus Harusnya</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyMassal">
+                            <tr><td colspan="11" class="empty-table-placeholder">Belum ada data diproses.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-text">
+            <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
+            <div>v2.5.0 • <span style="color:#10b981;">System Active ●</span></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODAL UBAH PASSWORD -->
+<div class="modal fade" id="passwordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content p-3" style="background:#0f141c; border:1px solid #1e2836; color:#fff;">
+            <div class="modal-header border-bottom border-secondary py-2">
+                <h6 class="modal-title fw-bold text-warning"><i class="fa-solid fa-key me-2"></i>Ubah Password</h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body py-2">
+                <div class="mb-2">
+                    <label class="form-label small text-muted">Password Baru</label>
+                    <input type="password" id="newAdminPass" class="form-control form-control-sm" style="background:#0b0e14; color:#fff; border-color:#1e2836;">
+                </div>
+            </div>
+            <div class="modal-footer border-top border-secondary py-2">
+                <button type="button" class="btn btn-primary-amber btn-sm w-100" onclick="savePasswordSettings()">SIMPAN</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL MANAJEMEN USER -->
+<div class="modal fade" id="masterUserModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3" style="background:#0f141c; border:1px solid #1e2836; color:#fff;">
+            <div class="modal-header border-bottom border-secondary py-2">
+                <h6 class="modal-title fw-bold text-warning"><i class="fa-solid fa-users-gear me-2"></i>Manajemen User Admin</h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body py-2">
+                <div class="p-2 mb-3 rounded" style="background:#0b0e14; border:1px solid #1e2836;">
+                    <div class="fw-bold small text-warning mb-2"><i class="fa-solid fa-user-plus me-1"></i> Tambah Admin Baru</div>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <input type="text" id="addName" class="form-control form-control-sm" placeholder="Nama Tampilan" style="background:#111722; color:#fff; border-color:#1e2836;">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="addUser" class="form-control form-control-sm" placeholder="Username" style="background:#111722; color:#fff; border-color:#1e2836;">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="password" id="addPass" class="form-control form-control-sm" placeholder="Password" style="background:#111722; color:#fff; border-color:#1e2836;">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary-amber btn-sm w-100 mt-2" onclick="addNewUser()"><i class="fa-solid fa-plus me-1"></i> Tambahkan Akun</button>
+                </div>
+
+                <div class="fw-bold small text-muted mb-2">Daftar Akun Admin:</div>
+                <div class="table-responsive-custom" style="max-height: 200px;">
+                    <table class="table align-middle text-center" style="font-size:11px;">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userListBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// KONFIGURASI SUPABASE
+const SUPABASE_URL = "https://bmrdzpzpoztzmkhmhmuu.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtcmR6cHpwb3p0em1raG1obXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MzYyMzQsImV4cCI6MjEwMjAxMjIzNH0.HbyEEh2KbZEBUTR1IGat5-_0oLrK6dRdxITeIma_dXo";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let passwordModal, masterUserModal;
+let currentUser = null;
+
+// FUNGSI MEMANFAATKAN DENGAN SELALU BACA TIPE FRESH
+function getUsersDB() {
+    return JSON.parse(localStorage.getItem("app_users") || "[]");
+}
+
+function saveUsersDB(users) {
+    localStorage.setItem("app_users", JSON.stringify(users));
+}
+
+function initUserDatabase() {
+    if (!localStorage.getItem("app_users")) {
+        const defaultUsers = [
+            { name: "SYALALA88", username: "admin", password: "admin123", role: "Master Admin" },
+            { name: "Auditor 1", username: "auditor1", password: "123", role: "Auditor" }
+        ];
+        saveUsersDB(defaultUsers);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    initUserDatabase();
+    passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+    masterUserModal = new bootstrap.Modal(document.getElementById('masterUserModal'));
+    
+    setInterval(updateClock, 1000);
+    updateClock();
+});
+
+function updateClock() {
+    const now = new Date();
+    const timeStr = now.toTimeString().split(' ')[0];
+    const clockEl = document.getElementById('liveClock');
+    if(clockEl) clockEl.innerText = timeStr;
+}
+
+// FIX: LOGIN SELALU MENGAMBIL DATA DATABASE TERBARU
+function loginAdmin() {
+    const u = document.getElementById("adminUser").value.trim().toLowerCase();
+    const p = document.getElementById("adminPass").value.trim();
+    
+    const users = getUsersDB();
+    const foundUser = users.find(x => x.username.toLowerCase() === u && String(x.password) === p);
+
+    if (foundUser) {
+        currentUser = foundUser;
+        document.getElementById("loginError").style.display = "none";
+        
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("appLayout").style.display = "block";
+        
+        const isMaster = (foundUser.role === 'Master Admin') || (foundUser.username.toLowerCase() === 'admin');
+        const roleLabel = isMaster ? 'Master Admin' : (foundUser.role || 'Auditor');
+
+        document.getElementById("displayUsername").innerText = foundUser.name;
+        document.getElementById("displayUserRole").innerText = roleLabel;
+        
+        document.getElementById("headerUsername").innerText = foundUser.name;
+        document.getElementById("welcomeUsername").innerText = foundUser.name;
+        document.getElementById("headerRole").innerText = roleLabel;
+
+        const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(foundUser.name)}`;
+        document.getElementById("displayUserAvatar").src = avatarUrl;
+        document.getElementById("headerUserAvatar").src = avatarUrl;
+
+        if (isMaster) {
+            document.getElementById("menuMasterAdmin").style.display = "block";
+        } else {
+            document.getElementById("menuMasterAdmin").style.display = "none";
+        }
+    } else {
+        document.getElementById("loginError").style.display = "block";
+    }
+}
+
+function logoutAdmin() { location.reload(); }
+
+function openPasswordModal() {
+    document.getElementById("newAdminPass").value = "";
+    passwordModal.show();
+}
+
+function savePasswordSettings() {
+    const newPass = document.getElementById("newAdminPass").value.trim();
+    if (!newPass) return alert("Password tidak boleh kosong!");
+    
+    let users = getUsersDB();
+    let idx = users.findIndex(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
+    
+    if (idx !== -1) {
+        users[idx].password = String(newPass);
+        currentUser.password = String(newPass);
+        saveUsersDB(users);
+        
+        alert("Password berhasil diubah! Silakan gunakan password baru ini saat login kembali.");
+        passwordModal.hide();
+    }
+}
+
+function openMasterUserModal() {
+    renderUserList();
+    masterUserModal.show();
+}
+
+function renderUserList() {
+    const users = getUsersDB();
+    const tbody = document.getElementById("userListBody");
+    tbody.innerHTML = "";
+
+    users.forEach((u) => {
+        const isMaster = u.username.toLowerCase() === "admin" || u.role === "Master Admin";
+        tbody.innerHTML += `
+            <tr>
+                <td><b>${u.name}</b></td>
+                <td>${u.username}</td>
+                <td><span class="badge ${isMaster ? 'bg-warning text-dark' : 'bg-secondary'}">${u.role || 'Auditor'}</span></td>
+                <td>
+                    ${isMaster ? '-' : `<button class="btn btn-danger btn-sm py-0 px-2" style="font-size:10px;" onclick="deleteUser('${u.username}')"><i class="fa-solid fa-trash"></i> Hapus</button>`}
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function addNewUser() {
+    const name = document.getElementById("addName").value.trim();
+    const user = document.getElementById("addUser").value.trim().toLowerCase();
+    const pass = document.getElementById("addPass").value.trim();
+
+    if (!name || !user || !pass) return alert("Semua kolom wajib diisi!");
+
+    let users = getUsersDB();
+    if (users.some(x => x.username.toLowerCase() === user)) {
+        return alert("Username tersebut sudah digunakan!");
+    }
+
+    users.push({ name: name, username: user, password: String(pass), role: "Auditor" });
+    saveUsersDB(users);
+
+    document.getElementById("addName").value = "";
+    document.getElementById("addUser").value = "";
+    document.getElementById("addPass").value = "";
+
+    renderUserList();
+    alert(`Akun baru untuk "${name}" (username: ${user}) berhasil dibuat!`);
+}
+
+function deleteUser(username) {
+    if (!confirm(`Yakin ingin menghapus akun ${username}?`)) return;
+    let users = getUsersDB();
+    users = users.filter(x => x.username.toLowerCase() !== username.toLowerCase());
+    saveUsersDB(users);
+    renderUserList();
+}
+
+function showPage(pageId, element) {
+    document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+
+    if (element) {
+        document.querySelectorAll('.nav-link-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+}
+
+function processUploadedFile(file, targetElementId) {
+    if (!file) return;
+    const reader = new FileReader();
+    if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+        reader.onload = function(e) { document.getElementById(targetElementId).value = e.target.result; };
+        reader.readAsText(file);
+    } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            document.getElementById(targetElementId).value = XLSX.utils.sheet_to_csv(worksheet, {FS: "\t"});
+        };
+        reader.readAsArrayBuffer(file);
+    }
+}
+
+// CHECKER DEPOSIT MANUAL LOGIC
+const ADMIN = [
+  "vknaaop1", "vknaaop3", "jymaacs1", "vknaaop4",
+  "vknaacs2", "vknaacs3", "vknaacs6", "kaeaacs3",
+  "keoaacdcs1", "keoaacs1", "keoaacs2", "keoaacs7",
+  "kaeaacs6", "kenaacdcs1", "kenaacs2", "vkiaacs3",
+  "vkiaacs7", "vkiaacs8", "vkiaaop1", "vkiaaop2",
+  "kxeaaop1", "liaaacs2", "licaacs4", "licaacdcs1", "jylaacs4",
+  "jvsaacs1", "jvsaacs2", "jvsaacs3", "jvsaaop1"
+];
+let history = [], hasil = [];
+function handleFileUpload(e) { processUploadedFile(e.target.files[0], "historytext"); }
+
+function parseHistoryData(text) {
+    let result = [];
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+    let isHorizontal = false;
+    lines.forEach(line => {
+        if (/reject\s*\(\s*deposit\s*\)/i.test(line)) return;
+
+        let parts = line.split(/,|\t|\s{2,}/).map(p => p.trim().replace(/^"|"$/g, ''));
+        if (parts.length >= 4 && !line.toLowerCase().startsWith("date")) {
+            isHorizontal = true;
+            let dateVal = parts[0];
+            let toVal = parts[2] || "";
+            let byVal = parts[3] || "";
+            let coinVal = parts[4] || parts[3] || "";
+            if (!/\d{1,2}\/\d{1,2}\/\d{4}/.test(dateVal)) {
+                let dateIdx = parts.findIndex(p => /\d{1,2}\/\d{1,2}\/\d{4}/.test(p));
+                if (dateIdx !== -1) dateVal = parts[dateIdx];
+            }
+            result.push({ date: dateVal, to: toVal, by: byVal, coin: coinVal.replace(/,/g, "").replace(/\./g, ""), used: false });
+        }
+    });
+    if (isHorizontal && result.length > 0) return result;
+    const regexBlock = /(\d{1,2}\/\d{1,2}\/\d{4}\s+\d{1,2}:\d{2})([\s\S]*?)(?=(\d{1,2}\/\d{1,2}\/\d{4}\s+\d{1,2}:\d{2})|$)/g;
+    let match;
+    while ((match = regexBlock.exec(text)) !== null) {
+        let dateStr = match[1].trim();
+        let blockContent = match[2].trim();
+
+        if (/reject\s*\(\s*deposit\s*\)/i.test(blockContent)) continue;
+
+        let tokens = blockContent.split(/\s+/).map(t => t.trim()).filter(t => t !== "");
+        let coinVal = "", toVal = "", byVal = "";
+        tokens.forEach(t => {
+            let cleanNum = t.replace(/,/g, "").replace(/\./g, "");
+            if (/^\d{4,9}$/.test(cleanNum) && !coinVal) coinVal = cleanNum;
+            else if (ADMIN.includes(t.toLowerCase())) byVal = t;
+            else if (!toVal && !["Deposit", "(PGA)", "PGA"].includes(t) && !/^\d+$/.test(t)) toVal = t;
+        });
+        result.push({ date: dateStr, to: toVal, by: byVal, coin: coinVal, used: false });
+    }
+    return result;
+}
+
+function getDepositCount(targetUid, fullDate) {
+    if (!fullDate || fullDate === "-") return "-";
+    let targetDate = fullDate.split(" ")[0].trim();
+    let count = 0;
+    history.forEach(r => {
+        if ((r.to || "").trim().toLowerCase() === targetUid.toLowerCase() && (r.date || "").split(" ")[0].trim() === targetDate && ADMIN.includes((r.by || "").trim().toLowerCase())) count++;
+    });
+    return count;
+}
+
+function prosesDeposit() {
+    const rawText = document.getElementById("historytext").value.trim();
+    if (!rawText) return alert("Upload/Paste data History Koin terlebih dahulu.");
+    history = parseHistoryData(rawText);
+    hasil = [];
+    const userid = document.getElementById("userid").value.trim().split(/\r?\n/).filter(x => x.trim() !== "");
+    const nominal = document.getElementById("nominal").value.trim().split(/\r?\n/).filter(x => x.trim() !== "");
+    if (userid.length === 0 || userid.length !== nominal.length) return alert("Data UserID dan Nominal harus valid & sama panjang.");
+    history.forEach(h => h.used = false);
+
+    for (let i = 0; i < userid.length; i++) {
+        const uid = userid[i].trim().toLowerCase();
+        const dep = nominal[i].replace(/,/g, "").replace(/\./g, "").trim();
+        let ketemu = false, admin = "-", tanggal = "-";
+        for (let j = 0; j < history.length; j++) {
+            if (!history[j].used && history[j].to.toLowerCase() === uid && history[j].coin === dep && ADMIN.includes((history[j].by || "").trim().toLowerCase())) {
+                ketemu = true; admin = history[j].by || "-"; tanggal = history[j].date || "-"; history[j].used = true; break;
+            }
+        }
+        let depCount = ketemu ? getDepositCount(uid, tanggal) : "-";
+        hasil.push({ no: i + 1, userid: userid[i].trim(), nominal: dep, status: ketemu ? "MATCH" : "TIDAK MATCH", admin, tanggal, depCount });
+    }
+    const tbody = document.querySelector("#hasilDepositTable tbody");
+    tbody.innerHTML = "";
+    hasil.forEach(item => {
+        const countVal = parseInt(item.depCount, 10);
+        const depBadge = (!isNaN(countVal) && countVal > 3) 
+            ? `<span class="depo-high-badge"><i class="fa-solid fa-fire me-1"></i>${item.depCount}</span>` 
+            : `<b>${item.depCount}</b>`;
+
+        tbody.innerHTML += `<tr>
+            <td>${item.no}</td>
+            <td class="fw-bold">${item.userid}</td>
+            <td>${Number(item.nominal).toLocaleString("id-ID")}</td>
+            <td><span class="status-badge ${item.status === "MATCH" ? "benar" : "salah"}">${item.status}</span></td>
+            <td>${item.admin}</td>
+            <td>${item.tanggal}</td>
+            <td>${depBadge}</td>
+        </tr>`;
+    });
+}
+
+function resetDeposit() {
+    document.getElementById("userid").value = "";
+    document.getElementById("nominal").value = "";
+    document.getElementById("historytext").value = "";
+    history = []; hasil = [];
+    document.querySelector("#hasilDepositTable tbody").innerHTML = "";
+    alert("Checker Manual Deposit berhasil di-reset.");
+}
+
+function downloadExcelDeposit() {
+    if (hasil.length === 0) return alert("Belum ada data.");
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(hasil), "HASIL DEPOSIT");
+    XLSX.writeFile(wb, "Hasil_Deposit.xlsx");
+}
+
+// CHECKER TO LOGIC
+let hasilTOExport = [];
+function handleTOHistoryFileUpload(e) { processUploadedFile(e.target.files[0], "historyTO"); }
+function handleTODataFileUpload(e) { processUploadedFile(e.target.files[0], "toDataText"); }
+
+function parseHistoryTO(text) {
+    let records = [];
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+    lines.forEach(line => {
+        let parts = line.split(/\t|,/).map(p => p.trim().replace(/^"|"$/g, ""));
+        if (parts.length >= 6 && parts[0].toLowerCase() === "date") return;
+        if (parts.length >= 6) {
+            const date = parts[0], info = parts[1], to = parts[2], by = parts[3], coin = parts[4], lastCoin = parts[5];
+            if (/^deposit/i.test(info) && to) records.push({date, info, userid: to.toLowerCase(), by, coin: coin.replace(/,/g, "").replace(/\./g, ""), lastCoin});
+        }
+    });
+    return records;
+}
+
+function parseTurnoverData(text) {
+    let toMap = {};
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
+    lines.forEach(line => {
+        let parts = line.split(/\t/).map(p => p.trim().replace(/^"|"$/g, ""));
+        if (parts.length >= 3) {
+            let idPart = parts[0].replace(/^\d+/, '').toLowerCase();
+            if (!idPart && parts[1]) idPart = parts[1].toLowerCase();
+            if (idPart && !/^(noid|pemain|player)$/i.test(idPart)) toMap[idPart] = {turnover: parts[1] || "", winLose: parts[2] || ""};
+        } else {
+            let match = line.match(/^(\d+)?([a-zA-Z][a-zA-Z0-9_-]*)[\s,]+([0-9.,]+)[\s,]+(-?[0-9.,]+)/);
+            if (match) toMap[match[2].toLowerCase()] = {turnover: match[3], winLose: match[4]};
+        }
+    });
+    return toMap;
+}
+
+function prosesTO() {
+    const historyVal = document.getElementById("historyTO").value.trim();
+    const toVal = document.getElementById("toDataText").value.trim();
+    if (!historyVal || !toVal) return alert("Mohon isi History Koin dan Data TO terlebih dahulu!");
+
+    const historyRecords = parseHistoryTO(historyVal);
+    const toMap = parseTurnoverData(toVal);
+    let htmlHasil = "";
+    hasilTOExport = [];
+
+    historyRecords.forEach((item, index) => {
+        let u = item.userid;
+        let coin = item.coin;
+        let toData = toMap[u];
+        let turnover = toData ? toData.turnover : "";
+        let winLose = toData ? toData.winLose : "";
+        let st = toData ? "ADA TO" : "TIDAK ADA TO";
+        htmlHasil += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.date || '-'}</td>
+                <td><b>${u}</b></td>
+                <td>${coin}</td>
+                <td>${turnover || '-'}</td>
+                <td>${winLose || '-'}</td>
+                <td><span class="status-badge ${st === "ADA TO" ? "benar" : "salah"}">${st}</span></td>
+            </tr>`;
+        hasilTOExport.push({"No":index+1,"Tanggal & Jam":item.date||"","UserID":u,"Coin":coin,"TurnOver":turnover||"0","WinLose":winLose||"0","Status":st});
+    });
+
+    document.getElementById("hasilTOBody").innerHTML = htmlHasil;
+}
+
+function resetTO() {
+    document.getElementById("historyTO").value = "";
+    document.getElementById("toDataText").value = "";
+    document.getElementById("hasilTOBody").innerHTML = "";
+    alert("Checker Deposit VS Turnover berhasil di-reset.");
+}
+
+function downloadExcelTO() {
+    if (hasilTOExport.length === 0) return alert("Belum ada data.");
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(hasilTOExport), "HASIL TO");
+    XLSX.writeFile(wb, "Hasil_TO.xlsx");
+}
+
+// BONUS & DATA MASSAL LOGIC
+let hasilBonusExport = [];
+function prosesDataMassal() {
+    const rawText = document.getElementById('textPasteAll').value.trim();
+    if (!rawText) return alert('Paste data Excel terlebih dahulu!');
+    const tbody = document.getElementById('tbodyMassal');
+    tbody.innerHTML = '';
+    hasilBonusExport = [];
+
+    const lines = rawText.split(/\r?\n/);
+    lines.forEach((line, index) => {
+        if (!line.trim()) return;
+        let cols = line.split('\t').length >= 2 ? line.split('\t') : line.split(',');
+        cols = cols.map(c => c.trim().replace(/^"|"$/g, ''));
+
+        if (cols.length >= 8) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td><b>${cols[0] || '-'}</b></td>
+                <td>${cols[1] || '-'}</td>
+                <td>${cols[2] || '-'}</td>
+                <td>${cols[3] || '-'}</td>
+                <td><code>${cols[4] || '-'}</code></td>
+                <td>${cols[5] || '0'}</td>
+                <td>${cols[6] || '0'}</td>
+                <td>${cols[7] || '0'}</td>
+                <td>${cols[7] || '0'}</td>
+                <td><span class="status-badge benar">Sesuai</span></td>
+            `;
+            tbody.appendChild(tr);
+        }
+    });
+}
+
+function resetBonus() {
+    document.getElementById("textPasteAll").value = "";
+    document.getElementById("tbodyMassal").innerHTML = '<tr><td colspan="11" class="empty-table-placeholder">Belum ada data diproses.</td></tr>';
+    alert("Bonus & Data Massal berhasil di-reset.");
+}
+
+function downloadExcelBonus() {
+    if (hasilBonusExport.length === 0) return alert("Belum ada data.");
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(hasilBonusExport), "HASIL BONUS");
+    XLSX.writeFile(wb, "Hasil_Bonus.xlsx");
+}
+
+// RECONCILIATION LOGIC
+let reconResults = [];
+function reconNormalizeUserID(v) { return String(v || "").trim().toLowerCase(); }
+function reconNormalizeNominal(v) {
+    if (!v) return null;
+    let text = String(v).trim().replace(/\s/g, "").replace(/,/g, "").replace(/\./g, "");
+    const n = parseInt(text, 10);
+    return isNaN(n) ? null : n;
+}
+function reconFormatNominal(v) {
+    if (v === null || v === undefined || isNaN(v)) return "-";
+    return Number(v).toLocaleString("id-ID");
+}
+function reconMakeKey(u, n) { return reconNormalizeUserID(u) + "|" + n; }
+
+function reconParseManualData(text) {
+    const data = [];
+    for (const line of text.split(/\r?\n/).map(x => x.trim()).filter(Boolean)) {
+        let parts = line.split(/\t+|\s{2,}|\|/);
+        if (parts.length < 2) parts = line.split(/\s+/);
+        if (parts.length < 2) continue;
+        const userid = parts[0];
+        const nominal = reconNormalizeNominal(parts[parts.length - 1]);
+        if (userid && nominal !== null) data.push({userid: reconNormalizeUserID(userid), nominal});
+    }
+    return data;
+}
+
+function reconParseExcelData(text) {
+    const data = [];
+    for (const line of text.split(/\r?\n/).filter(x => x.trim())) {
+        let columns = line.split("\t");
+        if (columns.length < 5) columns = line.split(/\s{2,}/);
+        if (columns[0] && columns[0].toLowerCase().includes("tanggal")) continue;
+        const tanggal = columns[0] || "", detail = columns[3] || "", to = columns[4] || "";
+        let userid = "";
+        const userMatch = detail.match(/\(([^()]+)\)/);
+        if (userMatch) userid = userMatch[1].trim();
+        if (to.trim()) userid = to.trim();
+        const nominalMatch = detail.match(/deposit\s+([\d.,]+)/i);
+        if (!nominalMatch) continue;
+        const nominal = reconNormalizeNominal(nominalMatch[1]);
+        if (userid && nominal !== null) data.push({tanggal, userid: reconNormalizeUserID(userid), nominal, detail});
+    }
+    return data;
+}
+
+function reconParseSlotData(text) {
+    const data = [];
+    for (const line of text.split(/\r?\n/).filter(x => x.trim())) {
+        let columns = line.split("\t");
+        if (columns.length < 2) columns = line.split(/\s{2,}/);
+        if (columns.length < 2) continue;
+        const userid = columns[0].trim();
+        let percentIndex = -1;
+        for (let i = 0; i < columns.length; i++) {
+            if (String(columns[i]).includes("%")) { percentIndex = i; break; }
+        }
+        if (percentIndex === -1) continue;
+        let bonus = null;
+        for (let i = columns.length - 1; i > percentIndex; i--) {
+            if (!columns[i].trim()) continue;
+            const parsed = reconNormalizeNominal(columns[i].trim());
+            if (parsed !== null) { bonus = parsed; break; }
+        }
+        if (userid && bonus !== null) data.push({userid: reconNormalizeUserID(userid), bonus});
+    }
+    return data;
+}
+
+function prosesReconciliation() {
+    const manualText = document.getElementById("reconManualData").value;
+    const excelText = document.getElementById("reconExcelData").value;
+    const slotText = document.getElementById("reconSlotData").value;
+
+    if (!manualText.trim()) return alert("Data Bonus Mahjong masih kosong.");
+    if (!excelText.trim()) return alert("Data Excel Deposit masih kosong.");
+
+    const manualData = reconParseManualData(manualText);
+    const excelData = reconParseExcelData(excelText);
+    const slotData = reconParseSlotData(slotText);
+
+    if (!excelData.length) return alert("Data Excel Deposit tidak berhasil dibaca. Pastikan format data sesuai.");
+
+    const mahjongCounter = {};
+    manualData.forEach(item => {
+        const key = reconMakeKey(item.userid, item.nominal);
+        mahjongCounter[key] = (mahjongCounter[key] || 0) + 1;
+    });
+
+    const slotByUser = {};
+    slotData.forEach(item => {
+        if (!slotByUser[item.userid]) slotByUser[item.userid] = [];
+        slotByUser[item.userid].push(item.bonus);
+    });
+
+    let depositBalance = 0, depositNotBalance = 0, slotBalance = 0, slotNotBalance = 0;
+    reconResults = [];
+
+    excelData.forEach(item => {
+        const key = reconMakeKey(item.userid, item.nominal);
+        let statusDeposit;
+        if (mahjongCounter[key] && mahjongCounter[key] > 0) {
+            statusDeposit = "BALANCE";
+            mahjongCounter[key]--;
+            depositBalance++;
+        } else {
+            statusDeposit = "TIDAK COCOK";
+            depositNotBalance++;
+        }
+
+        const userSlots = slotByUser[item.userid] || [];
+        const bonusSlot = userSlots.reduce((sum, value) => sum + value, 0);
+        const statusSlot = userSlots.length ? "BALANCE" : "TIDAK COCOK";
+        if (userSlots.length) slotBalance++; else slotNotBalance++;
+
+        reconResults.push({...item, statusDeposit, bonusSlot, statusSlot});
+    });
+
+    document.getElementById("reconTotalDeposit").innerText = excelData.length;
+    document.getElementById("reconDepositBalance").innerText = depositBalance;
+    document.getElementById("reconDepositNotBalance").innerText = depositNotBalance;
+    document.getElementById("reconSlotBalance").innerText = slotBalance;
+    document.getElementById("reconSlotNotBalance").innerText = slotNotBalance;
+
+    const tbody = document.getElementById("reconResultBody");
+    tbody.innerHTML = "";
+    reconResults.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        const depStatus = item.statusDeposit === "BALANCE"
+            ? '<span class="status-badge benar">🟢 BALANCE</span>'
+            : '<span class="status-badge salah">🔴 TIDAK COCOK</span>';
+        const slotStatus = item.statusSlot === "BALANCE"
+            ? '<span class="status-badge benar">🟢 BALANCE</span>'
+            : '<span class="status-badge salah">🔴 TIDAK COCOK</span>';
+
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.tanggal}</td>
+            <td><b>${item.userid}</b></td>
+            <td>${reconFormatNominal(item.nominal)}</td>
+            <td>${reconFormatNominal(item.nominal)}</td>
+            <td>${reconFormatNominal(item.bonusSlot)}</td>
+            <td class="text-start">${item.detail}</td>
+            <td>${depStatus}</td>
+            <td>${slotStatus}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+function resetReconciliation() {
+    ["reconManualData","reconExcelData","reconSlotData"].forEach(id => document.getElementById(id).value = "");
+    reconResults = [];
+    ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => document.innerText = "0");
+    document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="9" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
+    alert("Pengecekan Deposit Balance berhasil di-reset.");
+}
+</script>
+</body>
+</html>
