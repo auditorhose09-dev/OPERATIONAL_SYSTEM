@@ -1042,28 +1042,34 @@ function updateClock() {
     if(clockEl) clockEl.innerText = timeStr;
 }
 
-// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE
+// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE (DISEMPURNAKAN)
 async function loginAdmin() {
-    const u = document.getElementById("adminUser").value.trim().toLowerCase();
+    const u = document.getElementById("adminUser").value.trim();
     const p = document.getElementById("adminPass").value.trim();
     const btnSubmit = document.getElementById("btnLoginSubmit");
+
+    if (!u || !p) {
+        alert("Username dan Password tidak boleh kosong!");
+        return;
+    }
 
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Memeriksa...`;
 
     try {
+        // Menggunakan .ilike untuk username agar tidak terganggu huruf besar/kecil
         const { data: foundUsers, error } = await supabaseClient
             .from('app_users')
             .select('*')
-            .eq('username', u)
+            .ilike('username', u)
             .eq('password', p);
 
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
 
         if (error) {
-            console.error(error);
-            alert("Terjadi kesalahan pada koneksi Supabase.");
+            console.error("Error Supabase Login:", error.message);
+            alert("Gagal terhubung ke Supabase: " + error.message);
             return;
         }
 
@@ -1074,7 +1080,7 @@ async function loginAdmin() {
             document.getElementById("loginPage").style.display = "none";
             document.getElementById("appLayout").style.display = "block";
             
-            const isMaster = (currentUser.role === 'Master Admin') || (currentUser.username.toLowerCase() === 'admin');
+            const isMaster = (currentUser.role && currentUser.role.toLowerCase() === 'master admin') || (currentUser.username.toLowerCase() === 'admin');
             const roleLabel = isMaster ? 'Master Admin' : (currentUser.role || 'Auditor');
 
             document.getElementById("displayUsername").innerText = currentUser.name;
@@ -1151,7 +1157,7 @@ async function renderUserList() {
 
     tbody.innerHTML = "";
     users.forEach((u) => {
-        const isMaster = u.username.toLowerCase() === "admin" || u.role === "Master Admin";
+        const isMaster = u.username.toLowerCase() === "admin" || (u.role && u.role.toLowerCase() === "master admin");
         tbody.innerHTML += `
             <tr>
                 <td><b>${u.name}</b></td>
@@ -1165,7 +1171,7 @@ async function renderUserList() {
     });
 }
 
-// INTEGRASI SUPABASE: TAMBAH ADMIN BARU REALTIME
+// INTEGRASI SUPABASE: TAMBAH ADMIN BARU REALTIME (DISEMPURNAKAN)
 async function addNewUser() {
     const name = document.getElementById("addName").value.trim();
     const user = document.getElementById("addUser").value.trim().toLowerCase();
@@ -1173,27 +1179,34 @@ async function addNewUser() {
 
     if (!name || !user || !pass) return alert("Semua kolom wajib diisi!");
 
+    // Cek ketersediaan username di database secara case-insensitive
     const { data: existing } = await supabaseClient
         .from('app_users')
         .select('id')
-        .eq('username', user);
+        .ilike('username', user);
 
     if (existing && existing.length > 0) {
-        return alert("Username tersebut sudah digunakan!");
+        return alert("Username tersebut sudah digunakan! Silakan gunakan username lain.");
     }
 
+    // Masukkan data baru (tanpa menyertakan 'id' agar auto-increment ID PostgreSQL berjalan otomatis)
     const { error } = await supabaseClient
         .from('app_users')
-        .insert([{ name: name, username: user, password: String(pass), role: "Auditor" }]);
+        .insert([{ 
+            name: name, 
+            username: user, 
+            password: String(pass), 
+            role: "Auditor" 
+        }]);
 
     if (error) {
-        alert("Gagal menambahkan user: " + error.message);
+        alert("Gagal menambahkan user ke Supabase: " + error.message);
     } else {
         document.getElementById("addName").value = "";
         document.getElementById("addUser").value = "";
         document.getElementById("addPass").value = "";
         renderUserList();
-        alert(`Akun baru untuk "${name}" (username: ${user}) berhasil disimpan di Supabase!`);
+        alert(`Akun baru "${name}" (username: ${user}) berhasil ditambahkan ke database!`);
     }
 }
 
@@ -1204,7 +1217,7 @@ async function deleteUser(username) {
     const { error } = await supabaseClient
         .from('app_users')
         .delete()
-        .eq('username', username.toLowerCase());
+        .ilike('username', username.trim());
 
     if (error) {
         alert("Gagal menghapus user: " + error.message);
@@ -1480,20 +1493,6 @@ function prosesDataMassal() {
                 <td><span class="status-badge benar">Sesuai</span></td>
             `;
             tbody.appendChild(tr);
-
-            hasilBonusExport.push({
-                "No": index + 1,
-                "User ID": cols[0] || '-',
-                "Nama Rek": cols[1] || '-',
-                "No Rekening": cols[2] || '-',
-                "Permainan": cols[3] || '-',
-                "Kode Ticket": cols[4] || '-',
-                "Total Win": cols[5] || '0',
-                "Taruhan": cols[6] || '0',
-                "Bonus Dibagi": cols[7] || '0',
-                "Bonus Harusnya": cols[7] || '0',
-                "Status": "Sesuai"
-            });
         }
     });
 }
@@ -1501,7 +1500,6 @@ function prosesDataMassal() {
 function resetBonus() {
     document.getElementById("textPasteAll").value = "";
     document.getElementById("tbodyMassal").innerHTML = '<tr><td colspan="11" class="empty-table-placeholder">Belum ada data diproses.</td></tr>';
-    hasilBonusExport = [];
     alert("Bonus & Data Massal berhasil di-reset.");
 }
 
@@ -1665,10 +1663,7 @@ function prosesReconciliation() {
 function resetReconciliation() {
     ["reconManualData","reconExcelData","reconSlotData"].forEach(id => document.getElementById(id).value = "");
     reconResults = [];
-    ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = "0";
-    });
+    ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => document.innerText = "0");
     document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="9" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
     alert("Pengecekan Deposit Balance berhasil di-reset.");
 }
