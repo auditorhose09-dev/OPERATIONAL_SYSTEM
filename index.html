@@ -671,7 +671,7 @@ body {
             </li>
             <li class="nav-item">
                 <a class="nav-link-btn active-outline-amber" onclick="showPage('pageReconciliation', this)">
-                    <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
+                    <i class="fa-solid fa-chart-pie"></i> Pengecekan PL Ada Depo
                 </a>
             </li>
         </ul>
@@ -787,8 +787,8 @@ body {
                 <div class="panel-header">
                     <i class="fa-solid fa-chart-column"></i>
                     <div>
-                        <h5>Pengecekan Deposit Balance</h5>
-                        <p>Cocokkan data deposit dengan bonus untuk memastikan balance</p>
+                        <h5>Pengecekan PL Ada Depo</h5>
+                        <p>Cocokkan data deposit dengan bonus untuk memastikan balance PL</p>
                     </div>
                 </div>
 
@@ -1270,7 +1270,7 @@ const ADMIN = [ "vknaaop1", "vknaaop3", "jymaacs1", "vknaaop4", "vknaacs2", "vkn
                "vkiaaop2", "kxeaaop1", "liaaacs2", "licaacs4", "licaacdcs1", "jylaacs4", "jvsaacs1", 
                "jvsaacs2", "jvsaacs3", "jvsaaop1", "wzgaacs1", "wzgaacs16", "wzgaacs20", "wzgaacs21", 
                "wzgaacs5", "wzgaacs6", "wzgaacs8", "wzgaaop1", "wzgaaop3" ];
-];
+
 let history = [], hasil = [];
 function handleFileUpload(e) { processUploadedFile(e.target.files[0], "historytext"); }
 
@@ -1737,7 +1737,7 @@ function resetReconciliation() {
     reconResults = [];
     ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => document.innerText = "0");
     document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="9" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
-    alert("Pengecekan Deposit Balance berhasil di-reset.");
+    alert("Pengecekan PL Ada Depo berhasil di-reset.");
 }
 </script>
 </body>
