@@ -505,21 +505,6 @@ body {
     background-color: #1a2332 !important;
 }
 
-/* HIGHLIGHT UNTUK DATA KESAMAAN / DUPUKASI MASAL >= 3 KALI */
-.cell-duplicate-highlight {
-    background-color: #ffcc00 !important;
-    color: #000000 !important;
-    font-weight: 800 !important;
-    border-radius: 4px;
-    padding: 4px 8px;
-    display: inline-block;
-}
-
-.ticket-duplicate-highlight {
-    color: #ff3366 !important;
-    font-weight: 800 !important;
-}
-
 /* BADGE KECUALI HIGH DEPO */
 .depo-high-badge {
     background: #ef4444 !important;
@@ -1057,16 +1042,11 @@ function updateClock() {
     if(clockEl) clockEl.innerText = timeStr;
 }
 
-// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE (DISEMPURNAKAN)
+// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE
 async function loginAdmin() {
-    const u = document.getElementById("adminUser").value.trim();
+    const u = document.getElementById("adminUser").value.trim().toLowerCase();
     const p = document.getElementById("adminPass").value.trim();
     const btnSubmit = document.getElementById("btnLoginSubmit");
-
-    if (!u || !p) {
-        alert("Username dan Password tidak boleh kosong!");
-        return;
-    }
 
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Memeriksa...`;
@@ -1075,15 +1055,15 @@ async function loginAdmin() {
         const { data: foundUsers, error } = await supabaseClient
             .from('app_users')
             .select('*')
-            .ilike('username', u)
+            .eq('username', u)
             .eq('password', p);
 
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
 
         if (error) {
-            console.error("Error Supabase Login:", error.message);
-            alert("Gagal terhubung ke Supabase: " + error.message);
+            console.error(error);
+            alert("Terjadi kesalahan pada koneksi Supabase.");
             return;
         }
 
@@ -1094,7 +1074,7 @@ async function loginAdmin() {
             document.getElementById("loginPage").style.display = "none";
             document.getElementById("appLayout").style.display = "block";
             
-            const isMaster = (currentUser.role && currentUser.role.toLowerCase() === 'master admin') || (currentUser.username.toLowerCase() === 'admin');
+            const isMaster = (currentUser.role === 'Master Admin') || (currentUser.username.toLowerCase() === 'admin');
             const roleLabel = isMaster ? 'Master Admin' : (currentUser.role || 'Auditor');
 
             document.getElementById("displayUsername").innerText = currentUser.name;
@@ -1130,6 +1110,7 @@ function openPasswordModal() {
     passwordModal.show();
 }
 
+// INTEGRASI SUPABASE: UBAH PASSWORD REALTIME
 async function savePasswordSettings() {
     const newPass = document.getElementById("newAdminPass").value.trim();
     if (!newPass) return alert("Password tidak boleh kosong!");
@@ -1153,6 +1134,7 @@ function openMasterUserModal() {
     masterUserModal.show();
 }
 
+// INTEGRASI SUPABASE: BACA DAFTAR ADMIN REALTIME
 async function renderUserList() {
     const tbody = document.getElementById("userListBody");
     tbody.innerHTML = `<tr><td colspan="4" class="text-muted">Memuat data...</td></tr>`;
@@ -1169,7 +1151,7 @@ async function renderUserList() {
 
     tbody.innerHTML = "";
     users.forEach((u) => {
-        const isMaster = u.username.toLowerCase() === "admin" || (u.role && u.role.toLowerCase() === "master admin");
+        const isMaster = u.username.toLowerCase() === "admin" || u.role === "Master Admin";
         tbody.innerHTML += `
             <tr>
                 <td><b>${u.name}</b></td>
@@ -1183,6 +1165,7 @@ async function renderUserList() {
     });
 }
 
+// INTEGRASI SUPABASE: TAMBAH ADMIN BARU REALTIME
 async function addNewUser() {
     const name = document.getElementById("addName").value.trim();
     const user = document.getElementById("addUser").value.trim().toLowerCase();
@@ -1193,39 +1176,35 @@ async function addNewUser() {
     const { data: existing } = await supabaseClient
         .from('app_users')
         .select('id')
-        .ilike('username', user);
+        .eq('username', user);
 
     if (existing && existing.length > 0) {
-        return alert("Username tersebut sudah digunakan! Silakan gunakan username lain.");
+        return alert("Username tersebut sudah digunakan!");
     }
 
     const { error } = await supabaseClient
         .from('app_users')
-        .insert([{ 
-            name: name, 
-            username: user, 
-            password: String(pass), 
-            role: "Auditor" 
-        }]);
+        .insert([{ name: name, username: user, password: String(pass), role: "Auditor" }]);
 
     if (error) {
-        alert("Gagal menambahkan user ke Supabase: " + error.message);
+        alert("Gagal menambahkan user: " + error.message);
     } else {
         document.getElementById("addName").value = "";
         document.getElementById("addUser").value = "";
         document.getElementById("addPass").value = "";
         renderUserList();
-        alert(`Akun baru "${name}" (username: ${user}) berhasil ditambahkan ke database!`);
+        alert(`Akun baru untuk "${name}" (username: ${user}) berhasil disimpan di Supabase!`);
     }
 }
 
+// INTEGRASI SUPABASE: HAPUS ADMIN REALTIME
 async function deleteUser(username) {
     if (!confirm(`Yakin ingin menghapus akun ${username}?`)) return;
 
     const { error } = await supabaseClient
         .from('app_users')
         .delete()
-        .ilike('username', username.trim());
+        .eq('username', username.toLowerCase());
 
     if (error) {
         alert("Gagal menghapus user: " + error.message);
@@ -1264,12 +1243,14 @@ function processUploadedFile(file, targetElementId) {
 }
 
 // CHECKER DEPOSIT MANUAL LOGIC
-const ADMIN = [ "vknaaop1", "vknaaop3", "jymaacs1", "vknaaop4", "vknaacs2", "vknaacs3", 
-               "vknaacs6", "kaeaacs3", "keoaacdcs1", "keoaacs1", "keoaacs2", "keoaacs7", 
-               "kaeaacs6", "kenaacdcs1", "kenaacs2", "vkiaacs3", "vkiaacs7", "vkiaacs8", "vkiaaop1", 
-               "vkiaaop2", "kxeaaop1", "liaaacs2", "licaacs4", "licaacdcs1", "jylaacs4", "jvsaacs1", 
-               "jvsaacs2", "jvsaacs3", "jvsaaop1", "wzgaacs1", "wzgaacs16", "wzgaacs20", "wzgaacs21", 
-               "wzgaacs5", "wzgaacs6", "wzgaacs8", "wzgaaop1", "wzgaaop3" ];
+const ADMIN = [
+  "vknaaop1", "vknaaop3", "jymaacs1", "vknaaop4",
+  "vknaacs2", "vknaacs3", "vknaacs6", "kaeaacs3",
+  "keoaacdcs1", "keoaacs1", "keoaacs2", "keoaacs7",
+  "kaeaacs6", "kenaacdcs1", "kenaacs2", "vkiaacs3",
+  "vkiaacs7", "vkiaacs8", "vkiaaop1", "vkiaaop2",
+  "kxeaaop1", "liaaacs2", "licaacs4", "licaacdcs1", "jylaacs4",
+  "jvsaacs1", "jvsaacs2", "jvsaacs3", "jvsaaop1"
 ];
 let history = [], hasil = [];
 function handleFileUpload(e) { processUploadedFile(e.target.files[0], "historytext"); }
@@ -1468,9 +1449,8 @@ function downloadExcelTO() {
     XLSX.writeFile(wb, "Hasil_TO.xlsx");
 }
 
-// BONUS & DATA MASSAL LOGIC (DENGAN HIGHLIGHT KESAMAAN DATA >= 3)
+// BONUS & DATA MASSAL LOGIC
 let hasilBonusExport = [];
-
 function prosesDataMassal() {
     const rawText = document.getElementById('textPasteAll').value.trim();
     if (!rawText) return alert('Paste data Excel terlebih dahulu!');
@@ -1479,93 +1459,28 @@ function prosesDataMassal() {
     hasilBonusExport = [];
 
     const lines = rawText.split(/\r?\n/);
-    const parsedRows = [];
-
-    // Map penghitung frekuensi duplikasi
-    const userFreq = {};
-    const namaRekFreq = {};
-    const noRekFreq = {};
-    const ticketFreq = {};
-
-    lines.forEach((line) => {
+    lines.forEach((line, index) => {
         if (!line.trim()) return;
         let cols = line.split('\t').length >= 2 ? line.split('\t') : line.split(',');
         cols = cols.map(c => c.trim().replace(/^"|"$/g, ''));
 
         if (cols.length >= 8) {
-            const userId = cols[0] || '';
-            const namaRek = cols[1] || '';
-            const noRek = cols[2] || '';
-            const permainan = cols[3] || '';
-            const kodeTicket = cols[4] || '';
-            const totalWin = cols[5] || '0';
-            const taruhan = cols[6] || '0';
-            const bonusDibagi = cols[7] || '0';
-
-            parsedRows.push({
-                userId, namaRek, noRek, permainan, kodeTicket, totalWin, taruhan, bonusDibagi
-            });
-
-            // Hitung frekuensi jika kolom terisi
-            if (userId) userFreq[userId] = (userFreq[userId] || 0) + 1;
-            if (namaRek) namaRekFreq[namaRek] = (namaRekFreq[namaRek] || 0) + 1;
-            if (noRek) noRekFreq[noRek] = (noRekFreq[noRek] || 0) + 1;
-            if (kodeTicket) ticketFreq[kodeTicket] = (ticketFreq[kodeTicket] || 0) + 1;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td><b>${cols[0] || '-'}</b></td>
+                <td>${cols[1] || '-'}</td>
+                <td>${cols[2] || '-'}</td>
+                <td>${cols[3] || '-'}</td>
+                <td><code>${cols[4] || '-'}</code></td>
+                <td>${cols[5] || '0'}</td>
+                <td>${cols[6] || '0'}</td>
+                <td>${cols[7] || '0'}</td>
+                <td>${cols[7] || '0'}</td>
+                <td><span class="status-badge benar">Sesuai</span></td>
+            `;
+            tbody.appendChild(tr);
         }
-    });
-
-    // Render tabel dengan highlight untuk data >= 3
-    parsedRows.forEach((row, index) => {
-        const isUserDup = (userFreq[row.userId] || 0) >= 3;
-        const isNamaDup = (namaRekFreq[row.namaRek] || 0) >= 3;
-        const isNoRekDup = (noRekFreq[row.noRek] || 0) >= 3;
-        const isTicketDup = (ticketFreq[row.kodeTicket] || 0) >= 3;
-
-        const cellUser = isUserDup 
-            ? `<span class="cell-duplicate-highlight">${row.userId}</span>` 
-            : `<b>${row.userId || '-'}</b>`;
-
-        const cellNama = isNamaDup 
-            ? `<span class="cell-duplicate-highlight">${row.namaRek}</span>` 
-            : (row.namaRek || '-');
-
-        const cellNoRek = isNoRekDup 
-            ? `<span class="cell-duplicate-highlight">${row.noRek}</span>` 
-            : (row.noRek || '-');
-
-        const cellTicket = isTicketDup 
-            ? `<code class="ticket-duplicate-highlight">${row.kodeTicket}</code>` 
-            : `<code>${row.kodeTicket || '-'}</code>`;
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${cellUser}</td>
-            <td>${cellNama}</td>
-            <td>${cellNoRek}</td>
-            <td>${row.permainan || '-'}</td>
-            <td>${cellTicket}</td>
-            <td>${row.totalWin}</td>
-            <td>${row.taruhan}</td>
-            <td>${row.bonusDibagi}</td>
-            <td>${row.bonusDibagi}</td>
-            <td><span class="status-badge benar">Sesuai</span></td>
-        `;
-        tbody.appendChild(tr);
-
-        hasilBonusExport.push({
-            "No": index + 1,
-            "User ID": row.userId,
-            "Nama Rek": row.namaRek,
-            "No Rekening": row.noRek,
-            "Permainan": row.permainan,
-            "Kode Ticket": row.kodeTicket,
-            "Total Win": row.totalWin,
-            "Taruhan": row.taruhan,
-            "Bonus Dibagi": row.bonusDibagi,
-            "Bonus Harusnya": row.bonusDibagi,
-            "Status": "Sesuai"
-        });
     });
 }
 
