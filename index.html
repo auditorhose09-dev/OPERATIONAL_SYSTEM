@@ -529,158 +529,6 @@ body {
     margin-bottom: 8px;
 }
 
-/* === PANDUAN SYSTEM === */
-.guide-panel {
-    background: linear-gradient(145deg, #0f141c, #0b0e14);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 24px;
-    margin-bottom: 20px;
-}
-.guide-hero {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px;
-    border: 1px solid rgba(255,184,0,.18);
-    background: rgba(255,184,0,.035);
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-.guide-hero-icon {
-    width: 52px;
-    height: 52px;
-    flex-shrink: 0;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-gold);
-    background: rgba(255,184,0,.1);
-    border: 1px solid rgba(255,184,0,.35);
-    font-size: 22px;
-}
-.guide-hero h4 {
-    margin: 0 0 5px;
-    font-size: 20px;
-    font-weight: 800;
-    color: #fff;
-}
-.guide-hero p {
-    margin: 0;
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-}
-.guide-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-.guide-section {
-    background: #090d14;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 18px;
-}
-.guide-section.full-width {
-    grid-column: 1 / -1;
-}
-.guide-section-title {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 12px;
-}
-.guide-section-title i {
-    color: var(--accent-gold);
-}
-.guide-section p,
-.guide-section li {
-    color: #cbd5e1;
-    font-size: 12px;
-    line-height: 1.7;
-}
-.guide-section ul,
-.guide-section ol {
-    margin: 0;
-    padding-left: 20px;
-}
-.guide-section li {
-    margin-bottom: 5px;
-}
-.guide-feature {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
-}
-.guide-feature-item {
-    padding: 10px 12px;
-    border-radius: 8px;
-    background: #111722;
-    border: 1px solid #1e2836;
-}
-.guide-feature-item strong {
-    display: block;
-    color: #fff;
-    font-size: 12px;
-    margin-bottom: 3px;
-}
-.guide-feature-item span {
-    color: var(--text-muted);
-    font-size: 11px;
-    line-height: 1.5;
-}
-.guide-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 5px;
-    padding: 9px 13px;
-    border-radius: 8px;
-    background: var(--accent-gold);
-    color: #000;
-    font-size: 12px;
-    font-weight: 800;
-    text-decoration: none;
-    transition: .2s ease;
-}
-.guide-link:hover {
-    color: #000;
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(255,184,0,.2);
-}
-.guide-tech span {
-    display: inline-block;
-    padding: 6px 9px;
-    margin: 3px;
-    border-radius: 6px;
-    background: #111722;
-    border: 1px solid var(--border-color);
-    color: #cbd5e1;
-    font-size: 11px;
-}
-.guide-copyright {
-    margin-top: 18px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-size: 11px;
-    text-align: center;
-}
-@media (max-width: 900px) {
-    .guide-grid,
-    .guide-feature {
-        grid-template-columns: 1fr;
-    }
-    .guide-section.full-width {
-        grid-column: auto;
-    }
-}
-
 /* FOOTER */
 .footer-text {
     margin-top: auto;
@@ -734,7 +582,7 @@ body {
             <div id="loginError" class="text-danger small mb-3 fw-bold" style="display: none;">
                 <i class="fa-solid fa-triangle-exclamation me-1"></i> Username atau Password salah!
             </div>
-            <button type="submit" class="btn btn-login-submit">
+            <button type="submit" id="btnLoginSubmit" class="btn btn-login-submit">
                 MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
             </button>
         </form>
@@ -771,15 +619,6 @@ body {
             <li class="nav-item">
                 <a class="nav-link-btn active" onclick="showPage('pageReconciliation', this)">
                     <i class="fa-solid fa-house"></i> Beranda
-                </a>
-            </li>
-        </ul>
-
-        <div class="sidebar-label">PANDUAN</div>
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageGuide', this)">
-                    <i class="fa-solid fa-book-open"></i> Panduan System
                 </a>
             </li>
         </ul>
@@ -1104,104 +943,6 @@ body {
             </div>
         </div>
 
-        <!-- PANDUAN SYSTEM -->
-        <div id="pageGuide" class="view-page">
-            <div class="guide-panel">
-                <div class="guide-hero">
-                    <div class="guide-hero-icon">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <div>
-                        <h4>Operational System Auditor</h4>
-                        <p>
-                            Tools berbasis web (<i>client-side</i>) yang dirancang untuk mempermudah
-                            dan mempercepat proses validasi serta verifikasi data transaksi operasional secara otomatis.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="guide-grid">
-
-                    <div class="guide-section full-width">
-                        <div class="guide-section-title">
-                            <i class="fa-solid fa-rocket"></i> Fitur Utama
-                        </div>
-                        <div class="guide-feature">
-                            <div class="guide-feature-item">
-                                <strong><i class="fa-solid fa-chart-line me-1"></i> Checker Deposit VS TO</strong>
-                                <span>Membandingkan data transaksi History Koin (Deposit) dengan Data Turnover (TO) secara presisi.</span>
-                            </div>
-                            <div class="guide-feature-item">
-                                <strong><i class="fa-solid fa-money-bill-transfer me-1"></i> Checker Manual Deposit</strong>
-                                <span>Validasi manual untuk penginputan data deposit harian.</span>
-                            </div>
-                            <div class="guide-feature-item">
-                                <strong><i class="fa-solid fa-chart-pie me-1"></i> Pengecekan Deposit Balance</strong>
-                                <span>Memastikan keseimbangan antara saldo masuk dan aktivitas akun.</span>
-                            </div>
-                            <div class="guide-feature-item">
-                                <strong><i class="fa-solid fa-file-excel me-1"></i> Export Excel</strong>
-                                <span>Mengunduh hasil olah data langsung ke dalam format tabel .xlsx.</span>
-                            </div>
-                            <div class="guide-feature-item">
-                                <strong><i class="fa-solid fa-user-shield me-1"></i> Privasi Aman</strong>
-                                <span>Semua pemrosesan data dilakukan di sisi browser pengguna tanpa mengirimkan data ke server eksternal.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="guide-section">
-                        <div class="guide-section-title">
-                            <i class="fa-solid fa-desktop"></i> Cara Menggunakan Tools
-                        </div>
-                        <ol>
-                            <li>Buka halaman aplikasi web secara langsung melalui link berikut.</li>
-                            <li>Pilih menu tools di bilah navigasi kiri, misalnya <b>Checker Deposit VS TO</b>.</li>
-                            <li>Salin (<i>copy</i>) teks log/data transaksi kamu, lalu tempelkan (<i>paste</i>) pada kolom yang tersedia.</li>
-                            <li>Klik tombol <b>PROSES CHECK TO</b>.</li>
-                            <li>Tinjau tabel hasil analisis yang muncul di layar, atau klik <b>DOWNLOAD EXCEL TO</b> untuk menyimpan laporan.</li>
-                        </ol>
-                        <a class="guide-link"
-                           href="https://auditorhose09-dev.github.io/OPERATIONAL_SYSTEM/"
-                           target="_blank"
-                           rel="noopener noreferrer">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            OPERATIONAL SYSTEM AUDITOR
-                        </a>
-                    </div>
-
-                    <div class="guide-section">
-                        <div class="guide-section-title">
-                            <i class="fa-solid fa-code"></i> Teknologi yang Digunakan
-                        </div>
-                        <div class="guide-tech">
-                            <span>HTML5</span>
-                            <span>CSS3</span>
-                            <span>Bootstrap 5</span>
-                            <span>FontAwesome</span>
-                            <span>JavaScript (Vanilla)</span>
-                            <span>PapaParse</span>
-                            <span>SheetJS (XLSX)</span>
-                        </div>
-                        <p class="mt-3 mb-0">
-                            Digunakan untuk UI Custom Dark Theme & Responsive Layout, data extraction,
-                            parsing, logic, serta proses olah data CSV/Excel.
-                        </p>
-                    </div>
-
-                    <div class="guide-section full-width">
-                        <div class="guide-section-title">
-                            <i class="fa-solid fa-copyright"></i> Lisensi & Hak Cipta
-                        </div>
-                        <p class="mb-0">
-                            © 2026 Operational System Auditor. All Rights Reserved.
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
         <!-- FOOTER -->
         <div class="footer-text">
             <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
@@ -1278,35 +1019,15 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// KONFIGURASI SUPABASE
-const SUPABASE_URL = "https://bmrdzpzpoztzmkhmhmuu.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJtcmR6cHpwb3p0em1raG1obXV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0MzYyMzQsImV4cCI6MjEwMjAxMjIzNH0.HbyEEh2KbZEBUTR1IGat5-_0oLrK6dRdxITeIma_dXo";
+// KONFIGURASI SUPABASE KLIEN (PROYEK BARU)
+const SUPABASE_URL = "https://ceapqmsujottcfhrfqby.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlYXBxbXN1am90dGNmaHJmcWJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjEwMzEsImV4cCI6MjEwMjA5NzAzMX0.L_IL9PNt1kwgJk75z7rQLrMgs9AfOXcNMp9uQkASdKI";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let passwordModal, masterUserModal;
 let currentUser = null;
 
-// FUNGSI MEMANFAATKAN DENGAN SELALU BACA TIPE FRESH
-function getUsersDB() {
-    return JSON.parse(localStorage.getItem("app_users") || "[]");
-}
-
-function saveUsersDB(users) {
-    localStorage.setItem("app_users", JSON.stringify(users));
-}
-
-function initUserDatabase() {
-    if (!localStorage.getItem("app_users")) {
-        const defaultUsers = [
-            { name: "SYALALA88", username: "admin", password: "admin123", role: "Master Admin" },
-            { name: "Auditor 1", username: "auditor1", password: "123", role: "Auditor" }
-        ];
-        saveUsersDB(defaultUsers);
-    }
-}
-
 document.addEventListener("DOMContentLoaded", function() {
-    initUserDatabase();
     passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
     masterUserModal = new bootstrap.Modal(document.getElementById('masterUserModal'));
     
@@ -1321,42 +1042,64 @@ function updateClock() {
     if(clockEl) clockEl.innerText = timeStr;
 }
 
-// FIX: LOGIN SELALU MENGAMBIL DATA DATABASE TERBARU
-function loginAdmin() {
+// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE
+async function loginAdmin() {
     const u = document.getElementById("adminUser").value.trim().toLowerCase();
     const p = document.getElementById("adminPass").value.trim();
-    
-    const users = getUsersDB();
-    const foundUser = users.find(x => x.username.toLowerCase() === u && String(x.password) === p);
+    const btnSubmit = document.getElementById("btnLoginSubmit");
 
-    if (foundUser) {
-        currentUser = foundUser;
-        document.getElementById("loginError").style.display = "none";
-        
-        document.getElementById("loginPage").style.display = "none";
-        document.getElementById("appLayout").style.display = "block";
-        
-        const isMaster = (foundUser.role === 'Master Admin') || (foundUser.username.toLowerCase() === 'admin');
-        const roleLabel = isMaster ? 'Master Admin' : (foundUser.role || 'Auditor');
+    btnSubmit.disabled = true;
+    btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Memeriksa...`;
 
-        document.getElementById("displayUsername").innerText = foundUser.name;
-        document.getElementById("displayUserRole").innerText = roleLabel;
-        
-        document.getElementById("headerUsername").innerText = foundUser.name;
-        document.getElementById("welcomeUsername").innerText = foundUser.name;
-        document.getElementById("headerRole").innerText = roleLabel;
+    try {
+        const { data: foundUsers, error } = await supabaseClient
+            .from('app_users')
+            .select('*')
+            .eq('username', u)
+            .eq('password', p);
 
-        const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(foundUser.name)}`;
-        document.getElementById("displayUserAvatar").src = avatarUrl;
-        document.getElementById("headerUserAvatar").src = avatarUrl;
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
 
-        if (isMaster) {
-            document.getElementById("menuMasterAdmin").style.display = "block";
-        } else {
-            document.getElementById("menuMasterAdmin").style.display = "none";
+        if (error) {
+            console.error(error);
+            alert("Terjadi kesalahan pada koneksi Supabase.");
+            return;
         }
-    } else {
-        document.getElementById("loginError").style.display = "block";
+
+        if (foundUsers && foundUsers.length > 0) {
+            currentUser = foundUsers[0];
+            document.getElementById("loginError").style.display = "none";
+            
+            document.getElementById("loginPage").style.display = "none";
+            document.getElementById("appLayout").style.display = "block";
+            
+            const isMaster = (currentUser.role === 'Master Admin') || (currentUser.username.toLowerCase() === 'admin');
+            const roleLabel = isMaster ? 'Master Admin' : (currentUser.role || 'Auditor');
+
+            document.getElementById("displayUsername").innerText = currentUser.name;
+            document.getElementById("displayUserRole").innerText = roleLabel;
+            
+            document.getElementById("headerUsername").innerText = currentUser.name;
+            document.getElementById("welcomeUsername").innerText = currentUser.name;
+            document.getElementById("headerRole").innerText = roleLabel;
+
+            const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(currentUser.name)}`;
+            document.getElementById("displayUserAvatar").src = avatarUrl;
+            document.getElementById("headerUserAvatar").src = avatarUrl;
+
+            if (isMaster) {
+                document.getElementById("menuMasterAdmin").style.display = "block";
+            } else {
+                document.getElementById("menuMasterAdmin").style.display = "none";
+            }
+        } else {
+            document.getElementById("loginError").style.display = "block";
+        }
+    } catch (err) {
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
+        alert("Gagal terhubung ke database. Periksa koneksi internet.");
     }
 }
 
@@ -1367,19 +1110,21 @@ function openPasswordModal() {
     passwordModal.show();
 }
 
-function savePasswordSettings() {
+// INTEGRASI SUPABASE: UBAH PASSWORD REALTIME
+async function savePasswordSettings() {
     const newPass = document.getElementById("newAdminPass").value.trim();
     if (!newPass) return alert("Password tidak boleh kosong!");
-    
-    let users = getUsersDB();
-    let idx = users.findIndex(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
-    
-    if (idx !== -1) {
-        users[idx].password = String(newPass);
-        currentUser.password = String(newPass);
-        saveUsersDB(users);
-        
-        alert("Password berhasil diubah! Silakan gunakan password baru ini saat login kembali.");
+
+    const { error } = await supabaseClient
+        .from('app_users')
+        .update({ password: newPass })
+        .eq('id', currentUser.id);
+
+    if (error) {
+        alert("Gagal mengubah password: " + error.message);
+    } else {
+        currentUser.password = newPass;
+        alert("Password berhasil diubah di database Supabase!");
         passwordModal.hide();
     }
 }
@@ -1389,11 +1134,22 @@ function openMasterUserModal() {
     masterUserModal.show();
 }
 
-function renderUserList() {
-    const users = getUsersDB();
+// INTEGRASI SUPABASE: BACA DAFTAR ADMIN REALTIME
+async function renderUserList() {
     const tbody = document.getElementById("userListBody");
-    tbody.innerHTML = "";
+    tbody.innerHTML = `<tr><td colspan="4" class="text-muted">Memuat data...</td></tr>`;
 
+    const { data: users, error } = await supabaseClient
+        .from('app_users')
+        .select('*')
+        .order('id', { ascending: true });
+
+    if (error) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-danger">Gagal memuat user.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = "";
     users.forEach((u) => {
         const isMaster = u.username.toLowerCase() === "admin" || u.role === "Master Admin";
         tbody.innerHTML += `
@@ -1409,35 +1165,52 @@ function renderUserList() {
     });
 }
 
-function addNewUser() {
+// INTEGRASI SUPABASE: TAMBAH ADMIN BARU REALTIME
+async function addNewUser() {
     const name = document.getElementById("addName").value.trim();
     const user = document.getElementById("addUser").value.trim().toLowerCase();
     const pass = document.getElementById("addPass").value.trim();
 
     if (!name || !user || !pass) return alert("Semua kolom wajib diisi!");
 
-    let users = getUsersDB();
-    if (users.some(x => x.username.toLowerCase() === user)) {
+    const { data: existing } = await supabaseClient
+        .from('app_users')
+        .select('id')
+        .eq('username', user);
+
+    if (existing && existing.length > 0) {
         return alert("Username tersebut sudah digunakan!");
     }
 
-    users.push({ name: name, username: user, password: String(pass), role: "Auditor" });
-    saveUsersDB(users);
+    const { error } = await supabaseClient
+        .from('app_users')
+        .insert([{ name: name, username: user, password: String(pass), role: "Auditor" }]);
 
-    document.getElementById("addName").value = "";
-    document.getElementById("addUser").value = "";
-    document.getElementById("addPass").value = "";
-
-    renderUserList();
-    alert(`Akun baru untuk "${name}" (username: ${user}) berhasil dibuat!`);
+    if (error) {
+        alert("Gagal menambahkan user: " + error.message);
+    } else {
+        document.getElementById("addName").value = "";
+        document.getElementById("addUser").value = "";
+        document.getElementById("addPass").value = "";
+        renderUserList();
+        alert(`Akun baru untuk "${name}" (username: ${user}) berhasil disimpan di Supabase!`);
+    }
 }
 
-function deleteUser(username) {
+// INTEGRASI SUPABASE: HAPUS ADMIN REALTIME
+async function deleteUser(username) {
     if (!confirm(`Yakin ingin menghapus akun ${username}?`)) return;
-    let users = getUsersDB();
-    users = users.filter(x => x.username.toLowerCase() !== username.toLowerCase());
-    saveUsersDB(users);
-    renderUserList();
+
+    const { error } = await supabaseClient
+        .from('app_users')
+        .delete()
+        .eq('username', username.toLowerCase());
+
+    if (error) {
+        alert("Gagal menghapus user: " + error.message);
+    } else {
+        renderUserList();
+    }
 }
 
 function showPage(pageId, element) {
