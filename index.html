@@ -807,7 +807,7 @@ body {
                         </div>
                         <div class="card-subtitle">
                             Copy data Bonus Harian Slot di sini.<br>
-                            Script otomatis mengambil: UserID, Game Name, Total Bonus
+                            Script otomatis mengambil: UserID dan nominal di kolom terakhir (Total Bonus)
                         </div>
                         <textarea id="reconSlotData" rows="7" class="form-control" placeholder="Paste data Slot di sini..."></textarea>
                         <button class="btn-reset-card" onclick="document.getElementById('reconSlotData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Slot</button>
@@ -1544,24 +1544,40 @@ function reconParseExcelData(text) {
 
 function reconParseSlotData(text) {
     const data = [];
+
     for (const line of text.split(/\r?\n/).filter(x => x.trim())) {
+        // Format Bonus Harian Slot:
+        // Kolom pertama = UserID
+        // Kolom terakhir = Total Bonus
+        // Contoh:
+        // borjoy08    ANDIKA ADRIATA PRIORITAS ... 20%    212,960
+
         let columns = line.split("\t");
-        if (columns.length < 2) columns = line.split(/\s{2,}/);
+
+        // Fallback jika data ditempel tanpa TAB
+        if (columns.length < 2) {
+            columns = line.split(/\s{2,}/);
+        }
+
         if (columns.length < 2) continue;
-        const userid = columns[0].trim();
-        let percentIndex = -1;
-        for (let i = 0; i < columns.length; i++) {
-            if (String(columns[i]).includes("%")) { percentIndex = i; break; }
+
+        const userid = String(columns[0] || "").trim();
+
+        // Ambil nominal dari kolom PALING TERAKHIR
+        const lastColumn = String(columns[columns.length - 1] || "").trim();
+
+        if (!userid || !lastColumn) continue;
+
+        const bonus = reconNormalizeNominal(lastColumn);
+
+        if (bonus !== null) {
+            data.push({
+                userid: reconNormalizeUserID(userid),
+                bonus: bonus
+            });
         }
-        if (percentIndex === -1) continue;
-        let bonus = null;
-        for (let i = columns.length - 1; i > percentIndex; i--) {
-            if (!columns[i].trim()) continue;
-            const parsed = reconNormalizeNominal(columns[i].trim());
-            if (parsed !== null) { bonus = parsed; break; }
-        }
-        if (userid && bonus !== null) data.push({userid: reconNormalizeUserID(userid), bonus});
     }
+
     return data;
 }
 
@@ -1594,9 +1610,11 @@ function prosesReconciliation() {
     let depositBalance = 0, depositNotBalance = 0, slotBalance = 0, slotNotBalance = 0;
     reconResults = [];
 
+    // Proses seluruh data Deposit Excel seperti sebelumnya
     excelData.forEach(item => {
         const key = reconMakeKey(item.userid, item.nominal);
         let statusDeposit;
+
         if (mahjongCounter[key] && mahjongCounter[key] > 0) {
             statusDeposit = "BALANCE";
             mahjongCounter[key]--;
@@ -1609,9 +1627,45 @@ function prosesReconciliation() {
         const userSlots = slotByUser[item.userid] || [];
         const bonusSlot = userSlots.reduce((sum, value) => sum + value, 0);
         const statusSlot = userSlots.length ? "BALANCE" : "TIDAK COCOK";
-        if (userSlots.length) slotBalance++; else slotNotBalance++;
 
-        reconResults.push({...item, statusDeposit, bonusSlot, statusSlot});
+        if (userSlots.length) {
+            slotBalance++;
+        } else {
+            slotNotBalance++;
+        }
+
+        reconResults.push({
+            ...item,
+            bonusSlot,
+            statusDeposit,
+            statusSlot
+        });
+    });
+
+    // Tambahkan UserID yang hanya ada di Bonus Harian Slot
+    // tetapi tidak ada di Data Excel Deposit.
+    // Dengan begitu data seperti borjoy08 tidak hilang dari hasil.
+    const existingUsers = new Set(
+        excelData.map(item => reconNormalizeUserID(item.userid))
+    );
+
+    Object.keys(slotByUser).forEach(userid => {
+        if (existingUsers.has(userid)) return;
+
+        const userSlots = slotByUser[userid] || [];
+        const bonusSlot = userSlots.reduce((sum, value) => sum + value, 0);
+
+        reconResults.push({
+            tanggal: "-",
+            userid: userid,
+            nominal: 0,
+            detail: "Bonus Harian Slot - tidak ditemukan di Data Excel Deposit",
+            statusDeposit: "TIDAK COCOK",
+            bonusSlot: bonusSlot,
+            statusSlot: "BALANCE"
+        });
+
+        slotBalance++;
     });
 
     document.getElementById("reconTotalDeposit").innerText = excelData.length;
