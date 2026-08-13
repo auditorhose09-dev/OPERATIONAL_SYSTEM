@@ -379,7 +379,7 @@ body {
 /* INPUT BOX CARDS */
 .input-card-group {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
 }
@@ -750,6 +750,7 @@ body {
                             <th>UserID</th>
                             <th>Deposit Excel</th>
                             <th>Bonus Mahjong</th>
+                            <th>Input Manual</th>
                             <th>Bonus Slot</th>
                             <th>Detail</th>
                             <th>Status Deposit</th>
@@ -758,7 +759,7 @@ body {
                     </thead>
                     <tbody id="reconResultBody">
                         <tr>
-                            <td colspan="9" class="empty-table-placeholder">
+                            <td colspan="10" class="empty-table-placeholder">
                                 <i class="fa-solid fa-box-archive"></i>
                                 <div>Belum ada data diproses.</div>
                             </td>
@@ -773,7 +774,7 @@ body {
                     <i class="fa-solid fa-chart-column"></i>
                     <div>
                         <h5>Pengecekan Deposit Balance</h5>
-                        <p>Cocokkan data deposit dengan bonus untuk memastikan balance</p>
+                        <p>Cocokkan data deposit dengan bonus & data manual untuk memastikan balance</p>
                     </div>
                 </div>
 
@@ -786,8 +787,20 @@ body {
                             Masukkan data manual Bonus Mahjong.<br>
                             Format: <span style="color:var(--accent-gold);">UserID + Nominal</span>
                         </div>
-                        <textarea id="reconManualData" rows="7" class="form-control" placeholder="Contoh:&#10;jaguar99 50000&#10;puputmela 25000"></textarea>
+                        <textarea id="reconManualData" rows="7" class="form-control" placeholder="Contoh:&#10;jaguar99 50,000&#10;puputmela 25,000"></textarea>
                         <button class="btn-reset-card" onclick="document.getElementById('reconManualData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Mahjong</button>
+                    </div>
+
+                    <div class="input-box-card">
+                        <div class="card-title-custom">
+                            <i class="fa-solid fa-keyboard text-info"></i> Data Input Manual
+                        </div>
+                        <div class="card-subtitle">
+                            Masukkan data input manual member.<br>
+                            Format: <span style="color:var(--accent-gold);">UserID + Nominal</span>
+                        </div>
+                        <textarea id="reconInputManualData" rows="7" class="form-control" placeholder="Contoh:&#10;usr3b57p 50,000&#10;rayakiti 48,965"></textarea>
+                        <button class="btn-reset-card" onclick="document.getElementById('reconInputManualData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Input Manual</button>
                     </div>
 
                     <div class="input-box-card">
@@ -807,7 +820,7 @@ body {
                         </div>
                         <div class="card-subtitle">
                             Copy data Bonus Harian Slot di sini.<br>
-                            Script otomatis mengambil: UserID dan nominal di kolom terakhir (Total Bonus)
+                            Script otomatis mengambil: UserID, Game Name, Total Bonus
                         </div>
                         <textarea id="reconSlotData" rows="7" class="form-control" placeholder="Paste data Slot di sini..."></textarea>
                         <button class="btn-reset-card" onclick="document.getElementById('reconSlotData').value=''"><i class="fa-solid fa-rotate me-1"></i> Reset Slot</button>
@@ -833,7 +846,7 @@ body {
                     </div>
                     <div class="col-md-4">
                         <label class="fw-bold mb-1 small text-muted">Paste Nominal Deposit</label>
-                        <textarea id="nominal" rows="5" class="form-control" placeholder="50000&#10;25000..."></textarea>
+                        <textarea id="nominal" rows="5" class="form-control" placeholder="50,000&#10;25,000..."></textarea>
                     </div>
                     <div class="col-md-4">
                         <label class="fw-bold mb-1 small text-muted">Upload / Paste History Koin</label>
@@ -1019,7 +1032,6 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// KONFIGURASI SUPABASE KLIEN (PROYEK BARU)
 const SUPABASE_URL = "https://ceapqmsujottcfhrfqby.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlYXBxbXN1am90dGNmaHJmcWJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjEwMzEsImV4cCI6MjEwMjA5NzAzMX0.L_IL9PNt1kwgJk75z7rQLrMgs9AfOXcNMp9uQkASdKI";
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1110,7 +1122,6 @@ function openPasswordModal() {
     passwordModal.show();
 }
 
-// INTEGRASI SUPABASE: UBAH PASSWORD REALTIME
 async function savePasswordSettings() {
     const newPass = document.getElementById("newAdminPass").value.trim();
     if (!newPass) return alert("Password tidak boleh kosong!");
@@ -1134,7 +1145,6 @@ function openMasterUserModal() {
     masterUserModal.show();
 }
 
-// INTEGRASI SUPABASE: BACA DAFTAR ADMIN REALTIME
 async function renderUserList() {
     const tbody = document.getElementById("userListBody");
     tbody.innerHTML = `<tr><td colspan="4" class="text-muted">Memuat data...</td></tr>`;
@@ -1165,7 +1175,6 @@ async function renderUserList() {
     });
 }
 
-// INTEGRASI SUPABASE: TAMBAH ADMIN BARU REALTIME
 async function addNewUser() {
     const name = document.getElementById("addName").value.trim();
     const user = document.getElementById("addUser").value.trim().toLowerCase();
@@ -1197,7 +1206,6 @@ async function addNewUser() {
     }
 }
 
-// INTEGRASI SUPABASE: HAPUS ADMIN REALTIME
 async function deleteUser(username) {
     if (!confirm(`Yakin ingin menghapus akun ${username}?`)) return;
 
@@ -1339,7 +1347,7 @@ function prosesDeposit() {
         tbody.innerHTML += `<tr>
             <td>${item.no}</td>
             <td class="fw-bold">${item.userid}</td>
-            <td>${Number(item.nominal).toLocaleString("id-ID")}</td>
+            <td>${Number(item.nominal).toLocaleString("en-US")}</td>
             <td><span class="status-badge ${item.status === "MATCH" ? "benar" : "salah"}">${item.status}</span></td>
             <td>${item.admin}</td>
             <td>${item.tanggal}</td>
@@ -1478,12 +1486,27 @@ function prosesDataMassal() {
                 <td><span class="status-badge benar">Sesuai</span></td>
             `;
             tbody.appendChild(tr);
+
+            hasilBonusExport.push({
+                "No": index + 1,
+                "User ID": cols[0] || '-',
+                "Nama Rek": cols[1] || '-',
+                "No Rekening": cols[2] || '-',
+                "Permainan": cols[3] || '-',
+                "Kode Ticket": cols[4] || '-',
+                "Total Win": cols[5] || '0',
+                "Taruhan": cols[6] || '0',
+                "Bonus Dibagi": cols[7] || '0',
+                "Bonus Harusnya": cols[7] || '0',
+                "Status": "Sesuai"
+            });
         }
     });
 }
 
 function resetBonus() {
     document.getElementById("textPasteAll").value = "";
+    hasilBonusExport = [];
     document.getElementById("tbodyMassal").innerHTML = '<tr><td colspan="11" class="empty-table-placeholder">Belum ada data diproses.</td></tr>';
     alert("Bonus & Data Massal berhasil di-reset.");
 }
@@ -1498,27 +1521,47 @@ function downloadExcelBonus() {
 // RECONCILIATION LOGIC
 let reconResults = [];
 function reconNormalizeUserID(v) { return String(v || "").trim().toLowerCase(); }
+
 function reconNormalizeNominal(v) {
     if (!v) return null;
     let text = String(v).trim().replace(/\s/g, "").replace(/,/g, "").replace(/\./g, "");
     const n = parseInt(text, 10);
     return isNaN(n) ? null : n;
 }
+
 function reconFormatNominal(v) {
-    if (v === null || v === undefined || isNaN(v)) return "-";
-    return Number(v).toLocaleString("id-ID");
+    if (v === null || v === undefined || isNaN(v) || v === 0) return "0";
+    return Number(v).toLocaleString("en-US");
 }
+
 function reconMakeKey(u, n) { return reconNormalizeUserID(u) + "|" + n; }
 
 function reconParseManualData(text) {
     const data = [];
+    if (!text) return data;
     for (const line of text.split(/\r?\n/).map(x => x.trim()).filter(Boolean)) {
-        let parts = line.split(/\t+|\s{2,}|\|/);
-        if (parts.length < 2) parts = line.split(/\s+/);
-        if (parts.length < 2) continue;
-        const userid = parts[0];
-        const nominal = reconNormalizeNominal(parts[parts.length - 1]);
-        if (userid && nominal !== null) data.push({userid: reconNormalizeUserID(userid), nominal});
+        let tokens = line.split(/\s+/).filter(Boolean);
+        if (tokens.length < 2) continue;
+        
+        let nominal = null;
+        let userid = tokens[0];
+        
+        let lastClean = tokens[tokens.length - 1].replace(/,/g, "").replace(/\./g, "");
+        if (/^\d+$/.test(lastClean)) {
+            nominal = parseInt(lastClean, 10);
+        } else {
+            for (let i = tokens.length - 1; i >= 1; i--) {
+                let clean = tokens[i].replace(/,/g, "").replace(/\./g, "");
+                if (/^\d{3,9}$/.test(clean)) {
+                    nominal = parseInt(clean, 10);
+                    break;
+                }
+            }
+        }
+        
+        if (userid && nominal !== null && !isNaN(nominal)) {
+            data.push({userid: reconNormalizeUserID(userid), nominal});
+        }
     }
     return data;
 }
@@ -1544,61 +1587,52 @@ function reconParseExcelData(text) {
 
 function reconParseSlotData(text) {
     const data = [];
-
     for (const line of text.split(/\r?\n/).filter(x => x.trim())) {
-        // Format Bonus Harian Slot:
-        // Kolom pertama = UserID
-        // Kolom terakhir = Total Bonus
-        // Contoh:
-        // borjoy08    ANDIKA ADRIATA PRIORITAS ... 20%    212,960
-
         let columns = line.split("\t");
-
-        // Fallback jika data ditempel tanpa TAB
-        if (columns.length < 2) {
-            columns = line.split(/\s{2,}/);
-        }
-
+        if (columns.length < 2) columns = line.split(/\s{2,}/);
         if (columns.length < 2) continue;
-
-        const userid = String(columns[0] || "").trim();
-
-        // Ambil nominal dari kolom PALING TERAKHIR
-        const lastColumn = String(columns[columns.length - 1] || "").trim();
-
-        if (!userid || !lastColumn) continue;
-
-        const bonus = reconNormalizeNominal(lastColumn);
-
-        if (bonus !== null) {
-            data.push({
-                userid: reconNormalizeUserID(userid),
-                bonus: bonus
-            });
+        const userid = columns[0].trim();
+        let percentIndex = -1;
+        for (let i = 0; i < columns.length; i++) {
+            if (String(columns[i]).includes("%")) { percentIndex = i; break; }
         }
+        if (percentIndex === -1) continue;
+        let bonus = null;
+        for (let i = columns.length - 1; i > percentIndex; i--) {
+            if (!columns[i].trim()) continue;
+            const parsed = reconNormalizeNominal(columns[i].trim());
+            if (parsed !== null) { bonus = parsed; break; }
+        }
+        if (userid && bonus !== null) data.push({userid: reconNormalizeUserID(userid), bonus});
     }
-
     return data;
 }
 
 function prosesReconciliation() {
     const manualText = document.getElementById("reconManualData").value;
+    const inputManualText = document.getElementById("reconInputManualData").value;
     const excelText = document.getElementById("reconExcelData").value;
     const slotText = document.getElementById("reconSlotData").value;
 
-    if (!manualText.trim()) return alert("Data Bonus Mahjong masih kosong.");
     if (!excelText.trim()) return alert("Data Excel Deposit masih kosong.");
 
-    const manualData = reconParseManualData(manualText);
+    const manualMahjongData = reconParseManualData(manualText);
+    const manualInputData = reconParseManualData(inputManualText);
     const excelData = reconParseExcelData(excelText);
     const slotData = reconParseSlotData(slotText);
 
     if (!excelData.length) return alert("Data Excel Deposit tidak berhasil dibaca. Pastikan format data sesuai.");
 
     const mahjongCounter = {};
-    manualData.forEach(item => {
+    manualMahjongData.forEach(item => {
         const key = reconMakeKey(item.userid, item.nominal);
         mahjongCounter[key] = (mahjongCounter[key] || 0) + 1;
+    });
+
+    const manualCounter = {};
+    manualInputData.forEach(item => {
+        const key = reconMakeKey(item.userid, item.nominal);
+        manualCounter[key] = (manualCounter[key] || 0) + 1;
     });
 
     const slotByUser = {};
@@ -1610,62 +1644,39 @@ function prosesReconciliation() {
     let depositBalance = 0, depositNotBalance = 0, slotBalance = 0, slotNotBalance = 0;
     reconResults = [];
 
-    // Proses seluruh data Deposit Excel seperti sebelumnya
     excelData.forEach(item => {
         const key = reconMakeKey(item.userid, item.nominal);
-        let statusDeposit;
 
+        let bonusMahjong = 0;
         if (mahjongCounter[key] && mahjongCounter[key] > 0) {
-            statusDeposit = "BALANCE";
+            bonusMahjong = item.nominal;
             mahjongCounter[key]--;
-            depositBalance++;
-        } else {
-            statusDeposit = "TIDAK COCOK";
-            depositNotBalance++;
         }
+
+        let dataManual = 0;
+        if (manualCounter[key] && manualCounter[key] > 0) {
+            dataManual = item.nominal;
+            manualCounter[key]--;
+        }
+
+        const isDepoBalanced = (bonusMahjong > 0) || (dataManual > 0);
+        const statusDeposit = isDepoBalanced ? "BALANCE" : "TIDAK COCOK";
+
+        if (isDepoBalanced) depositBalance++; else depositNotBalance++;
 
         const userSlots = slotByUser[item.userid] || [];
         const bonusSlot = userSlots.reduce((sum, value) => sum + value, 0);
-        const statusSlot = userSlots.length ? "BALANCE" : "TIDAK COCOK";
-
-        if (userSlots.length) {
-            slotBalance++;
-        } else {
-            slotNotBalance++;
-        }
+        const statusSlot = bonusSlot > 0 ? "BALANCE" : "TIDAK COCOK";
+        if (bonusSlot > 0) slotBalance++; else slotNotBalance++;
 
         reconResults.push({
             ...item,
-            bonusSlot,
+            bonusMahjong,
+            dataManual,
             statusDeposit,
+            bonusSlot,
             statusSlot
         });
-    });
-
-    // Tambahkan UserID yang hanya ada di Bonus Harian Slot
-    // tetapi tidak ada di Data Excel Deposit.
-    // Dengan begitu data seperti borjoy08 tidak hilang dari hasil.
-    const existingUsers = new Set(
-        excelData.map(item => reconNormalizeUserID(item.userid))
-    );
-
-    Object.keys(slotByUser).forEach(userid => {
-        if (existingUsers.has(userid)) return;
-
-        const userSlots = slotByUser[userid] || [];
-        const bonusSlot = userSlots.reduce((sum, value) => sum + value, 0);
-
-        reconResults.push({
-            tanggal: "-",
-            userid: userid,
-            nominal: 0,
-            detail: "Bonus Harian Slot - tidak ditemukan di Data Excel Deposit",
-            statusDeposit: "TIDAK COCOK",
-            bonusSlot: bonusSlot,
-            statusSlot: "BALANCE"
-        });
-
-        slotBalance++;
     });
 
     document.getElementById("reconTotalDeposit").innerText = excelData.length;
@@ -1690,7 +1701,8 @@ function prosesReconciliation() {
             <td>${item.tanggal}</td>
             <td><b>${item.userid}</b></td>
             <td>${reconFormatNominal(item.nominal)}</td>
-            <td>${reconFormatNominal(item.nominal)}</td>
+            <td>${reconFormatNominal(item.bonusMahjong)}</td>
+            <td>${reconFormatNominal(item.dataManual)}</td>
             <td>${reconFormatNominal(item.bonusSlot)}</td>
             <td class="text-start">${item.detail}</td>
             <td>${depStatus}</td>
@@ -1700,10 +1712,16 @@ function prosesReconciliation() {
 }
 
 function resetReconciliation() {
-    ["reconManualData","reconExcelData","reconSlotData"].forEach(id => document.getElementById(id).value = "");
+    ["reconManualData","reconInputManualData","reconExcelData","reconSlotData"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+    });
     reconResults = [];
-    ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => document.innerText = "0");
-    document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="9" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
+    ["reconTotalDeposit","reconDepositBalance","reconDepositNotBalance","reconSlotBalance","reconSlotNotBalance"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = "0";
+    });
+    document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="10" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
     alert("Pengecekan Deposit Balance berhasil di-reset.");
 }
 </script>
