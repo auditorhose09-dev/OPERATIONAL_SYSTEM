@@ -268,7 +268,6 @@ body {
     color: #fff;
 }
 
-/* MAIN CONTENT WRAPPER */
 #content {
     margin-left: 260px;
     padding: 20px 30px;
@@ -505,6 +504,16 @@ body {
     background-color: #1a2332 !important;
 }
 
+/* KELAS TAMBAHAN UNTUK HIGHLIGHT DATA LEBIH DARI 3 */
+.row-highlight td {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.3) !important;
+    color: #ffcccc !important;
+}
+.row-highlight:hover td {
+    background-color: rgba(239, 68, 68, 0.25) !important;
+}
+
 /* BADGE KECUALI HIGH DEPO */
 .depo-high-badge {
     background: #ef4444 !important;
@@ -651,7 +660,7 @@ body {
             </li>
             <li class="nav-item">
                 <a class="nav-link-btn" onclick="showPage('pageBonus', this)">
-                    <i class="fa-solid fa-gift"></i> Bonus & Data Massal
+                    <i class="fa-solid fa-gift"></i> Bonus mahjong
                 </a>
             </li>
             <li class="nav-item">
@@ -918,10 +927,10 @@ body {
             </div>
         </div>
 
-        <!-- BONUS & DATA MASSAL -->
+        <!-- PENGECEKAN BONUS MAHJONG -->
         <div id="pageBonus" class="view-page">
             <div class="dashboard-panel">
-                <h5 class="text-warning mb-3"><i class="fa-solid fa-gift me-2"></i>Pengecek Bonus & Data Massal</h5>
+                <h5 class="text-warning mb-3"><i class="fa-solid fa-gift me-2"></i>Pengecek Bonus Mahjong</h5>
                 <div class="mb-2">
                     <label class="fw-bold mb-1 small text-muted">Smart Paste Data Excel</label>
                     <textarea id="textPasteAll" class="form-control" rows="4" placeholder="Paste data tabel dari Excel di sini..."></textarea>
@@ -1455,52 +1464,101 @@ function downloadExcelTO() {
     XLSX.writeFile(wb, "Hasil_TO.xlsx");
 }
 
-// BONUS & DATA MASSAL LOGIC
+// PENGECEKAN BONUS MAHJONG LOGIC
 let hasilBonusExport = [];
+
 function prosesDataMassal() {
     const rawText = document.getElementById('textPasteAll').value.trim();
     if (!rawText) return alert('Paste data Excel terlebih dahulu!');
+    
     const tbody = document.getElementById('tbodyMassal');
     tbody.innerHTML = '';
     hasilBonusExport = [];
 
-    const lines = rawText.split(/\r?\n/);
-    lines.forEach((line, index) => {
-        if (!line.trim()) return;
-        let cols = line.split('\t').length >= 2 ? line.split('\t') : line.split(',');
+    const lines = rawText.split(/\r?\n/).filter(l => l.trim() !== '');
+    let parsedData = [];
+    let userCounts = {};
+
+    // Proses 1: Memilah kolom agar presisi & Hitung jumlah duplikat
+    lines.forEach(line => {
+        // Coba pisahkan dengan tab terlebih dahulu (paling stabil dari Excel)
+        let cols = line.split('\t');
+        
+        // Jika kolom hasil tab kurang dari 6, kemungkinan di-paste dengan spasi
+        if (cols.length < 6) {
+            cols = line.split(/\s{2,}/); // Pecah berdasarkan 2 spasi atau lebih
+        }
+        
+        // Jika masih gagal, coba koma
+        if (cols.length < 6) {
+            cols = line.split(',');
+        }
+
         cols = cols.map(c => c.trim().replace(/^"|"$/g, ''));
 
+        // Jika terdeteksi minimal 8 kolom (sesuai contoh data)
         if (cols.length >= 8) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td><b>${cols[0] || '-'}</b></td>
-                <td>${cols[1] || '-'}</td>
-                <td>${cols[2] || '-'}</td>
-                <td>${cols[3] || '-'}</td>
-                <td><code>${cols[4] || '-'}</code></td>
-                <td>${cols[5] || '0'}</td>
-                <td>${cols[6] || '0'}</td>
-                <td>${cols[7] || '0'}</td>
-                <td>${cols[7] || '0'}</td>
-                <td><span class="status-badge benar">Sesuai</span></td>
-            `;
-            tbody.appendChild(tr);
-
-            hasilBonusExport.push({
-                "No": index + 1,
-                "User ID": cols[0] || '-',
-                "Nama Rek": cols[1] || '-',
-                "No Rekening": cols[2] || '-',
-                "Permainan": cols[3] || '-',
-                "Kode Ticket": cols[4] || '-',
-                "Total Win": cols[5] || '0',
-                "Taruhan": cols[6] || '0',
-                "Bonus Dibagi": cols[7] || '0',
-                "Bonus Harusnya": cols[7] || '0',
-                "Status": "Sesuai"
-            });
+            parsedData.push(cols);
+            
+            // Hitung duplikasi User ID
+            let uid = cols[0].toLowerCase();
+            userCounts[uid] = (userCounts[uid] || 0) + 1;
         }
+    });
+
+    if (parsedData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" class="empty-table-placeholder">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>Gagal mendeteksi kolom. Pastikan format tabel sesuai.</div>
+        </td></tr>`;
+        return;
+    }
+
+    // Proses 2: Cetak ke dalam Tabel dengan Logika Highlighting
+    parsedData.forEach((cols, index) => {
+        let uid = cols[0].toLowerCase();
+        let count = userCounts[uid];
+        let isHigh = count > 3; // Jika data lebih dari 3
+        
+        const tr = document.createElement('tr');
+        
+        // Tambahkan class khusus jika lebih dari 3
+        if (isHigh) {
+            tr.classList.add('row-highlight');
+        }
+
+        let statusHtml = isHigh 
+            ? '<span class="status-badge salah">Lebih dari 3</span>' 
+            : '<span class="status-badge benar">Sesuai</span>';
+
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+            <td><b>${cols[0] || '-'}</b></td>
+            <td>${cols[1] || '-'}</td>
+            <td>${cols[2] || '-'}</td>
+            <td>${cols[3] || '-'}</td>
+            <td><code>${cols[4] || '-'}</code></td>
+            <td>${cols[5] || '0'}</td>
+            <td>${cols[6] || '0'}</td>
+            <td>${cols[7] || '0'}</td>
+            <td>${cols[7] || '0'}</td>
+            <td>${statusHtml}</td>
+        `;
+        tbody.appendChild(tr);
+
+        hasilBonusExport.push({
+            "No": index + 1,
+            "User ID": cols[0] || '-',
+            "Nama Rek": cols[1] || '-',
+            "No Rekening": cols[2] || '-',
+            "Permainan": cols[3] || '-',
+            "Kode Ticket": cols[4] || '-',
+            "Total Win": cols[5] || '0',
+            "Taruhan": cols[6] || '0',
+            "Bonus Dibagi": cols[7] || '0',
+            "Bonus Harusnya": cols[7] || '0',
+            "Status": isHigh ? "Lebih dari 3" : "Sesuai"
+        });
     });
 }
 
@@ -1508,7 +1566,7 @@ function resetBonus() {
     document.getElementById("textPasteAll").value = "";
     hasilBonusExport = [];
     document.getElementById("tbodyMassal").innerHTML = '<tr><td colspan="11" class="empty-table-placeholder">Belum ada data diproses.</td></tr>';
-    alert("Bonus & Data Massal berhasil di-reset.");
+    alert("Bonus mahong berhasil di-reset.");
 }
 
 function downloadExcelBonus() {
