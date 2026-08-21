@@ -668,6 +668,11 @@ body {
                     <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageAccountValidator', this)">
+                    <i class="fa-solid fa-building-columns"></i> Validator Rekening
+                </a>
+            </li>
         </ul>
 
         <div class="logout-container">
@@ -962,6 +967,70 @@ body {
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+
+        <!-- VALIDATOR REKENING / E-WALLET - MODUL TAMBAHAN -->
+        <div id="pageAccountValidator" class="view-page">
+            <div class="dashboard-panel">
+                <div class="panel-header">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <div>
+                        <h5>Validator Rekening &amp; E-Wallet</h5>
+                        <p>Validasi nomor rekening/akun dan tampilkan nama pemilik melalui API backend.</p>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="fw-bold mb-1 small text-muted">API KEY APIVALIDASI</label>
+                        <input type="password" id="accountValidatorApiKey" class="form-control" autocomplete="off" placeholder="Masukkan API Key..." style="background:#0b0e14;color:#fff;border-color:#1e2836;">
+                        <div class="small text-muted mt-1">Disimpan hanya di session browser, tidak ditanam ke source code.</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fw-bold mb-1 small text-muted">PROVIDER</label>
+                        <select id="accountValidatorProvider" class="form-select" style="background:#0b0e14;color:#fff;border-color:#1e2836;">
+                            <option value="">-- Pilih Provider --</option>
+                            <optgroup label="BANK">
+                                <option value="014">BCA</option>
+                                <option value="002">BRI</option>
+                                <option value="009">BNI</option>
+                                <option value="008">Mandiri</option>
+                            </optgroup>
+                            <optgroup label="E-WALLET">
+                                <option value="dana">DANA</option>
+                                <option value="gopay">GoPay</option>
+                                <option value="gopaydriver">GoPay Driver</option>
+                                <option value="linkaja">LinkAja</option>
+                                <option value="maxim">Maxim</option>
+                                <option value="ovo">OVO</option>
+                                <option value="shopeepay">ShopeePay</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="fw-bold mb-1 small text-muted">NOMOR REKENING / AKUN</label>
+                        <input type="text" id="accountValidatorNumber" class="form-control" inputmode="numeric" autocomplete="off" placeholder="Masukkan nomor rekening..." style="background:#0b0e14;color:#fff;border-color:#1e2836;">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="button" id="accountValidatorButton" class="btn btn-primary-amber w-100" onclick="accountValidatorCheck()">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i> VALIDASI
+                        </button>
+                    </div>
+                </div>
+
+                <div id="accountValidatorResult" class="mt-4" style="display:none;">
+                    <div class="p-3 rounded" style="background:#090d14;border:1px solid #1e2836;">
+                        <div class="row g-3">
+                            <div class="col-md-3"><div class="small text-muted">STATUS</div><div id="accountValidatorStatus" class="fw-bold mt-1">-</div></div>
+                            <div class="col-md-3"><div class="small text-muted">PROVIDER</div><div id="accountValidatorProviderResult" class="fw-bold text-white mt-1">-</div></div>
+                            <div class="col-md-3"><div class="small text-muted">NOMOR AKUN</div><div id="accountValidatorNumberResult" class="fw-bold text-white mt-1">-</div></div>
+                            <div class="col-md-3"><div class="small text-muted">NAMA PEMILIK</div><div id="accountValidatorName" class="fw-bold text-warning mt-1">-</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="accountValidatorError" class="alert alert-danger mt-3" style="display:none;"></div>
             </div>
         </div>
 
@@ -1782,7 +1851,126 @@ function resetReconciliation() {
     document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="10" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
     alert("Pengecekan Deposit Balance berhasil di-reset.");
 }
+
+
+/* =========================================================
+   ACCOUNT VALIDATOR - MODUL TAMBAHAN
+   APIVALIDASI documented endpoint: GET /api/cek
+   API key tidak ditanam ke source/repository.
+   ========================================================= */
+const ACCOUNT_VALIDATOR_API_URL = "https://app.apivalidasi.my.id/api/cek";
+
+function accountValidatorGetApiKey() {
+    const input = document.getElementById("accountValidatorApiKey");
+    const saved = sessionStorage.getItem("apivalidasi_api_key") || "";
+    if (input && !input.value && saved) input.value = saved;
+    return input ? input.value.trim() : saved;
+}
+
+function accountValidatorSaveApiKey() {
+    const input = document.getElementById("accountValidatorApiKey");
+    if (input && input.value.trim()) {
+        sessionStorage.setItem("apivalidasi_api_key", input.value.trim());
+    }
+}
+
+async function accountValidatorCheck() {
+    const provider = document.getElementById("accountValidatorProvider").value;
+    const accountNumber = document.getElementById("accountValidatorNumber").value.trim();
+    const apiKey = accountValidatorGetApiKey();
+    const button = document.getElementById("accountValidatorButton");
+    const resultBox = document.getElementById("accountValidatorResult");
+    const errorBox = document.getElementById("accountValidatorError");
+    const statusEl = document.getElementById("accountValidatorStatus");
+    const providerResultEl = document.getElementById("accountValidatorProviderResult");
+    const numberResultEl = document.getElementById("accountValidatorNumberResult");
+    const nameEl = document.getElementById("accountValidatorName");
+
+    resultBox.style.display = "none";
+    errorBox.style.display = "none";
+
+    if (!apiKey) {
+        errorBox.innerText = "API Key wajib diisi. Ambil dari menu API Keys APIVALIDASI.";
+        errorBox.style.display = "block";
+        return;
+    }
+    if (!provider) {
+        errorBox.innerText = "Silakan pilih bank atau e-wallet terlebih dahulu.";
+        errorBox.style.display = "block";
+        return;
+    }
+    if (!accountNumber) {
+        errorBox.innerText = "Nomor rekening / akun wajib diisi.";
+        errorBox.style.display = "block";
+        return;
+    }
+    if (!/^\d+$/.test(accountNumber)) {
+        errorBox.innerText = "Nomor rekening / akun hanya boleh berisi angka.";
+        errorBox.style.display = "block";
+        return;
+    }
+
+    accountValidatorSaveApiKey();
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> MEMERIKSA...';
+
+    try {
+        const query = new URLSearchParams({ code: provider, nomor: accountNumber });
+        const response = await fetch(`${ACCOUNT_VALIDATOR_API_URL}?${query.toString()}`, {
+            method: "GET",
+            headers: {
+                "X-API-Key": apiKey,
+                "Accept": "application/json"
+            },
+            cache: "no-store"
+        });
+
+        let data = {};
+        try { data = await response.json(); } catch (_) {}
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || `Validasi gagal (HTTP ${response.status}).`);
+        }
+
+        const accountName = data.nama || data.account_name || data.data?.nama || data.data?.account_name || "-";
+        const returnedNumber = data.account_number || data.nomor || data.data?.account_number || accountNumber;
+        const returnedProvider = data.provider || data.bank_name || data.data?.bank_name || accountValidatorFormatProvider(provider);
+        const valid = data.valid !== false;
+
+        resultBox.style.display = "block";
+        providerResultEl.innerText = returnedProvider;
+        numberResultEl.innerText = returnedNumber;
+        nameEl.innerText = accountName;
+        statusEl.innerHTML = valid
+            ? '<span class="status-badge benar"><i class="fa-solid fa-circle-check me-1"></i>AKUN DITEMUKAN</span>'
+            : '<span class="status-badge salah"><i class="fa-solid fa-circle-xmark me-1"></i>TIDAK DITEMUKAN</span>';
+    } catch (error) {
+        console.error("Account Validator Error:", error);
+        const msg = String(error?.message || error || "");
+        if (error instanceof TypeError && /fetch/i.test(msg)) {
+            errorBox.innerHTML = "<b>Gagal menghubungi API.</b><br>Browser menolak koneksi langsung ke API (biasanya CORS) atau endpoint tidak dapat dijangkau. Jika file ini dibuka sebagai file lokal, upload ke GitHub Pages lalu tes dari URL Pages.";
+        } else {
+            errorBox.innerText = msg || "Terjadi kesalahan saat melakukan validasi.";
+        }
+        errorBox.style.display = "block";
+    } finally {
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-magnifying-glass me-1"></i> VALIDASI';
+    }
+}
+
+function accountValidatorFormatProvider(provider) {
+    const providers = {
+        "014": "BCA", "002": "BRI", "009": "BNI", "008": "Mandiri",
+        dana: "DANA", gopay: "GoPay", gopaydriver: "GoPay Driver",
+        linkaja: "LinkAja", maxim: "Maxim", ovo: "OVO", shopeepay: "ShopeePay"
+    };
+    return providers[provider] || provider;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    accountValidatorGetApiKey();
+});
 </script>
-    <script src="js/dashboard.js"></script>
 </body>
 </html>
