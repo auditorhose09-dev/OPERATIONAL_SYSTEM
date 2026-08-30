@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root {
     --bg-dark: #0b0e14;
@@ -664,6 +663,11 @@ body {
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageParlay', this)">
+                    <i class="fa-solid fa-futbol"></i> Kalkulator Parlay
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link-btn active-outline-amber" onclick="showPage('pageReconciliation', this)">
                     <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
                 </a>
@@ -965,6 +969,120 @@ body {
             </div>
         </div>
 
+        <!-- KALKULATOR PARLAY -->
+        <div id="pageParlay" class="view-page">
+            <style>
+                #pageParlay .parlay-wrap{max-width:680px;margin:auto}
+                #pageParlay .parlay-card{background:#075f5f;border-radius:7px;padding:16px;color:#fff;box-shadow:0 2px 8px #0002}
+                #pageParlay .parlay-result{margin-bottom:14px;line-height:1.5}
+                #pageParlay .parlay-result b{color:#ffd82e}
+                #pageParlay .parlay-title{margin:0 0 16px;text-align:center;color:#ffd82e;border:2px solid #11bfc5;border-radius:6px;padding:14px 8px;font-size:20px}
+                #pageParlay label{display:block;font-weight:700;margin:10px 0 6px;color:#fff}
+                #pageParlay .parlay-stake{width:100%;padding:11px 12px;border:2px solid #12c4ca;border-radius:6px;font-size:16px;font-weight:700;outline:none;background:#fff;color:#173b3b}
+                #pageParlay .parlay-hint{font-size:13px;margin:13px 0 7px;font-weight:700}
+                #pageParlay .parlay-team{display:grid;grid-template-columns:62px 1fr 205px;gap:8px;align-items:center;margin:9px 0}
+                #pageParlay .parlay-team-name{font-weight:700}
+                #pageParlay .parlay-odds{width:100%;padding:10px;border:2px solid #12c4ca;border-radius:6px;font-size:16px;font-weight:700;outline:none;background:#fff;color:#173b3b}
+                #pageParlay .parlay-status{display:flex;gap:5px}
+                #pageParlay .parlay-status button{flex:1;border:0;border-radius:6px;padding:10px 5px;color:#fff;font-weight:800;cursor:pointer}
+                #pageParlay .parlay-win{background:#238c4e}
+                #pageParlay .parlay-lose{background:#9c3030}
+                #pageParlay .parlay-status button.active{box-shadow:inset 0 0 0 3px #58e0e5;filter:brightness(1.15)}
+                #pageParlay .parlay-status button:not(.active){opacity:.72}
+                #pageParlay .parlay-buttons{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+                #pageParlay .parlay-buttons button{border:0;border-radius:6px;padding:12px 9px;color:#fff;font-weight:800;cursor:pointer;flex:1;min-width:130px}
+                #pageParlay .parlay-add{background:#126bd7}
+                #pageParlay .parlay-del{background:#b72e3b}
+                #pageParlay .parlay-calc{background:#f2c514;color:#111!important}
+
+/* PARLAY - DASHBOARD THEME */
+#pageParlay .parlay-wrap{max-width:760px;margin:auto}
+#pageParlay .parlay-card{
+    background:linear-gradient(145deg,#090e16 0%,#101925 55%,#0a1018 100%) !important;
+    border:1px solid rgba(212,168,67,.25) !important;
+    border-radius:14px !important;
+    box-shadow:0 12px 32px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+#pageParlay .parlay-result{
+    border-left:3px solid #d4a843 !important;
+    background:linear-gradient(145deg,#0b121d,#121b28) !important;
+}
+#pageParlay .parlay-result b{color:#f0c967 !important}
+#pageParlay .parlay-title{
+    background:linear-gradient(90deg,#0e1622,#182332,#0e1622) !important;
+    border:1px solid rgba(212,168,67,.5) !important;
+    color:#f0c967 !important;
+    border-radius:10px !important;
+    letter-spacing:.5px;
+    box-shadow:0 0 18px rgba(212,168,67,.07);
+}
+#pageParlay .parlay-stake,
+#pageParlay .parlay-odds{
+    background:#080d14 !important;
+    color:#f3f6fa !important;
+    border:1px solid #293648 !important;
+    border-radius:8px !important;
+}
+#pageParlay .parlay-stake:focus,
+#pageParlay .parlay-odds:focus{
+    border-color:#d4a843 !important;
+    box-shadow:0 0 0 2px rgba(212,168,67,.12) !important;
+}
+#pageParlay .parlay-hint{color:#8996a8 !important}
+#pageParlay .parlay-team-name{color:#f0c967 !important}
+#pageParlay .parlay-status button{
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:8px !important;
+    transition:.18s ease;
+}
+#pageParlay .parlay-win{background:#176b49 !important}
+#pageParlay .parlay-lose{background:#8d3038 !important}
+#pageParlay .parlay-status button.active{
+    box-shadow:inset 0 0 0 2px #d4a843,0 0 12px rgba(212,168,67,.14) !important;
+    filter:brightness(1.12);
+}
+#pageParlay .parlay-buttons button{
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:8px !important;
+    transition:.18s ease;
+}
+#pageParlay .parlay-buttons button:hover{
+    transform:translateY(-1px);
+    filter:brightness(1.08);
+}
+#pageParlay .parlay-add{background:#175fae !important}
+#pageParlay .parlay-del{background:#8d3038 !important}
+#pageParlay .parlay-reset{background:#344253 !important;color:#f1f4f8 !important}
+#pageParlay .parlay-calc{
+    background:linear-gradient(135deg,#d4a843,#f0c967) !important;
+    color:#111 !important;
+    border-color:#d4a843 !important;
+    box-shadow:0 4px 14px rgba(212,168,67,.18);
+}
+                @media(max-width:500px){
+                    #pageParlay .parlay-team{grid-template-columns:52px 1fr;gap:6px}
+                    #pageParlay .parlay-status{grid-column:2}
+                    #pageParlay .parlay-buttons button{min-width:0}
+                }
+            </style>
+            <div class="parlay-wrap">
+                <div id="parlayResult" class="parlay-card parlay-result">Silakan pilih status setiap tim.</div>
+                <div class="parlay-card">
+                    <h2 class="parlay-title">KALKULATOR PARLAY</h2>
+                    <label for="parlayStake">Nominal taruhan (Stake)</label>
+                    <input id="parlayStake" class="parlay-stake" type="number" min="0" step="1000" value="25000">
+                    <div class="parlay-hint">Masukkan odds lalu klik MENANG atau KALAH pada setiap tim</div>
+                    <div id="parlayTeams"></div>
+                    <div class="parlay-buttons">
+                        <button class="parlay-add" onclick="parlayAddTeam()">+ TAMBAH TIM</button>
+                        <button class="parlay-del" onclick="parlayRemoveTeam()">- HAPUS TIM</button>
+                        <button class="parlay-reset" onclick="parlayReset()">↻ RESET</button>
+                        <button class="parlay-calc" onclick="parlayCalculate()">HITUNG BAYARAN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- FOOTER -->
         <div class="footer-text">
             <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
@@ -1041,17 +1159,35 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-const SUPABASE_URL = "https://ceapqmsujottcfhrfqby.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlYXBxbXN1am90dGNmaHJmcWJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1MjEwMzEsImV4cCI6MjEwMjA5NzAzMX0.L_IL9PNt1kwgJk75z7rQLrMgs9AfOXcNMp9uQkASdKI";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+/* LOGIN LOKAL - TANPA SUPABASE */
 let passwordModal, masterUserModal;
 let currentUser = null;
+
+const LOCAL_USERS_KEY = "auditor_local_users_v1";
+const defaultLocalUsers = [
+    { id: 1, name: "SYALALA88", username: "admin", password: "admin", role: "Master Admin" }
+];
+
+function getLocalUsers() {
+    try {
+        const saved = localStorage.getItem(LOCAL_USERS_KEY);
+        if (saved) {
+            const users = JSON.parse(saved);
+            if (Array.isArray(users) && users.length) return users;
+        }
+    } catch (e) {}
+    localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(defaultLocalUsers));
+    return JSON.parse(JSON.stringify(defaultLocalUsers));
+}
+
+function saveLocalUsers(users) {
+    localStorage.setItem(LOCAL_USERS_KEY, JSON.stringify(users));
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     passwordModal = new bootstrap.Modal(document.getElementById('passwordModal'));
     masterUserModal = new bootstrap.Modal(document.getElementById('masterUserModal'));
-    
+    getLocalUsers();
     setInterval(updateClock, 1000);
     updateClock();
 });
@@ -1063,8 +1199,8 @@ function updateClock() {
     if(clockEl) clockEl.innerText = timeStr;
 }
 
-// INTEGRASI SUPABASE: LOGIN USER DARI DATABASE
-async function loginAdmin() {
+/* LOGIN USER DARI LOCAL STORAGE */
+function loginAdmin() {
     const u = document.getElementById("adminUser").value.trim().toLowerCase();
     const p = document.getElementById("adminPass").value.trim();
     const btnSubmit = document.getElementById("btnLoginSubmit");
@@ -1072,35 +1208,26 @@ async function loginAdmin() {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Memeriksa...`;
 
-    try {
-        const { data: foundUsers, error } = await supabaseClient
-            .from('app_users')
-            .select('*')
-            .eq('username', u)
-            .eq('password', p);
+    const users = getLocalUsers();
+    const foundUser = users.find(user =>
+        String(user.username).toLowerCase() === u && String(user.password) === p
+    );
 
+    setTimeout(() => {
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
 
-        if (error) {
-            console.error(error);
-            alert("Terjadi kesalahan pada koneksi Supabase.");
-            return;
-        }
-
-        if (foundUsers && foundUsers.length > 0) {
-            currentUser = foundUsers[0];
+        if (foundUser) {
+            currentUser = foundUser;
             document.getElementById("loginError").style.display = "none";
-            
             document.getElementById("loginPage").style.display = "none";
             document.getElementById("appLayout").style.display = "block";
-            
-            const isMaster = (currentUser.role === 'Master Admin') || (currentUser.username.toLowerCase() === 'admin');
+
+            const isMaster = (currentUser.role === 'Master Admin') || (String(currentUser.username).toLowerCase() === 'admin');
             const roleLabel = isMaster ? 'Master Admin' : (currentUser.role || 'Auditor');
 
             document.getElementById("displayUsername").innerText = currentUser.name;
             document.getElementById("displayUserRole").innerText = roleLabel;
-            
             document.getElementById("headerUsername").innerText = currentUser.name;
             document.getElementById("welcomeUsername").innerText = currentUser.name;
             document.getElementById("headerRole").innerText = roleLabel;
@@ -1108,20 +1235,11 @@ async function loginAdmin() {
             const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(currentUser.name)}`;
             document.getElementById("displayUserAvatar").src = avatarUrl;
             document.getElementById("headerUserAvatar").src = avatarUrl;
-
-            if (isMaster) {
-                document.getElementById("menuMasterAdmin").style.display = "block";
-            } else {
-                document.getElementById("menuMasterAdmin").style.display = "none";
-            }
+            document.getElementById("menuMasterAdmin").style.display = isMaster ? "block" : "none";
         } else {
             document.getElementById("loginError").style.display = "block";
         }
-    } catch (err) {
-        btnSubmit.disabled = false;
-        btnSubmit.innerHTML = `MASUK KE SYSTEM <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>`;
-        alert("Gagal terhubung ke database. Periksa koneksi internet.");
-    }
+    }, 250);
 }
 
 function logoutAdmin() { location.reload(); }
@@ -1131,22 +1249,20 @@ function openPasswordModal() {
     passwordModal.show();
 }
 
-async function savePasswordSettings() {
+function savePasswordSettings() {
     const newPass = document.getElementById("newAdminPass").value.trim();
     if (!newPass) return alert("Password tidak boleh kosong!");
+    if (!currentUser) return alert("Silakan login terlebih dahulu.");
 
-    const { error } = await supabaseClient
-        .from('app_users')
-        .update({ password: newPass })
-        .eq('id', currentUser.id);
+    const users = getLocalUsers();
+    const idx = users.findIndex(u => u.id === currentUser.id);
+    if (idx === -1) return alert("User tidak ditemukan.");
 
-    if (error) {
-        alert("Gagal mengubah password: " + error.message);
-    } else {
-        currentUser.password = newPass;
-        alert("Password berhasil diubah di database Supabase!");
-        passwordModal.hide();
-    }
+    users[idx].password = newPass;
+    currentUser.password = newPass;
+    saveLocalUsers(users);
+    alert("Password berhasil diubah di perangkat ini.");
+    passwordModal.hide();
 }
 
 function openMasterUserModal() {
@@ -1154,80 +1270,55 @@ function openMasterUserModal() {
     masterUserModal.show();
 }
 
-async function renderUserList() {
+function renderUserList() {
     const tbody = document.getElementById("userListBody");
-    tbody.innerHTML = `<tr><td colspan="4" class="text-muted">Memuat data...</td></tr>`;
-
-    const { data: users, error } = await supabaseClient
-        .from('app_users')
-        .select('*')
-        .order('id', { ascending: true });
-
-    if (error) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-danger">Gagal memuat user.</td></tr>`;
-        return;
-    }
-
+    if (!tbody) return;
+    const users = getLocalUsers();
     tbody.innerHTML = "";
+
     users.forEach((u) => {
-        const isMaster = u.username.toLowerCase() === "admin" || u.role === "Master Admin";
+        const isMaster = String(u.username).toLowerCase() === "admin" || u.role === "Master Admin";
         tbody.innerHTML += `
             <tr>
                 <td><b>${u.name}</b></td>
                 <td>${u.username}</td>
                 <td><span class="badge ${isMaster ? 'bg-warning text-dark' : 'bg-secondary'}">${u.role || 'Auditor'}</span></td>
                 <td>
-                    ${isMaster ? '-' : `<button class="btn btn-danger btn-sm py-0 px-2" style="font-size:10px;" onclick="deleteUser('${u.username}')"><i class="fa-solid fa-trash"></i> Hapus</button>`}
+                    ${isMaster ? '-' : `<button class="btn btn-danger btn-sm py-0 px-2" style="font-size:10px;" onclick="deleteUser('${u.username.replace(/'/g, "\\'")}')"><i class="fa-solid fa-trash"></i> Hapus</button>`}
                 </td>
             </tr>
         `;
     });
 }
 
-async function addNewUser() {
+function addNewUser() {
     const name = document.getElementById("addName").value.trim();
     const user = document.getElementById("addUser").value.trim().toLowerCase();
     const pass = document.getElementById("addPass").value.trim();
-
     if (!name || !user || !pass) return alert("Semua kolom wajib diisi!");
 
-    const { data: existing } = await supabaseClient
-        .from('app_users')
-        .select('id')
-        .eq('username', user);
-
-    if (existing && existing.length > 0) {
+    const users = getLocalUsers();
+    if (users.some(u => String(u.username).toLowerCase() === user)) {
         return alert("Username tersebut sudah digunakan!");
     }
 
-    const { error } = await supabaseClient
-        .from('app_users')
-        .insert([{ name: name, username: user, password: String(pass), role: "Auditor" }]);
+    const nextId = users.reduce((max,u)=>Math.max(max, Number(u.id)||0),0) + 1;
+    users.push({ id: nextId, name, username: user, password: pass, role: "Auditor" });
+    saveLocalUsers(users);
 
-    if (error) {
-        alert("Gagal menambahkan user: " + error.message);
-    } else {
-        document.getElementById("addName").value = "";
-        document.getElementById("addUser").value = "";
-        document.getElementById("addPass").value = "";
-        renderUserList();
-        alert(`Akun baru untuk "${name}" (username: ${user}) berhasil disimpan di Supabase!`);
-    }
+    document.getElementById("addName").value = "";
+    document.getElementById("addUser").value = "";
+    document.getElementById("addPass").value = "";
+    renderUserList();
+    alert(`Akun baru untuk "${name}" berhasil disimpan di perangkat ini!`);
 }
 
-async function deleteUser(username) {
+function deleteUser(username) {
     if (!confirm(`Yakin ingin menghapus akun ${username}?`)) return;
-
-    const { error } = await supabaseClient
-        .from('app_users')
-        .delete()
-        .eq('username', username.toLowerCase());
-
-    if (error) {
-        alert("Gagal menghapus user: " + error.message);
-    } else {
-        renderUserList();
-    }
+    const users = getLocalUsers();
+    const next = users.filter(u => String(u.username).toLowerCase() !== String(username).toLowerCase());
+    saveLocalUsers(next);
+    renderUserList();
 }
 
 function showPage(pageId, element) {
@@ -1782,6 +1873,133 @@ function resetReconciliation() {
     document.getElementById("reconResultBody").innerHTML = '<tr><td colspan="10" class="empty-table-placeholder"><i class="fa-solid fa-box-archive"></i><div>Belum ada data diproses.</div></td></tr>';
     alert("Pengecekan Deposit Balance berhasil di-reset.");
 }
+
+
+/* ============================================================
+   KALKULATOR PARLAY - MENU TAMBAHAN
+   ============================================================ */
+let parlayTeams = [
+    {odds:1.85,status:"win"},
+    {odds:1.85,status:"win"},
+    {odds:1.85,status:"win"},
+    {odds:1.85,status:"win"},
+    {odds:1.85,status:"lose"}
+];
+
+function parlaySetStatus(i,status){
+    parlayTeams[i].status = status;
+    parlayRender();
+    parlayCalculate();
+}
+
+function parlayAddTeam(){
+    if(parlayTeams.length >= 30){ alert("Maksimal 30 tim."); return; }
+    parlayTeams.push({odds:1.85,status:"win"});
+    parlayRender();
+    parlayCalculate();
+}
+
+function parlayRemoveTeam(){
+    if(parlayTeams.length <= 2){ alert("Minimal 2 tim."); return; }
+    parlayTeams.pop();
+    parlayRender();
+    parlayCalculate();
+}
+
+function parlayFmt(n){
+    return n.toLocaleString("id-ID",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function parlayRupiah(n){
+    return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n).replace("IDR","Rp");
+}
+
+function parlayRender(){
+    const box=document.getElementById("parlayTeams");
+    if(!box) return;
+    box.innerHTML="";
+    parlayTeams.forEach((t,i)=>{
+        const row=document.createElement("div");
+        row.className="parlay-team";
+        row.innerHTML=`
+            <div class="parlay-team-name">TIM ${i+1}</div>
+            <input class="parlay-odds" type="number" min="1" step="0.01" value="${t.odds}"
+                   oninput="parlayTeams[${i}].odds=parseFloat(this.value)||0">
+            <div class="parlay-status">
+                <button class="parlay-win ${t.status==='win'?'active':''}" onclick="parlaySetStatus(${i},'win')">✓ MENANG</button>
+                <button class="parlay-lose ${t.status==='lose'?'active':''}" onclick="parlaySetStatus(${i},'lose')">✕ KALAH</button>
+            </div>`;
+        box.appendChild(row);
+    });
+}
+
+function parlayReset(){
+    // Reset semua input dan status ke kondisi kosong.
+    parlayTeams = [
+        {odds:'',status:''},
+        {odds:'',status:''},
+        {odds:'',status:''},
+        {odds:'',status:''},
+        {odds:'',status:''}
+    ];
+
+    const stake = document.getElementById('parlayStake');
+    if(stake) stake.value = '';
+
+    parlayRender();
+
+    const result = document.getElementById('parlayResult');
+    if(result){
+        result.innerHTML = 'Silakan masukkan stake, odds, lalu pilih status setiap tim.';
+    }
+}
+
+function parlayCalculate(){
+    const stakeEl=document.getElementById("parlayStake");
+    const result=document.getElementById("parlayResult");
+    if(!stakeEl || !result) return;
+
+    const stake=parseFloat(stakeEl.value)||0;
+    if(!stake || parlayTeams.some(t=>!t.odds || t.odds<=0)) return;
+
+    const winners=parlayTeams.filter(t=>t.status==='win');
+    const losers=parlayTeams.filter(t=>t.status==='lose');
+
+    /*
+      LOSE 1:
+      Odds tim KALAH tidak ikut dikalikan.
+      Odds tim MENANG dikalikan.
+      Jika tepat 1 tim kalah, hasil perkalian dibagi 2.
+
+      1.85 × 1.85 × 1.85 × 1.85 = 11.71350625
+      11.71350625 ÷ 2 = 5.856753125 → 5.86
+    */
+    const winningOdds=winners.reduce((total,t)=>total*t.odds,1);
+    const factor=(losers.length===1) ? winningOdds/2 : winningOdds;
+    const payout=factor*stake;
+
+    const detail=parlayTeams.map((t,i)=>
+        `Partai ${String.fromCharCode(65+i)}: Odds ${parlayFmt(t.odds)} - <b>${t.status==='win'?'Menang':'Kalah'}</b>`
+    ).join('<br>');
+
+    const oddsText=winners.length ? winners.map(t=>parlayFmt(t.odds)).join(' × ') : 'Tidak ada tim menang';
+
+    result.innerHTML=`
+        ${detail}
+        <br><br>
+        <b>Jumlah menang:</b> ${winners.length} &nbsp; | &nbsp; <b>Jumlah kalah:</b> ${losers.length}
+        <br><br>
+        <b>Odds sisa:</b><br>
+        ${oddsText}${losers.length===1?' / 2':''} = <b>${parlayFmt(factor)}</b>
+        <br><br>
+        <b>Total bayaran:</b><br>
+        ${parlayFmt(factor)} × ${parlayRupiah(stake)} = <b>${parlayRupiah(payout)}</b>
+    `;
+}
+
+parlayRender();
+parlayCalculate();
+
 </script>
 </body>
 </html>
