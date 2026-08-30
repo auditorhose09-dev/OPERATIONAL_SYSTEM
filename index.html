@@ -672,6 +672,11 @@ body {
                     <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageAccountValidator', this)">
+                    <i class="fa-solid fa-building-columns"></i> Validator Rekening & E-Wallet
+                </a>
+            </li>
         </ul>
 
         <div class="logout-container">
@@ -1084,6 +1089,718 @@ body {
         </div>
 
         <!-- FOOTER -->
+
+        <!-- VALIDATOR REKENING / E-WALLET - MODUL TAMBAHAN -->
+<!-- =========================================================
+     VALIDATOR REKENING & E-WALLET - APIVALIDASI V4
+     ========================================================= -->
+
+<div id="pageAccountValidator" class="view-page">
+
+    <div class="dashboard-panel">
+
+        <div class="panel-header">
+            <i class="fa-solid fa-building-columns"></i>
+            <div>
+                <h5>Validator Rekening & E-Wallet</h5>
+                <p>
+                    Validasi nomor rekening/akun dan tampilkan nama pemilik
+                    melalui APIVALIDASI V4.
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+
+            <!-- API KEY -->
+            <div class="col-md-4">
+
+                <label class="fw-bold mb-1 small text-muted">
+                    API KEY APIVALIDASI
+                </label>
+
+                <input
+                    type="password"
+                    id="accountValidatorApiKey"
+                    class="form-control"
+                    autocomplete="off"
+                    placeholder="Masukkan API Key..."
+                    style="
+                        background:#0b0e14;
+                        color:#fff;
+                        border-color:#1e2836;
+                    "
+                >
+
+                <div class="small text-muted mt-1">
+                    API Key hanya disimpan di session browser.
+                </div>
+
+            </div>
+
+
+            <!-- PROVIDER -->
+            <div class="col-md-3">
+
+                <label class="fw-bold mb-1 small text-muted">
+                    PROVIDER
+                </label>
+
+                <select
+                    id="accountValidatorProvider"
+                    class="form-select"
+                    style="
+                        background:#0b0e14;
+                        color:#fff;
+                        border-color:#1e2836;
+                    "
+                >
+
+                    <option value="">
+                        -- Pilih Provider --
+                    </option>
+
+                    <!-- BANK -->
+                    <optgroup label="BANK">
+
+                        <option value="014">
+                            BCA
+                        </option>
+
+                        <option value="002">
+                            BRI
+                        </option>
+
+                        <option value="009">
+                            BNI
+                        </option>
+
+                        <option value="008">
+                            Mandiri
+                        </option>
+
+                        <option value="535">
+                            SeaBank
+                        </option>
+
+                    </optgroup>
+
+
+                    <!-- E-WALLET -->
+                    <optgroup label="E-WALLET">
+
+                        <option value="dana">
+                            DANA
+                        </option>
+
+                        <option value="gopay">
+                            GoPay
+                        </option>
+
+                        <option value="gopaydriver">
+                            GoPay Driver
+                        </option>
+
+                        <option value="linkaja">
+                            LinkAja
+                        </option>
+
+                        <option value="maxim">
+                            Maxim
+                        </option>
+
+                        <option value="ovo">
+                            OVO
+                        </option>
+
+                        <option value="shopeepay">
+                            ShopeePay
+                        </option>
+
+                    </optgroup>
+
+                </select>
+
+            </div>
+
+
+            <!-- NOMOR REKENING -->
+            <div class="col-md-3">
+
+                <label class="fw-bold mb-1 small text-muted">
+                    NOMOR REKENING / AKUN
+                </label>
+
+                <input
+                    type="text"
+                    id="accountValidatorNumber"
+                    class="form-control"
+                    inputmode="numeric"
+                    autocomplete="off"
+                    placeholder="Masukkan nomor rekening..."
+                    style="
+                        background:#0b0e14;
+                        color:#fff;
+                        border-color:#1e2836;
+                    "
+                >
+
+            </div>
+
+
+            <!-- BUTTON -->
+            <div class="col-md-2 d-flex align-items-end">
+
+                <button
+                    type="button"
+                    id="accountValidatorButton"
+                    class="btn btn-primary-amber w-100"
+                    onclick="accountValidatorCheck()"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+
+                    VALIDASI
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- HASIL -->
+        <div
+            id="accountValidatorResult"
+            class="mt-4"
+            style="display:none;"
+        >
+
+            <div
+                class="p-3 rounded"
+                style="
+                    background:#090d14;
+                    border:1px solid #1e2836;
+                "
+            >
+
+                <div class="row g-3">
+
+                    <!-- STATUS -->
+                    <div class="col-md-3">
+
+                        <div class="small text-muted">
+                            STATUS
+                        </div>
+
+                        <div
+                            id="accountValidatorStatus"
+                            class="fw-bold mt-1"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROVIDER -->
+                    <div class="col-md-3">
+
+                        <div class="small text-muted">
+                            PROVIDER
+                        </div>
+
+                        <div
+                            id="accountValidatorProviderResult"
+                            class="fw-bold text-white mt-1"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOMOR -->
+                    <div class="col-md-3">
+
+                        <div class="small text-muted">
+                            NOMOR AKUN
+                        </div>
+
+                        <div
+                            id="accountValidatorNumberResult"
+                            class="fw-bold text-white mt-1"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <!-- NAMA -->
+                    <div class="col-md-3">
+
+                        <div class="small text-muted">
+                            NAMA PEMILIK
+                        </div>
+
+                        <div
+                            id="accountValidatorName"
+                            class="fw-bold text-warning mt-1"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+        <div
+            id="accountValidatorError"
+            class="alert alert-danger mt-3"
+            style="display:none;"
+        ></div>
+
+    </div>
+
+</div>
+
+<script>
+
+(function(){
+
+    const API_BASE =
+        "https://app.apivalidasi.my.id/api/v3/validate";
+
+
+    /*
+     * PROVIDER NAME
+     */
+    function accountValidatorProviderName(code){
+
+        const names = {
+
+            "014" : "BCA",
+            "002" : "BRI",
+            "009" : "BNI",
+            "008" : "Mandiri",
+            "535" : "SeaBank",
+
+            "dana"        : "DANA",
+            "gopay"       : "GoPay",
+            "gopaydriver" : "GoPay Driver",
+            "linkaja"     : "LinkAja",
+            "maxim"       : "Maxim",
+            "ovo"          : "OVO",
+            "shopeepay"   : "ShopeePay"
+
+        };
+
+        return names[code] || code;
+
+    }
+
+
+    /*
+     * LOAD API KEY DARI SESSION
+     */
+    function accountValidatorLoadKey(){
+
+        const key =
+            sessionStorage.getItem(
+                "accountValidatorApiKey"
+            );
+
+        if(key){
+
+            const input =
+                document.getElementById(
+                    "accountValidatorApiKey"
+                );
+
+            if(input){
+                input.value = key;
+            }
+
+        }
+
+    }
+
+
+    /*
+     * TAMPILKAN ERROR
+     */
+    function accountValidatorShowError(message){
+
+        const error =
+            document.getElementById(
+                "accountValidatorError"
+            );
+
+        error.textContent = message;
+        error.style.display = "block";
+
+    }
+
+
+    /*
+     * RESET ERROR
+     */
+    function accountValidatorHideError(){
+
+        const error =
+            document.getElementById(
+                "accountValidatorError"
+            );
+
+        error.textContent = "";
+        error.style.display = "none";
+
+    }
+
+
+    /*
+     * VALIDASI REKENING
+     */
+    window.accountValidatorCheck = async function(){
+
+        accountValidatorHideError();
+
+
+        const apiKey =
+            document
+                .getElementById(
+                    "accountValidatorApiKey"
+                )
+                .value
+                .trim();
+
+
+        const provider =
+            document
+                .getElementById(
+                    "accountValidatorProvider"
+                )
+                .value
+                .trim();
+
+
+        const accountNumber =
+            document
+                .getElementById(
+                    "accountValidatorNumber"
+                )
+                .value
+                .trim();
+
+
+        const button =
+            document.getElementById(
+                "accountValidatorButton"
+            );
+
+
+        /*
+         * VALIDASI INPUT
+         */
+
+        if(!apiKey){
+
+            accountValidatorShowError(
+                "API Key belum dimasukkan."
+            );
+
+            return;
+
+        }
+
+
+        if(!provider){
+
+            accountValidatorShowError(
+                "Silakan pilih provider terlebih dahulu."
+            );
+
+            return;
+
+        }
+
+
+        if(!accountNumber){
+
+            accountValidatorShowError(
+                "Nomor rekening / akun belum dimasukkan."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * SIMPAN API KEY DI SESSION
+         */
+
+        sessionStorage.setItem(
+            "accountValidatorApiKey",
+            apiKey
+        );
+
+
+        /*
+         * UI LOADING
+         */
+
+        const oldButton =
+            button.innerHTML;
+
+        button.disabled = true;
+
+        button.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin me-1"></i> MEMERIKSA...';
+
+
+        try{
+
+            /*
+             * URL API
+             */
+
+            const url =
+                API_BASE +
+                "?code=" +
+                encodeURIComponent(provider) +
+                "&accountNumber=" +
+                encodeURIComponent(accountNumber);
+
+
+            /*
+             * REQUEST
+             */
+
+            const response =
+                await fetch(
+                    url,
+                    {
+                        method:"GET",
+
+                        headers:{
+                            "X-API-Key":apiKey,
+                            "X-Idempotency-Key":
+                                "validator-" +
+                                provider +
+                                "-" +
+                                accountNumber +
+                                "-" +
+                                Date.now()
+                        }
+                    }
+                );
+
+
+            /*
+             * BACA JSON
+             */
+
+            let data = {};
+
+            try{
+
+                data =
+                    await response.json();
+
+            }catch(e){
+
+                throw new Error(
+                    "Server mengembalikan response yang tidak valid."
+                );
+
+            }
+
+
+            /*
+             * HTTP ERROR
+             */
+
+            if(!response.ok || data.success === false){
+
+                let message =
+                    data.message ||
+                    "Validasi gagal.";
+
+                switch(response.status){
+
+                    case 401:
+
+                        message =
+                            "API Key tidak valid.";
+
+                        break;
+
+                    case 402:
+
+                        message =
+                            "Saldo API tidak mencukupi.";
+
+                        break;
+
+                    case 404:
+
+                        message =
+                            "Nomor rekening / akun tidak ditemukan.";
+
+                        break;
+
+                    case 422:
+
+                        message =
+                            "Format nomor atau provider tidak valid.";
+
+                        break;
+
+                    case 429:
+
+                        message =
+                            "Terlalu cepat. Silakan tunggu beberapa detik sebelum melakukan validasi lagi.";
+
+                        break;
+
+                    case 500:
+                    case 502:
+                    case 504:
+
+                        message =
+                            "Server APIVALIDASI sedang mengalami gangguan. Coba lagi nanti.";
+
+                        break;
+
+                }
+
+                throw new Error(message);
+
+            }
+
+
+            /*
+             * DATA BERHASIL
+             */
+
+            const result =
+                data.data || {};
+
+
+            /*
+             * Dokumentasi terbaru menggunakan
+             * account_name.
+             *
+             * Kita juga support "nama"
+             * untuk kompatibilitas.
+             */
+
+            const ownerName =
+                result.account_name ||
+                result.nama ||
+                data.nama ||
+                "-";
+
+
+            const resultProvider =
+                result.bank_name ||
+                accountValidatorProviderName(provider);
+
+
+            const resultNumber =
+                result.account_number ||
+                accountNumber;
+
+
+            /*
+             * TAMPILKAN HASIL
+             */
+
+            document.getElementById(
+                "accountValidatorResult"
+            ).style.display = "block";
+
+
+            document.getElementById(
+                "accountValidatorStatus"
+            ).innerHTML =
+                '<span style="color:#35d07f;">✓ VALID</span>';
+
+
+            document.getElementById(
+                "accountValidatorProviderResult"
+            ).textContent =
+                resultProvider;
+
+
+            document.getElementById(
+                "accountValidatorNumberResult"
+            ).textContent =
+                resultNumber;
+
+
+            document.getElementById(
+                "accountValidatorName"
+            ).textContent =
+                ownerName;
+
+
+        }catch(error){
+
+            document.getElementById(
+                "accountValidatorResult"
+            ).style.display = "none";
+
+
+            accountValidatorShowError(
+                error.message ||
+                "Terjadi kesalahan saat menghubungi APIVALIDASI."
+            );
+
+
+        }finally{
+
+            button.disabled = false;
+
+            button.innerHTML = oldButton;
+
+        }
+
+    };
+
+
+    /*
+     * LOAD API KEY SAAT HALAMAN DIBUKA
+     */
+
+    if(
+        document.readyState ===
+        "loading"
+    ){
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            accountValidatorLoadKey
+        );
+
+    }else{
+
+        accountValidatorLoadKey();
+
+    }
+
+})();
+
+</script>
+
         <div class="footer-text">
             <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
             <div>v2.5.0 • <span style="color:#10b981;">System Active ●</span></div>
