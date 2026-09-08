@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard Operational System Auditor</title>
+<title>Operational System Auditor — Integrated</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
@@ -560,6 +561,291 @@ body {
 .status-badge.benar { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
 .status-badge.salah { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
 
+
+/* =========================================================
+   EYE-COMFORT THEME — SOFT DARK SLATE
+   ========================================================= */
+:root{
+    --bg-dark:#18222c;
+    --bg-sidebar:#111a23;
+    --bg-card:#202c37;
+    --bg-input:#151e27;
+    --border-color:#344452;
+    --accent-gold:#d6b36a;
+    --text-muted:#a9b5c0;
+    --text-light:#e8edf2;
+}
+body{background-color:var(--bg-dark);color:var(--text-light)}
+#sidebar{background-color:var(--bg-sidebar);border-right-color:#344452}
+#content{background:var(--bg-dark)}
+.brand-logo{border-bottom-color:#344452}
+.brand-logo i,.brand-title span,.panel-header i,.nav-link-btn.active-outline-amber{
+    color:var(--accent-gold)!important;
+}
+.user-profile-card,.dashboard-panel,.stat-box{
+    background:#202c37!important;
+    border-color:#344452!important;
+}
+.input-box-card{
+    background:#17212b!important;
+    border-color:#344452!important;
+}
+.form-control-custom,
+.input-box-card textarea,
+textarea,
+.form-control{
+    background:#151e27!important;
+    color:#e8edf2!important;
+    border-color:#3a4b59!important;
+}
+.form-control-custom::placeholder,
+textarea::placeholder,
+.form-control::placeholder{color:#7f8d99!important}
+.form-control-custom:focus,.form-control:focus,textarea:focus{
+    border-color:#8fa6b8!important;
+    box-shadow:0 0 0 3px rgba(143,166,184,.12)!important;
+}
+.table-responsive-custom{background:#1b2630;border-color:#344452}
+.table th{background:#334655!important;color:#f0d79e!important}
+.table td{background:#1b2630!important;color:#dce4ea!important;border-bottom-color:#344452}
+.table tbody tr:hover td{background:#25333f!important}
+.btn-secondary-dark{background:#334452;border-color:#465966}
+.btn-secondary-dark:hover{background:#405462}
+.btn-reset-card{border-color:#3b4b58;color:#a9b5c0}
+.btn-reset-card:hover{border-color:#d6b36a;color:#d6b36a}
+.sidebar-label{color:#71808d}
+.nav-link-btn{color:#a9b5c0}
+.nav-link-btn:hover{background:rgba(255,255,255,.055);color:#f1f4f6}
+.nav-link-btn.active{background:#d6b36a;color:#18222c}
+.stat-box .details h3,.panel-header h5,.input-box-card .card-title-custom{color:#edf2f5}
+.footer-text{color:#91a0ad}
+
+
+/* Integrated Operational Checker */
+.checker-integrated-page{width:100%}
+.checker-panel-shell{padding:14px!important;overflow:hidden}
+.checker-panel-shell .panel-header{margin-bottom:12px}
+.checker-iframe{
+    display:block;
+    width:100%;
+    height:calc(100vh - 145px);
+    min-height:820px;
+    border:1px solid #344452;
+    border-radius:10px;
+    background:#f4f6f8;
+}
+@media(max-width:900px){
+    .checker-iframe{height:calc(100vh - 130px);min-height:760px}
+}
+
+
+/* =========================================================
+   THEME SWITCH — MODE BIASA / MODE DARK
+   Default tetap MODE DARK agar tampilan existing tidak berubah.
+   ========================================================= */
+.theme-toggle-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 11px;
+    border:1px solid var(--border-color);
+    border-radius:8px;
+    background:var(--bg-card);
+    color:var(--text-light);
+    font-size:11px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .2s ease;
+    white-space:nowrap;
+}
+.theme-toggle-btn:hover{
+    border-color:var(--accent-gold);
+    color:var(--accent-gold);
+    transform:translateY(-1px);
+}
+.theme-toggle-btn i{color:var(--accent-gold)}
+
+body[data-theme="light"]{
+    --bg-dark:#f3f5f7;
+    --bg-sidebar:#ffffff;
+    --bg-card:#ffffff;
+    --bg-input:#f8fafc;
+    --border-color:#d8e0e7;
+    --accent-gold:#a87500;
+    --text-muted:#64748b;
+    --text-light:#17202a;
+    background-color:var(--bg-dark)!important;
+    color:var(--text-light)!important;
+}
+
+body[data-theme="light"] #sidebar{
+    background-color:#ffffff!important;
+    border-right-color:#d8e0e7!important;
+}
+body[data-theme="light"] #content{
+    background:#f3f5f7!important;
+}
+body[data-theme="light"] .brand-logo{
+    border-bottom-color:#d8e0e7!important;
+}
+body[data-theme="light"] .brand-title,
+body[data-theme="light"] .user-info .name,
+body[data-theme="light"] .panel-header h5,
+body[data-theme="light"] .input-box-card .card-title-custom,
+body[data-theme="light"] .stat-box .details h3{
+    color:#17202a!important;
+}
+body[data-theme="light"] .user-profile-card,
+body[data-theme="light"] .dashboard-panel,
+body[data-theme="light"] .stat-box{
+    background:#ffffff!important;
+    border-color:#d8e0e7!important;
+}
+body[data-theme="light"] .input-box-card{
+    background:#f8fafc!important;
+    border-color:#d8e0e7!important;
+}
+body[data-theme="light"] .nav-link-btn{
+    color:#526170!important;
+}
+body[data-theme="light"] .nav-link-btn:hover{
+    color:#17202a!important;
+    background:#eef2f6!important;
+}
+body[data-theme="light"] .nav-link-btn.active{
+    background:#d6b36a!important;
+    color:#17202a!important;
+}
+body[data-theme="light"] .sidebar-label{
+    color:#7b8794!important;
+}
+body[data-theme="light"] .form-control-custom,
+body[data-theme="light"] .input-box-card textarea,
+body[data-theme="light"] textarea,
+body[data-theme="light"] .form-control,
+body[data-theme="light"] .form-select,
+body[data-theme="light"] input,
+body[data-theme="light"] select{
+    background:#ffffff!important;
+    color:#17202a!important;
+    border-color:#cbd5df!important;
+}
+body[data-theme="light"] .form-control-custom::placeholder,
+body[data-theme="light"] textarea::placeholder,
+body[data-theme="light"] .form-control::placeholder{
+    color:#94a3b8!important;
+}
+body[data-theme="light"] .table-responsive-custom{
+    background:#ffffff!important;
+    border-color:#d8e0e7!important;
+}
+body[data-theme="light"] .table{
+    color:#17202a!important;
+    border-color:#d8e0e7!important;
+}
+body[data-theme="light"] .table th{
+    background:#e9eef3!important;
+    color:#8a5d00!important;
+    border-bottom-color:#cbd5df!important;
+    box-shadow:0 2px 5px rgba(0,0,0,.08)!important;
+}
+body[data-theme="light"] .table td{
+    background:#ffffff!important;
+    color:#334155!important;
+    border-bottom-color:#e2e8f0!important;
+}
+body[data-theme="light"] .table tbody tr:hover td{
+    background:#f1f5f9!important;
+}
+body[data-theme="light"] .empty-table-placeholder{
+    color:#64748b!important;
+}
+body[data-theme="light"] .btn-secondary-dark{
+    background:#e2e8f0!important;
+    color:#17202a!important;
+    border-color:#cbd5df!important;
+}
+body[data-theme="light"] .btn-secondary-dark:hover{
+    background:#cbd5df!important;
+    color:#17202a!important;
+}
+body[data-theme="light"] .btn-reset-card{
+    border-color:#cbd5df!important;
+    color:#64748b!important;
+}
+body[data-theme="light"] .footer-text,
+body[data-theme="light"] .clock-display{
+    color:#64748b!important;
+}
+body[data-theme="light"] .text-white{
+    color:#17202a!important;
+}
+body[data-theme="light"] .text-muted{
+    color:#64748b!important;
+}
+body[data-theme="light"] .theme-toggle-btn{
+    background:#ffffff!important;
+    color:#17202a!important;
+    border-color:#cbd5df!important;
+}
+body[data-theme="light"] .theme-toggle-btn:hover{
+    border-color:#a87500!important;
+    color:#8a5d00!important;
+}
+
+/* Login ikut berubah saat mode biasa dipilih. */
+body[data-theme="light"] #loginPage{
+    background:radial-gradient(circle at center,#ffffff 0%,#e8edf2 100%)!important;
+}
+body[data-theme="light"] .login-card{
+    background:rgba(255,255,255,.94)!important;
+    border-color:rgba(168,117,0,.25)!important;
+    box-shadow:0 20px 50px rgba(15,23,42,.14),0 0 30px rgba(168,117,0,.05)!important;
+}
+body[data-theme="light"] .login-title{
+    color:#17202a!important;
+}
+body[data-theme="light"] .login-quote{
+    color:#64748b!important;
+}
+body[data-theme="light"] .form-control-custom{
+    background:#ffffff!important;
+    color:#17202a!important;
+}
+body[data-theme="light"] .form-control-custom::placeholder{
+    color:#94a3b8!important;
+}
+
+/* Kalkulator parlay: pertahankan desain khususnya, tetapi input tetap nyaman
+   dibaca pada mode biasa. */
+body[data-theme="light"] #pageParlay .parlay-stake,
+body[data-theme="light"] #pageParlay .parlay-odds{
+    background:#ffffff!important;
+    color:#17202a!important;
+    border-color:#cbd5df!important;
+}
+body[data-theme="light"] #pageParlay .parlay-card{
+    background:linear-gradient(145deg,#ffffff 0%,#f5f7fa 55%,#ffffff 100%)!important;
+    border-color:rgba(168,117,0,.25)!important;
+    color:#17202a!important;
+}
+body[data-theme="light"] #pageParlay .parlay-title{
+    background:#eef2f6!important;
+    color:#8a5d00!important;
+}
+body[data-theme="light"] #pageParlay .parlay-team-name{
+    color:#8a5d00!important;
+}
+body[data-theme="light"] #pageParlay .parlay-hint{
+    color:#64748b!important;
+}
+
+/* Mobile */
+@media(max-width:700px){
+    .theme-toggle-btn span{display:none}
+    .theme-toggle-btn{padding:7px 9px}
+}
+
 </style>
 </head>
 <body>
@@ -679,6 +965,31 @@ body {
             </li>
         </ul>
 
+
+        <div class="sidebar-label">OPERATIONAL CHECKER</div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageCheckerDurasiHitung', this)">
+                    <i class="fa-solid fa-stopwatch"></i> Durasi Hitung Nomor
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageCheckerDurasiInput', this)">
+                    <i class="fa-solid fa-clock"></i> Durasi Input Nomor
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageCheckerResultTogel', this)">
+                    <i class="fa-solid fa-list-check"></i> Result Togel
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link-btn" onclick="showPage('pageCheckerWithdrawFlop', this)">
+                    <i class="fa-solid fa-money-bill-transfer"></i> Withdraw Flop Checker
+                </a>
+            </li>
+        </ul>
+
         <div class="logout-container">
             <button class="btn-logout-sidebar" onclick="logoutAdmin()">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
@@ -695,6 +1006,9 @@ body {
                 <i class="fa-solid fa-bars text-muted me-3" style="cursor:pointer;"></i>
             </div>
             <div class="topbar-right">
+                <button type="button" id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" title="Ganti mode tampilan">
+                    <i class="fa-solid fa-sun"></i><span>Mode Biasa</span>
+                </button>
                 <div class="clock-display">
                     <i class="fa-regular fa-clock"></i> <span id="liveClock">14:35:42</span>
                 </div>
@@ -1857,9 +2171,1810 @@ body {
 
 </script>
 
+
+        <div id="pageCheckerDurasiHitung" class="view-page checker-integrated-page">
+            <div class="dashboard-panel checker-panel-shell">
+                <div class="panel-header">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <div>
+                        <h5>① Durasi Hitung Nomor</h5>
+                        <p>Operational Checker terintegrasi dalam Operational System Auditor.</p>
+                    </div>
+                </div>
+                <iframe class="checker-iframe" title="① Durasi Hitung Nomor" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;id&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;① Durasi Hitung Nomor&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Checker Durasi Hitung Nomor&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#263238}
+.wrap{max-width:1400px;margin:auto;padding:24px}
+h1{margin:0 0 6px}.subtitle{color:#68737d;font-size:14px;margin-bottom:22px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:white;border:1px solid #dfe4e8;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+h2{font-size:17px;margin:0 0 8px}
+.hint{font-size:12px;color:#78838c;margin-bottom:12px;line-height:1.5}
+textarea{width:100%;height:330px;resize:vertical;border:1px solid #cfd6dc;border-radius:8px;padding:12px;font:13px Consolas,monospace;line-height:1.5;background:#fbfcfd}
+.actions{display:flex;gap:10px;margin:18px 0}
+button{border:0;border-radius:8px;padding:11px 18px;cursor:pointer;font-weight:600}
+.primary{background:#2563eb;color:white}.secondary{background:#e9eef3;color:#344454}
+.result-card{margin-top:18px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#f7f9fb;border:1px solid #e1e6ea;border-radius:8px;padding:8px 12px;font-size:13px}
+.table-wrap{overflow:auto;border:1px solid #e0e5e9;border-radius:9px}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th{background:#3f5366;color:white;padding:11px;text-align:left;font-size:13px}
+td{padding:10px;border-bottom:1px solid #edf0f2;font-size:13px;white-space:nowrap}
+.danger td{background:#fff1f2}.danger td:first-child{border-left:4px solid #dc2626}
+.missing td{background:#fff8e6}
+.danger-text{color:#b42318;font-weight:700}.ok-text{color:#25603b;font-weight:600}
+.duration-danger{background:#ffcdd2!important;color:#b71c1c!important;font-weight:800}
+.empty{text-align:center;padding:28px;color:#7a858e}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.wrap{padding:14px}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+&lt;h1&gt;Checker Durasi Hitung Nomor&lt;/h1&gt;
+&lt;p class=&quot;subtitle&quot;&gt;Cocokkan Data 1 — Input Nomor dengan Data 2 — Hitung Nomor berdasarkan nama pasaran.&lt;/p&gt;
+
+&lt;div class=&quot;grid&quot;&gt;
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;Data 1 — Input Nomor&lt;/h2&gt;
+&lt;div class=&quot;hint&quot;&gt;Mendukung tanggal &lt;b&gt;4/9/2026 23:51&lt;/b&gt; dan &lt;b&gt;04-09-2026 23:50:23&lt;/b&gt;.&lt;/div&gt;
+&lt;textarea id=&quot;data1&quot; placeholder=&quot;4/9/2026 23:51	vapaaoptgl7	input nomor SEOUL	nomor keluar : 5372,,	all member
+4/9/2026 22:27	vapaaoptgl1	input nomor PATTAYA	nomor keluar : 5475,,	all member
+
+04-09-2026 23:50:23	Master Togel	input nomor seoul	Periode : 2256 ; nomor keluar (DRAFT) : 5372	All Downline
+04-09-2026 23:33:45	Master Togel	input nomor kingkong 4d malam	Periode : 2009 ; nomor keluar (DRAFT) : 0629	All Downline&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;Data 2 — Hitung Nomor&lt;/h2&gt;
+&lt;div class=&quot;hint&quot;&gt;Mendukung &lt;b&gt;pasar :&lt;/b&gt; dan &lt;b&gt;Pasaran :&lt;/b&gt;.&lt;/div&gt;
+&lt;textarea id=&quot;data2&quot; placeholder=&quot;4/9/2026 23:54	vapaaoptgl7	hitung nomor 4d	periode : 2256 ;pasar : SEOUL	all member
+4/9/2026 22:32	vapaaoptgl1	hitung nomor 4d	periode : 2143 ;pasar : PATTAYA	all member
+
+04-09-2026 23:54:46	Master Togel	hitung nomor 4d	Periode : 2256 ; Pasaran : SEOUL	All Downline
+04-09-2026 23:34:06	Master Togel	hitung nomor 4d	Periode : 2009 ; Pasaran : KINGKONG 4D MALAM	All Downline&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;actions&quot;&gt;
+&lt;button class=&quot;primary&quot; id=&quot;btnCheck&quot;&gt;HITUNG DURASI&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; id=&quot;btnClear&quot;&gt;BERSIHKAN&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card result-card&quot;&gt;
+&lt;h2&gt;Hasil&lt;/h2&gt;
+&lt;div id=&quot;stats&quot; class=&quot;stats&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;table-wrap&quot;&gt;
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Pasaran&lt;/th&gt;&lt;th&gt;Waktu Input Nomor&lt;/th&gt;&lt;th&gt;Waktu Hitung Nomor&lt;/th&gt;&lt;th&gt;Selisih&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody id=&quot;resultBody&quot;&gt;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Belum ada hasil.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+&quot;use strict&quot;;
+
+function normalizeMarket(name){
+  let s=String(name||&quot;&quot;)
+    .normalize(&quot;NFKD&quot;)
+    .replace(/[\u0300-\u036f]/g,&quot;&quot;)
+    .replace(/[^a-zA-Z0-9]/g,&quot;&quot;)
+    .toUpperCase();
+
+  const alias={
+    &quot;FLORIDAMID&quot;:&quot;FLORIDAMIDDAY&quot;,
+    &quot;FLORIDAEVE&quot;:&quot;FLORIDAEVENING&quot;,
+    &quot;NEWYORKMID&quot;:&quot;NEWYORKMIDDAY&quot;,
+    &quot;NEWYORKEVE&quot;:&quot;NEWYORKEVENING&quot;,
+    &quot;KENTUCKYMID&quot;:&quot;KENTUCKYMIDDAY&quot;,
+    &quot;KENTUCKYEVE&quot;:&quot;KENTUCKYEVENING&quot;,
+    &quot;CAROLINAEVE&quot;:&quot;CAROLINAEVENING&quot;,
+    &quot;DELAWAREEVE&quot;:&quot;DELAWAREEVENING&quot;,
+    &quot;PPLOTTO&quot;:&quot;PHNOMPENHLOTTO&quot;
+  };
+  return alias[s] || s;
+}
+
+function parseDateTime(line){
+  const m=String(line).match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if(!m)return null;
+  return new Date(
+    Number(m[3]),Number(m[2])-1,Number(m[1]),
+    Number(m[4]),Number(m[5]),Number(m[6]||0)
+  );
+}
+
+function lines(text){
+  return String(text||&quot;&quot;).split(/\r?\n/).map(x=&gt;x.trim())
+    .filter(x=&gt;x &amp;&amp; !/^\|?\s*-{2,}/.test(x));
+}
+
+function parseData1(text){
+  const map=new Map();
+  lines(text).forEach((line,i)=&gt;{
+    const date=parseDateTime(line);
+    if(!date)return;
+
+    const m=line.match(/input\s+nomor\s+(.+?)(?=\s*(?:\t|\||Periode\b|nomor\s+keluar\b))/i);
+    if(!m)return;
+
+    const market=m[1].trim();
+    const key=normalizeMarket(market);
+    if(!key)return;
+
+    if(!map.has(key))map.set(key,[]);
+    map.get(key).push({market,date,line:i+1});
+  });
+  return map;
+}
+
+function parseData2(text){
+  const rows=[];
+  lines(text).forEach((line,i)=&gt;{
+    const date=parseDateTime(line);
+    if(!date)return;
+
+    const m=line.match(/(?:Pasaran|Pasar)\s*:\s*(.+?)(?=\s*(?:\t|\||All\s+Downline\b|$))/i);
+    if(!m)return;
+
+    const market=m[1].trim();
+    const key=normalizeMarket(market);
+    if(!key)return;
+
+    rows.push({market,key,date,line:i+1});
+  });
+  return rows;
+}
+
+function bestMatch(list,date){
+  if(!list||!list.length)return null;
+  return list.reduce((best,item)=&gt;
+    Math.abs(date-item.date)&lt;Math.abs(date-best.date)?item:best
+  );
+}
+
+function duration(sec){
+  const a=Math.abs(sec);
+  const h=Math.floor(a/3600);
+  const m=Math.floor((a%3600)/60);
+  const s=a%60;
+  let p=[];
+  if(h)p.push(h+&quot; jam&quot;);
+  if(m||h)p.push(m+&quot; menit&quot;);
+  p.push(s+&quot; detik&quot;);
+  return (sec&lt;0?&quot;-&quot;:&quot;&quot;)+p.join(&quot; &quot;);
+}
+
+function esc(v){
+  return String(v).replace(/&amp;/g,&quot;&amp;amp;&quot;).replace(/&lt;/g,&quot;&amp;lt;&quot;)
+    .replace(/&gt;/g,&quot;&amp;gt;&quot;).replace(/&quot;/g,&quot;&amp;quot;&quot;).replace(/&#x27;/g,&quot;&amp;#039;&quot;);
+}
+
+function fmt(d){
+  const p=n=&gt;String(n).padStart(2,&quot;0&quot;);
+  return p(d.getDate())+&quot;-&quot;+p(d.getMonth()+1)+&quot;-&quot;+d.getFullYear()+&quot; &quot;+
+    p(d.getHours())+&quot;:&quot;+p(d.getMinutes())+&quot;:&quot;+p(d.getSeconds());
+}
+
+function check(){
+  const map1=parseData1(document.getElementById(&quot;data1&quot;).value);
+  const rows2=parseData2(document.getElementById(&quot;data2&quot;).value);
+  const body=document.getElementById(&quot;resultBody&quot;);
+  const stats=document.getElementById(&quot;stats&quot;);
+
+  body.innerHTML=&quot;&quot;;
+  stats.innerHTML=&quot;&quot;;
+
+  let matched=0,danger=0,missing=0;
+
+  rows2.forEach((r,i)=&gt;{
+    const m=bestMatch(map1.get(r.key),r.date);
+
+    if(!m){
+      missing++;
+      body.innerHTML+=`&lt;tr class=&quot;missing&quot;&gt;
+        &lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;&lt;b&gt;${esc(r.market)}&lt;/b&gt;&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;
+        &lt;td&gt;${fmt(r.date)}&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;
+        &lt;td class=&quot;danger-text&quot;&gt;TIDAK DITEMUKAN DI DATA 1&lt;/td&gt;&lt;/tr&gt;`;
+      return;
+    }
+
+    matched++;
+    const sec=Math.round((r.date-m.date)/1000);
+    const bad=sec&gt;600;
+    if(bad)danger++;
+
+    body.innerHTML+=`&lt;tr class=&quot;${bad?&quot;danger&quot;:&quot;&quot;}&quot;&gt;
+      &lt;td&gt;${i+1}&lt;/td&gt;
+      &lt;td&gt;&lt;b&gt;${esc(r.market)}&lt;/b&gt;&lt;/td&gt;
+      &lt;td&gt;${fmt(m.date)}&lt;/td&gt;
+      &lt;td&gt;${fmt(r.date)}&lt;/td&gt;
+      &lt;td class=&quot;${bad?&quot;duration-danger&quot;:&quot;&quot;}&quot;&gt;&lt;b&gt;${duration(sec)}&lt;/b&gt;&lt;/td&gt;
+      &lt;td class=&quot;${bad?&quot;danger-text&quot;:&quot;ok-text&quot;}&quot;&gt;${bad?&quot;DANGER — &gt; 10 MENIT&quot;:sec&lt;0?&quot;DATA 2 LEBIH AWAL&quot;:&quot;NORMAL&quot;}&lt;/td&gt;
+    &lt;/tr&gt;`;
+  });
+
+  if(!rows2.length)
+    body.innerHTML=&#x27;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Data 2 tidak berhasil dibaca.&lt;/td&gt;&lt;/tr&gt;&#x27;;
+
+  let total1=0;
+  for(const a of map1.values())total1+=a.length;
+
+  stats.innerHTML=
+    `&lt;div class=&quot;stat&quot;&gt;Data 1 terbaca: &lt;b&gt;${total1}&lt;/b&gt;&lt;/div&gt;`+
+    `&lt;div class=&quot;stat&quot;&gt;Data 2 terbaca: &lt;b&gt;${rows2.length}&lt;/b&gt;&lt;/div&gt;`+
+    `&lt;div class=&quot;stat&quot;&gt;Tersinkron: &lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;`+
+    `&lt;div class=&quot;stat&quot;&gt;Danger: &lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;`+
+    `&lt;div class=&quot;stat&quot;&gt;Tidak ditemukan: &lt;b&gt;${missing}&lt;/b&gt;&lt;/div&gt;`;
+}
+
+function clearAll(){
+  data1.value=&quot;&quot;;
+  data2.value=&quot;&quot;;
+  stats.innerHTML=&quot;&quot;;
+  resultBody.innerHTML=&#x27;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Belum ada hasil.&lt;/td&gt;&lt;/tr&gt;&#x27;;
+}
+
+btnCheck.addEventListener(&quot;click&quot;,check);
+btnClear.addEventListener(&quot;click&quot;,clearAll);
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+            </div>
+        </div>
+
+
+        <div id="pageCheckerDurasiInput" class="view-page checker-integrated-page">
+            <div class="dashboard-panel checker-panel-shell">
+                <div class="panel-header">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <h5>② Durasi Input Nomor</h5>
+                        <p>Operational Checker terintegrasi dalam Operational System Auditor.</p>
+                    </div>
+                </div>
+                <iframe class="checker-iframe" title="② Durasi Input Nomor" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;id&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;② Durasi Input Nomor&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;Cek Durasi Input Nomor&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box} body{margin:0;background:#f3f6f8;color:#263238;font-family:Arial,sans-serif;font-size:13px}
+.wrap{max-width:1450px;margin:auto;padding:20px} h1{margin:0 0 5px;font-size:24px}
+.sub{color:#607d8b;margin-bottom:16px} .grid{display:grid;grid-template-columns:minmax(650px,1.35fr) minmax(420px,.9fr);gap:16px}
+.card{background:#fff;border:1px solid #d9e2e7;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(38,50,56,.07)}
+h2{font-size:14px;color:#37474f;margin:2px 0 11px} .schedule-box{max-height:690px;overflow:auto;border:1px solid #d7e0e5;border-radius:8px}
+.schedule-table{width:100%;min-width:650px;border-collapse:collapse;table-layout:fixed}
+.schedule-table th{position:sticky;top:0;z-index:2;background:#455a64;color:#fff;font-size:11px;padding:8px 7px;border:1px solid #546e7a;text-align:center}
+.schedule-table td{background:#fff;color:#37474f;font-size:11px;padding:6px 7px;border:1px solid #e4eaed;line-height:1.15}
+.schedule-table tbody tr:nth-child(even) td{background:#f7f9fa}
+.schedule-table td:first-child{width:31%;font-weight:700} .schedule-table td:nth-child(2){width:30%;font-size:10px;text-align:center;color:#78909c}
+.schedule-table td:nth-child(3),.schedule-table td:nth-child(4){width:19.5%;text-align:center;font-weight:700}
+.redtime{color:#c62828!important} .greentime{color:#2e7d32!important}
+textarea{width:100%;height:250px;background:#fbfcfd;color:#263238;border:1px solid #cbd7dd;border-radius:8px;padding:10px;font:12px Consolas,monospace;resize:vertical}
+textarea:focus{outline:none;border-color:#78909c;box-shadow:0 0 0 3px rgba(120,144,156,.14)}
+.buttons{display:flex;gap:8px;margin-top:9px} button{border:0;border-radius:7px;padding:9px 14px;font-weight:700;cursor:pointer}
+button.process{background:#546e7a;color:#fff} button.secondary{background:#e8eef1;color:#455a64}
+.hint{font-size:11px;color:#78909c;margin:8px 0 0} .sync-note{margin-top:8px;padding:9px 10px;background:#f1f6f8;border-left:3px solid #78909c;border-radius:5px;color:#546e7a;font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px} .stat{background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;padding:9px;color:#78909c;font-size:11px} .stat b{display:block;color:#37474f;font-size:16px;margin-top:2px}
+.table-wrap{overflow:auto;border:1px solid #d9e2e7;border-radius:8px} table:not(.schedule-table){width:100%;border-collapse:collapse} table:not(.schedule-table) th{background:#546e7a;color:#fff;padding:8px;font-size:11px;white-space:nowrap} table:not(.schedule-table) td{padding:8px;background:#fff;color:#37474f;border-bottom:1px solid #e4eaed;font-size:11px} table:not(.schedule-table) tbody tr:nth-child(even) td{background:#f8fafb}
+.ok{background:#e8f5e9!important;color:#2e7d32!important;font-weight:700} .duration-danger{background:#ffebee!important;color:#c62828!important;font-weight:800} .danger{background:#ffebee!important;color:#c62828!important;font-weight:800}
+.empty{padding:15px;background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;color:#78909c}
+@media(max-width:900px){.grid{grid-template-columns:1fr}} @media(max-width:700px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+&lt;h1&gt;Cek Durasi Input Nomor&lt;/h1&gt;
+&lt;div class=&quot;sub&quot;&gt;Bandingkan &lt;b&gt;jam jadwal tetap&lt;/b&gt; dengan &lt;b&gt;jam input aktual&lt;/b&gt;. Urutan/baris tidak harus sama; pencocokan dilakukan berdasarkan nama pasaran.&lt;/div&gt;
+&lt;div class=&quot;grid&quot;&gt;
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;① JADWAL PASARAN — JAM TETAP&lt;/h2&gt;
+&lt;div class=&quot;schedule-box&quot;&gt;&lt;table class=&quot;schedule-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;PASARAN&lt;/th&gt;&lt;th&gt;JADWAL&lt;/th&gt;&lt;th&gt;JAM MULAI&lt;/th&gt;&lt;th&gt;JAM AKHIR&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;SEOUL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KINGKONG 4D MALAM&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HONGKONG LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:59&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 23:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PATTAYA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;22:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 22:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;22:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MANILA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 5D 21:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TAIPEI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SHANGHAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PYONGYANG&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DELAWARE DAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DUBAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PCSO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:50&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 19:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BUSAN&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:05&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MAGNUM4D&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:40&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HANOI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;LONDON&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:55&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SINGAPORE 4D&lt;/td&gt;&lt;td&gt;RABU / SABTU / MINGGU&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SINGAPORE TOTO&lt;/td&gt;&lt;td&gt;SENIN / KAMIS&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:40&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NAGOYA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KINGKONG 4D SORE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;GUANGZHOU&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;16:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;16:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 16:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;16:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;16:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BEIJING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;15:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;15:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 5D 15:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;15:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;15:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KUALA LUMPUR&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;14:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:55&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PHUKET&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;14:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SYDNEY LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:49&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:05&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SENEGAL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BULLSEYE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 13:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MADRID&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;12:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HOI AN&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;12:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;12:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 12:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;12:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CHIANGMAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:40&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:55&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PHNOMPENH LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOKYO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DELAWARE EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;10:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CAROLINA EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;10:07&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;10:22&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KENTUCKY EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;09:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;10:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW YORK EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;09:20&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;09:35&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 09:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;09:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CALIFORNIA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;08:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FLORIDA EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;08:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 06:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;05:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;06:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BRUSSELS&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;05:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;05:35&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;YORDANIA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;04:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;05:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;VIENTIANE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;04:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;04:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;COLOMBO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;03:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;04:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW DELHI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;03:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 03:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KYOTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BOMBAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;02:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CAROLINA DAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;02:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ISTANBUL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW YORK MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ATHENA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BURMA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FLORIDA MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KENTUCKY MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;IOWA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 00:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:15&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;hint&quot;&gt;Jadwal sudah ditetapkan dan tidak perlu dipaste ulang.&lt;/div&gt;
+&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Sinkronisasi:&lt;/b&gt; nama pasaran dinormalisasi sehingga spasi, tanda baca, dan format singkat dari Excel tetap bisa dicocokkan.&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;② DATA INPUT AKTUAL DARI EXCEL&lt;/h2&gt;
+&lt;textarea id=&quot;actual&quot; placeholder=&quot;Paste langsung dari Excel, contoh:
+1/9/2026 0:28	libaaoptgl6	input nomor KENTUCKYMID	nomor keluar : 1234
+1/9/2026 1:32	libaaoptgl6	input nomor NEWYORKMID	nomor keluar : 5678
+1/9/2026 10:24	libaaoptgl5	input nomor CAROLINAEVE	nomor keluar : 9999
+&lt;br&gt;
+Bisa juga memakai format 30-08-2026 23:35:12.
+Baris tidak harus urut.&quot;&gt;&lt;/textarea&gt;
+&lt;div class=&quot;buttons&quot;&gt;&lt;button class=&quot;process&quot; onclick=&quot;check()&quot;&gt;⚡ PROSES &amp; HITUNG DURASI&lt;/button&gt;&lt;button class=&quot;secondary&quot; onclick=&quot;clearBox(&#x27;actual&#x27;)&quot;&gt;Hapus Data&lt;/button&gt;&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Excel boleh menggunakan TAB, spasi, atau tanda |. Nama pasaran boleh tanpa spasi.&lt;/p&gt;
+&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Contoh otomatis:&lt;/b&gt; KENTUCKYMID → KENTUCKY MIDDAY, NEWYORKMID → NEW YORK MIDDAY, NEWYORKEVE → NEW YORK EVENING, PP-LOTTO → PHNOMPENH LOTTO, OREGON12 → OREGON 12:00.&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;card&quot; style=&quot;margin-top:14px&quot;&gt;
+&lt;h2&gt;HASIL — SINKRONISASI BERDASARKAN NAMA&lt;/h2&gt;
+&lt;div id=&quot;result&quot;&gt;&lt;div class=&quot;empty&quot;&gt;Paste Data Excel lalu klik &quot;PROSES &amp; HITUNG DURASI&quot;.&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+
+function esc(s){return String(s??&#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,m=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#039;&#x27;}[m]));}
+
+
+const aliases = {
+KENTUCKYMID:&quot;KENTUCKYMIDDAY&quot;,
+NEWYORKMID:&quot;NEWYORKMIDDAY&quot;,
+NEWYORKEVE:&quot;NEWYORKEVENING&quot;,
+KENTUCKYEVE:&quot;KENTUCKYEVENING&quot;,
+CAROLINAEVE:&quot;CAROLINAEVENING&quot;,
+DELAWAREEVE:&quot;DELAWAREEVENING&quot;,
+DELAWAREDAY:&quot;DELAWAREDAY&quot;,
+FLORIDAEVE:&quot;FLORIDAEVENING&quot;,
+FLORIDAMID:&quot;FLORIDAMIDDAY&quot;,
+PPLOTTO:&quot;PHNOMPENHLOTTO&quot;,
+OREGON12:&quot;OREGON1200&quot;,
+OREGON09:&quot;OREGON0900&quot;,
+OREGON06:&quot;OREGON0600&quot;,
+OREGON03:&quot;OREGON0300&quot;,
+KUALALUMPUR:&quot;KUALALUMPUR&quot;,
+HOIAN:&quot;HOIAN&quot;,
+NEWDELHI:&quot;NEWDELHI&quot;,
+CAROLINADAY:&quot;CAROLINADAY&quot;,
+KINGKONG4DMALAM:&quot;KINGKONG4DMALAM&quot;,
+KINGKONG4DSORE:&quot;KINGKONG4DSORE&quot;,
+MAGNUM4D:&quot;MAGNUM4D&quot;
+};
+
+
+function norm(s){
+const compact=String(s||&#x27;&#x27;).normalize(&#x27;NFKD&#x27;)
+.replace(/[\u0300-\u036f]/g,&#x27;&#x27;)
+.toUpperCase()
+.replace(/[^A-Z0-9]/g,&#x27;&#x27;);
+return aliases[compact] || compact;
+}
+
+
+function cleanName(s){return String(s||&#x27;&#x27;).trim().replace(/\s+/g,&#x27; &#x27;).toUpperCase();}
+
+
+function parseTime(s){
+const m=String(s||&#x27;&#x27;).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+if(!m)return null;
+const h=Number(m[1]), mi=Number(m[2]), se=Number(m[3]||0);
+if(h&gt;23||mi&gt;59||se&gt;59)return null;
+return `${String(h).padStart(2,&#x27;0&#x27;)}:${m[2]}:${String(se).padStart(2,&#x27;0&#x27;)}`;
+}
+
+
+function sec(t){const p=t.split(&#x27;:&#x27;).map(Number);return p[0]*3600+p[1]*60+(p[2]||0);}
+function signedDiff(actual,fixedEnd){
+let d=sec(actual)-sec(fixedEnd);
+if(d&gt;43200)d-=86400;
+if(d&lt;-43200)d+=86400;
+return d;
+}
+function fmtSelisih(d){
+d=Math.abs(Math.round(d));
+const jam=Math.floor(d/3600), menit=Math.floor((d%3600)/60), detik=d%60;
+if(jam&gt;0)return `${jam} jam ${menit} menit ${detik} detik`;
+return `${menit} menit ${detik} detik`;
+}
+
+
+function parseSchedule(){
+const rows=[];
+document.querySelectorAll(&#x27;.schedule-table tbody tr&#x27;).forEach((tr,i)=&gt;{
+const c=tr.querySelectorAll(&#x27;td&#x27;); if(c.length&lt;4)return;
+const name=cleanName(c[0].textContent), start=parseTime(c[2].textContent), end=parseTime(c[3].textContent);
+if(name&amp;&amp;start&amp;&amp;end)rows.push({name,start,end,line:i+1,raw:tr.textContent.trim()});
+});
+return rows;
+}
+
+
+function parseDateTime(line){
+// Mendukung 1/9/2026 0:28, 01/09/2026 00:28:12, 30-08-2026 23:35:12
+const m=line.match(/(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{4})\s+(\d{1,2}:\d{2}(?::\d{2})?)/);
+if(!m)return null;
+return {date:m[1],time:parseTime(m[2])};
+}
+
+
+function extractMarket(line, dateStr){
+const m=line.match(/input\s+nomor\s+(.+?)(?=\s*(?:\t|\||nomor\s+keluar\b|periode\b|$))/i);
+let name=m ? cleanName(m[1]) : &#x27;&#x27;;
+
+// KHUSUS SINGAPORE:
+// Format nomor keluar menentukan jenis pasaran:
+// - 3 nomor 4 digit (contoh 9248,2243,5264) = SINGAPORE 4D
+// - 1 nomor 4 digit (contoh 5264) = SINGAPORE TOTO
+// Jika format nomor tidak terbaca, gunakan hari pada tanggal sebagai fallback:
+// Rabu/Sabtu/Minggu = 4D, Senin/Kamis = TOTO.
+if(name.replace(/[^A-Z0-9]/g,&#x27;&#x27;) === &#x27;SINGAPORE&#x27;){
+  const outMatch=line.match(/nomor\s+keluar\s*:\s*([^\t|]+)/i);
+  const outText=outMatch ? outMatch[1] : &#x27;&#x27;;
+  const numbers=outText.match(/\d{4}/g) || [];
+  const uniqueNumbers=[...new Set(numbers)];
+
+  if(uniqueNumbers.length &gt;= 3){
+    return &#x27;SINGAPORE 4D&#x27;;
+  }
+  if(uniqueNumbers.length === 1){
+    return &#x27;SINGAPORE TOTO&#x27;;
+  }
+
+  // Fallback berdasarkan hari: 0=Minggu, 1=Senin, ..., 3=Rabu, 4=Kamis, 6=Sabtu
+  const dm=String(dateStr||&#x27;&#x27;).match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(dm){
+    const d=new Date(Number(dm[3]),Number(dm[2])-1,Number(dm[1]));
+    const day=d.getDay();
+    if(day===0 || day===3 || day===6) return &#x27;SINGAPORE 4D&#x27;;
+    if(day===1 || day===4) return &#x27;SINGAPORE TOTO&#x27;;
+  }
+}
+
+// Fallback: ambil teks setelah input nomor sampai akhir kolom/baris.
+if(!name){
+  const f=line.match(/input\s+nomor\s+(.+)$/i);
+  name=f ? cleanName(f[1].split(/\t|\||nomor\s+keluar|periode/i)[0]) : &#x27;&#x27;;
+}
+return name;
+}
+
+
+function parseActual(text){
+const rows=[];
+String(text||&#x27;&#x27;).split(/\r?\n/).forEach((original,i)=&gt;{
+const line=original.replace(/\u00A0/g,&#x27; &#x27;).trim();
+if(!line)return;
+const dt=parseDateTime(line);
+if(!dt || !dt.time)return;
+const name=extractMarket(line,dt.date);
+if(name)rows.push({name,date:dt.date,time:dt.time,line:i+1,raw:original});
+});
+return rows;
+}
+
+
+function check(){
+const result=document.getElementById(&#x27;result&#x27;);
+try{
+const sch=parseSchedule(), act=parseActual(document.getElementById(&#x27;actual&#x27;).value);
+if(!act.length){result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data Excel belum terbaca. Pastikan ada tanggal + jam dan teks &quot;input nomor&quot;.&lt;/div&gt;&#x27;;return;}
+const map=new Map(); sch.forEach(r=&gt;map.set(norm(r.name),r));
+const rows=act.map(a=&gt;{
+const s=map.get(norm(a.name));
+if(!s)return {...a,status:&#x27;NAMA TIDAK DITEMUKAN&#x27;,schedule:&#x27;-&#x27;,scheduleEnd:&#x27;&#x27;,duration:null};
+const duration=signedDiff(a.time,s.end);
+return {...a,status:duration&gt;600?&#x27;DANGER&#x27;:&#x27;OK&#x27;,schedule:s.start,scheduleEnd:s.end,duration};
+});
+const matched=rows.filter(r=&gt;r.duration!==null).length;
+const danger=rows.filter(r=&gt;r.duration&gt;600).length;
+const notFound=rows.filter(r=&gt;r.duration===null).length;
+const body=rows.map((r,i)=&gt;{
+const isDanger=r.duration!==null&amp;&amp;r.duration&gt;600;
+const cls=isDanger?&#x27;danger&#x27;:(r.duration===null?&#x27;danger&#x27;:&#x27;ok&#x27;);
+return `&lt;tr class=&quot;${cls}&quot;&gt;
+&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${esc(r.name)}&lt;/td&gt;&lt;td&gt;${esc(r.date)}&lt;/td&gt;
+&lt;td&gt;${esc(r.schedule)}${r.scheduleEnd?&#x27; - &#x27;+esc(r.scheduleEnd):&#x27;&#x27;}&lt;/td&gt;
+&lt;td&gt;${esc(r.time)}&lt;/td&gt;
+&lt;td class=&quot;${isDanger?&#x27;duration-danger&#x27;:&#x27;&#x27;}&quot;&gt;${r.duration===null?&#x27;-&#x27;:esc(fmtSelisih(r.duration))}&lt;/td&gt;
+&lt;td&gt;${r.duration===null?&#x27;⚠ TIDAK DITEMUKAN&#x27;:(isDanger?&#x27;⚠ DANGER &gt;10 MENIT&#x27;:&#x27;OK&#x27;)}&lt;/td&gt;
+&lt;/tr&gt;`;
+}).join(&#x27;&#x27;);
+result.innerHTML=`&lt;div class=&quot;stats&quot;&gt;
+&lt;div class=&quot;stat&quot;&gt;Jadwal tetap terbaca&lt;b&gt;${sch.length}&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;Data Excel terbaca&lt;b&gt;${act.length}&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;Cocok&lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;
+&lt;div class=&quot;stat&quot;&gt;Danger &amp;gt;10 menit&lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Tidak ditemukan:&lt;/b&gt; ${notFound} baris. Nama dicocokkan setelah spasi/tanda baca dihilangkan dan alias format Excel diterapkan.&lt;/div&gt;
+&lt;div class=&quot;table-wrap&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
+&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Pasaran Excel&lt;/th&gt;&lt;th&gt;Tanggal&lt;/th&gt;&lt;th&gt;Jam Tetap&lt;/th&gt;&lt;th&gt;Jam Input&lt;/th&gt;&lt;th&gt;Selisih&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;
+&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;${body}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;`;
+}catch(e){
+result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;⚠ Error: &#x27;+esc(e.message||e)+&#x27;&lt;/div&gt;&#x27;;
+}
+}
+function clearBox(id){document.getElementById(id).value=&#x27;&#x27;;document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data sudah dihapus.&lt;/div&gt;&#x27;;}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+            </div>
+        </div>
+
+
+        <div id="pageCheckerResultTogel" class="view-page checker-integrated-page">
+            <div class="dashboard-panel checker-panel-shell">
+                <div class="panel-header">
+                    <i class="fa-solid fa-list-check"></i>
+                    <div>
+                        <h5>③ Result Togel</h5>
+                        <p>Operational Checker terintegrasi dalam Operational System Auditor.</p>
+                    </div>
+                </div>
+                <iframe class="checker-iframe" title="③ Result Togel" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;id&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;③ Result Togel&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;id&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;Checker Result Togel - Flexible Excel&lt;/title&gt;
+&lt;style&gt;
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6fb;color:#202535;font-family:Arial,sans-serif}
+.wrap{max-width:1500px;margin:auto;padding:22px}
+h1{margin:0 0 5px}.sub{color:#667085;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border:1px solid #dfe3eb;border-radius:12px;padding:16px}
+h2{font-size:16px;margin:0 0 10px}
+textarea{width:100%;height:330px;resize:vertical;border:1px solid #ccd2df;border-radius:8px;padding:11px;font:13px Consolas,monospace}
+textarea:focus{border-color:#4b55aa;box-shadow:0 0 0 3px #4b55aa18}
+.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button{border:0;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer}
+.primary{background:#25215f;color:#fff}.secondary{background:#e8ecf4;color:#344054}
+button:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:14px 0}
+.stat{background:#f8f9fc;border:1px solid #e4e7ec;border-radius:8px;padding:10px}.stat b{display:block;font-size:20px;margin-top:3px}
+.table-wrap{overflow:auto;border:1px solid #e4e7ec;border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:950px}
+th,td{padding:8px 10px;border-bottom:1px solid #eaecf0;font-size:13px;white-space:nowrap;text-align:left}
+th{background:#f2f4f7}.ok{background:#ecfdf3;color:#027a48;font-weight:bold}
+.no{background:#fef3f2;color:#b42318;font-weight:bold}.warn{background:#fffaeb;color:#b54708;font-weight:bold}
+.hint{font-size:12px;color:#667085;line-height:1.5;margin:9px 0 0}
+.empty{text-align:center;padding:20px;color:#667085}
+.manual-input{width:130px;padding:6px 8px;border:1px solid #f0a000;border-radius:6px;font:13px Consolas,monospace}
+.manual-input:focus{outline:none;border-color:#25215f;box-shadow:0 0 0 2px #25215f22}
+.process-wrap{display:flex;justify-content:center;margin-top:14px}
+.process-btn{background:#0b7a4b;color:#fff;border:0;border-radius:8px;padding:11px 20px;font-weight:bold;cursor:pointer}
+.process-btn:hover{opacity:.92}
+.manual-note{font-size:12px;color:#667085;margin:8px 0 0}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.wrap{padding:12px}}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+&lt;h1&gt;Checker Result Togel&lt;/h1&gt;
+&lt;div class=&quot;sub&quot;&gt;Cocokkan nomor berdasarkan nama pasaran. Data boleh berbeda urutan, format nama pasaran, dan bisa langsung di-paste dari Excel.&lt;/div&gt;
+
+&lt;div class=&quot;grid&quot;&gt;
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;① DATA 1 — HASIL TERBARU&lt;/h2&gt;
+&lt;textarea id=&quot;data1&quot; placeholder=&quot;Contoh:
+4/9/2026 23:51	vapaaoptgl7	input nomor SEOUL	nomor keluar : 5372,,	all member
+4/9/2026 22:27	vapaaoptgl1	input nomor PATTAYA	nomor keluar : 5475,,	all member&quot;&gt;&lt;/textarea&gt;
+&lt;div class=&quot;buttons&quot;&gt;
+&lt;button class=&quot;primary&quot; onclick=&quot;check()&quot;&gt;Cocokkan Data&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; onclick=&quot;clearBox(&#x27;data1&#x27;)&quot;&gt;Hapus Data 1&lt;/button&gt;
+&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Bisa paste 2 format sekaligus: format member (nomor keluar : 5372,,) atau format Excel (Periode ... nomor keluar (DRAFT) : 5372). Nomor 3 digit otomatis dianggap 4 digit.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card&quot;&gt;
+&lt;h2&gt;② DATA 2 — DATA EXCEL / PEMBANDING&lt;/h2&gt;
+&lt;textarea id=&quot;data2&quot; placeholder=&quot;Contoh:
+04-09-2026 23:50:23	Master Togel	input nomor seoul	Periode : 2256 ; nomor keluar (DRAFT) : 5372	All Downline
+04-09-2026 23:33:45	Master Togel	input nomor kingkong 4d malam	Periode : 2009 ; nomor keluar (DRAFT) : 0629	All Downline&quot;&gt;&lt;/textarea&gt;
+&lt;div class=&quot;buttons&quot;&gt;
+&lt;button class=&quot;secondary&quot; onclick=&quot;clearBox(&#x27;data2&#x27;)&quot;&gt;Hapus Data 2&lt;/button&gt;
+&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Data 2 menjadi daftar utama hasil. Jika pasaran tidak ada di Data 1, nomor Data 1 dan nomor cocok akan dikosongkan.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;card&quot; style=&quot;margin-top:14px&quot;&gt;
+&lt;h2&gt;HASIL PENCOCOKAN&lt;/h2&gt;
+&lt;div class=&quot;buttons&quot; style=&quot;margin-bottom:10px&quot;&gt;
+&lt;button class=&quot;primary&quot; onclick=&quot;downloadExcel()&quot; id=&quot;downloadBtn&quot; disabled&gt;Download Excel&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; onclick=&quot;clearAll()&quot;&gt;Hapus Semua&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id=&quot;result&quot;&gt;&lt;div class=&quot;empty&quot;&gt;Masukkan kedua data lalu klik &quot;Cocokkan Data&quot;.&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;process-wrap&quot;&gt;
+  &lt;button class=&quot;process-btn&quot; onclick=&quot;processManual()&quot;&gt;PROSES INPUT MANUAL&lt;/button&gt;
+&lt;/div&gt;
+&lt;p class=&quot;manual-note&quot;&gt;Isi nomor pada kolom input manual untuk pasaran yang kosong, lalu tekan tombol ini untuk mencocokkan dengan DATA 2.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+let lastExportRows=[];
+
+function lines(s){
+  return String(s||&#x27;&#x27;).split(/\r?\n/).map(x=&gt;x.trim()).filter(Boolean);
+}
+function esc(s){
+  return String(s??&#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,m=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#039;&#x27;}[m]));
+}
+// Alias pasaran agar nama yang berbeda format tetap dianggap sama.
+const MARKET_ALIAS = {
+  &quot;KENTUCKYMID&quot;: &quot;KENTUCKY MIDDAY&quot;,
+  &quot;NEWYORKMID&quot;: &quot;NEW YORK MIDDAY&quot;,
+  &quot;CAROLINADAY&quot;: &quot;CAROLINA DAY&quot;,
+  &quot;OREGON03&quot;: &quot;OREGON 03:00&quot;,
+  &quot;OREGON06&quot;: &quot;OREGON 06:00&quot;,
+  &quot;OREGON09&quot;: &quot;OREGON 09:00&quot;,
+  &quot;OREGON12&quot;: &quot;OREGON 12:00&quot;,
+  &quot;FLORIDAEVE&quot;: &quot;FLORIDA EVENING&quot;,
+  &quot;FLORIDAMID&quot;: &quot;FLORIDA MIDDAY&quot;,
+  &quot;NEWYORKEVE&quot;: &quot;NEW YORK EVENING&quot;,
+  &quot;KENTUCKYEVE&quot;: &quot;KENTUCKY EVENING&quot;,
+  &quot;CAROLINAEVE&quot;: &quot;CAROLINA EVENING&quot;,
+  &quot;DELAWAREEVE&quot;: &quot;DELAWARE EVENING&quot;,
+  &quot;PP-LOTTO&quot;: &quot;PHNOMPENH LOTTO&quot;,
+  &quot;KUALALUMPUR&quot;: &quot;KUALA LUMPUR&quot;,
+  &quot;HOIAN&quot;: &quot;HOI AN&quot;,
+  &quot;NEWDELHI&quot;: &quot;NEW DELHI&quot;,
+  &quot;DELAWAREDAY&quot;: &quot;DELAWARE DAY&quot;,
+  &quot;DELAWARE DAY&quot;: &quot;DELAWARE DAY&quot;
+};
+
+function normalizeName(name){
+  let n = String(name||&#x27;&#x27;)
+    .replace(/\s+/g,&#x27; &#x27;)
+    .trim()
+    .toUpperCase();
+
+  // Variasi umum penulisan waktu/status.
+  n = n
+    .replace(/\bEVE\b/g,&#x27;EVENING&#x27;)
+    .replace(/\bMID\b/g,&#x27;MIDDAY&#x27;)
+    .replace(/\bDAY\b/g,&#x27;DAY&#x27;);
+
+  return MARKET_ALIAS[n] || MARKET_ALIAS[n.replace(/\s+/g,&#x27;&#x27;)] || n;
+}
+
+/*
+  Fleksibel:
+  - Mencari &quot;input nomor&quot; dan &quot;nomor keluar&quot; di mana pun posisinya dalam baris.
+  - Mendukung Data 1: nomor keluar : 5372,,
+  - Mendukung Data 2: Periode ... nomor keluar (DRAFT) : 5372
+  - Mendukung beberapa nomor seperti 4566, 5015, 5970.
+*/
+function parse(text){
+  const out=[];
+
+  lines(text).forEach((line,idx)=&gt;{
+    /*
+      FORMAT 1:
+      4/9/2026 23:51 | vapaaoptgl7 | input nomor SEOUL | nomor keluar : 5372,, | all member
+
+      FORMAT 2:
+      04-09-2026 23:50:23 | Master Togel | input nomor seoul |
+      Periode : 2256 ; nomor keluar (DRAFT) : 5372 | All Downline
+
+      Jadi Data 1 bebas memakai salah satu format tersebut.
+    */
+
+    // Ambil nama pasaran dari teks setelah &quot;input nomor&quot;
+    // dan sebelum kolom/teks &quot;nomor keluar&quot; atau &quot;Periode&quot;.
+    const nameMatch = line.match(/input\s+nomor\s+(.+?)(?=\s+nomor\s+keluar|\s+periode\s*:|$)/i);
+    if(!nameMatch) return;
+
+    const name = normalizeName(nameMatch[1]);
+
+    // Ambil semua angka setelah &quot;nomor keluar :&quot; atau
+    // &quot;nomor keluar (DRAFT) :&quot;.
+    const resultMatch = line.match(/nomor\s+keluar(?:\s*\(DRAFT\))?\s*:\s*(.*)$/i);
+    if(!resultMatch) return;
+
+    // Hanya ambil angka result, bukan tanggal/periode.
+    // Mendukung 3 digit, 4 digit, 5 digit, dan multi-result.
+    const nums = (resultMatch[1].match(/\b\d{1,5}\b/g)||[])
+      .map(n=&gt;n.padStart(4,&#x27;0&#x27;));
+
+    if(name &amp;&amp; nums.length){
+      out.push({
+        name,
+        nums,
+        line:idx+1,
+        raw:line
+      });
+    }
+  });
+
+  return out;
+}
+
+function check(){
+  const d1=parse(document.getElementById(&#x27;data1&#x27;).value);
+  const d2=parse(document.getElementById(&#x27;data2&#x27;).value);
+
+  if(!d1.length||!d2.length){
+    document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data belum terbaca. Pastikan kedua data memiliki &quot;input nomor ... nomor keluar&quot;.&lt;/div&gt;&#x27;;
+    document.getElementById(&#x27;downloadBtn&#x27;).disabled=true;
+    lastExportRows=[];
+    return;
+  }
+
+  const map1=new Map();
+  d1.forEach(r=&gt;{
+    if(!map1.has(r.name)) map1.set(r.name,[]);
+    r.nums.forEach(n=&gt;{
+      if(!map1.get(r.name).includes(n)) map1.get(r.name).push(n);
+    });
+  });
+
+  let klop=0,partial=0,tidakKlop=0,kosong=0;
+
+  const rows=d2.map((r,i)=&gt;{
+    const ref=map1.get(r.name);
+
+    if(!ref){
+      kosong++;
+      return {...r,status:&#x27;KOSONG&#x27;,matched:[],refNums:[]};
+    }
+
+    const matched=r.nums.filter(n=&gt;ref.includes(n));
+    const allMatch=matched.length===r.nums.length;
+
+    if(allMatch){
+      klop++;
+      return {...r,status:&#x27;KLOP&#x27;,matched,refNums:ref};
+    }
+    if(matched.length&gt;0){
+      partial++;
+      return {...r,status:&#x27;SEBAGIAN&#x27;,matched,refNums:ref};
+    }
+
+    tidakKlop++;
+    return {...r,status:&#x27;TIDAK KLOP&#x27;,matched:[],refNums:ref};
+  });
+
+  lastExportRows=rows.map((r,i)=&gt;({
+    &quot;No&quot;:i+1,
+    &quot;Nama Result&quot;:r.name,
+    &quot;Nomor Data 2&quot;:r.nums.join(&#x27;, &#x27;),
+    &quot;Nomor Data 1&quot;:r.refNums.join(&#x27;, &#x27;),
+    &quot;Nomor Cocok&quot;:r.matched.join(&#x27;, &#x27;),
+    &quot;Status&quot;:r.status
+  }));
+
+  const body=rows.map((r,i)=&gt;{
+    const cls=r.status===&#x27;KLOP&#x27;?&#x27;ok&#x27;:(r.status===&#x27;SEBAGIAN&#x27;||r.status===&#x27;KOSONG&#x27;?&#x27;warn&#x27;:&#x27;no&#x27;);
+    const manual = r.status===&#x27;KOSONG&#x27;
+      ? `&lt;input class=&quot;manual-input&quot; id=&quot;manual-${i}&quot; data-name=&quot;${esc(r.name)}&quot; placeholder=&quot;Isi nomor&quot;&gt;`
+      : esc(r.refNums.join(&#x27;, &#x27;)||&#x27;&#x27;);
+    return `&lt;tr&gt;
+      &lt;td&gt;${i+1}&lt;/td&gt;
+      &lt;td&gt;${esc(r.name)}&lt;/td&gt;
+      &lt;td&gt;${esc(r.nums.join(&#x27;, &#x27;))}&lt;/td&gt;
+      &lt;td&gt;${manual}&lt;/td&gt;
+      &lt;td&gt;${esc(r.matched.join(&#x27;, &#x27;)||&#x27;&#x27;)}&lt;/td&gt;
+      &lt;td class=&quot;${cls}&quot; id=&quot;status-${i}&quot;&gt;${esc(r.status)}&lt;/td&gt;
+      &lt;td&gt;Data 2 baris ${r.line}&lt;/td&gt;
+    &lt;/tr&gt;`;
+  }).join(&#x27;&#x27;);
+
+  document.getElementById(&#x27;result&#x27;).innerHTML=`
+    &lt;div class=&quot;stats&quot;&gt;
+      &lt;div class=&quot;stat&quot;&gt;Data 1&lt;b&gt;${d1.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Data 2&lt;b&gt;${d2.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;KLOP&lt;b&gt;${klop}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;SEBAGIAN&lt;b&gt;${partial}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;KOSONG / TIDAK KLOP&lt;b&gt;${kosong+tidakKlop}&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;table-wrap&quot;&gt;
+    &lt;table&gt;
+      &lt;thead&gt;&lt;tr&gt;
+        &lt;th&gt;No&lt;/th&gt;&lt;th&gt;Nama Result&lt;/th&gt;&lt;th&gt;Nomor Data 2&lt;/th&gt;
+        &lt;th&gt;Nomor Data 1&lt;/th&gt;&lt;th&gt;Nomor Cocok&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Info&lt;/th&gt;
+      &lt;/tr&gt;&lt;/thead&gt;
+      &lt;tbody&gt;${body}&lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;/div&gt;`;
+
+  document.getElementById(&#x27;downloadBtn&#x27;).disabled=false;
+}
+
+function processManual(){
+  if(!lastExportRows.length){
+    alert(&#x27;Klik &quot;Cocokkan Data&quot; terlebih dahulu.&#x27;);
+    return;
+  }
+
+  const d2=parse(document.getElementById(&#x27;data2&#x27;).value);
+  const map2=new Map();
+
+  d2.forEach(r=&gt;{
+    if(!map2.has(r.name)) map2.set(r.name,[]);
+    r.nums.forEach(n=&gt;{
+      if(!map2.get(r.name).includes(n)) map2.get(r.name).push(n);
+    });
+  });
+
+  let processed=0;
+
+  document.querySelectorAll(&#x27;.manual-input&#x27;).forEach(input=&gt;{
+    const name=input.dataset.name;
+    const value=input.value.trim();
+
+    if(!value) return;
+
+    const manualNums=(value.match(/\b\d{1,5}\b/g)||[])
+      .map(n=&gt;n.padStart(4,&#x27;0&#x27;));
+
+    if(!manualNums.length) return;
+
+    const ref=map2.get(name)||[];
+    const matched=manualNums.filter(n=&gt;ref.includes(n));
+    const status=matched.length===manualNums.length ? &#x27;KLOP MANUAL&#x27; :
+                 matched.length&gt;0 ? &#x27;SEBAGIAN MANUAL&#x27; : &#x27;TIDAK KLOP&#x27;;
+
+    const rowIndex=input.id.replace(&#x27;manual-&#x27;,&#x27;&#x27;);
+    const dataRow=lastExportRows[rowIndex];
+
+    if(dataRow){
+      dataRow[&quot;Nomor Data 1&quot;]=manualNums.join(&#x27;, &#x27;);
+      dataRow[&quot;Nomor Cocok&quot;]=matched.join(&#x27;, &#x27;);
+      dataRow[&quot;Status&quot;]=status;
+    }
+
+    const statusEl=document.getElementById(&#x27;status-&#x27;+rowIndex);
+    if(statusEl){
+      statusEl.textContent=status;
+      statusEl.className=status.startsWith(&#x27;KLOP&#x27;)?&#x27;ok&#x27;:
+                         status.startsWith(&#x27;SEBAGIAN&#x27;)?&#x27;warn&#x27;:&#x27;no&#x27;;
+    }
+
+    const cell=input.parentElement;
+    cell.textContent=manualNums.join(&#x27;, &#x27;);
+
+    const matchedCell=cell.parentElement.children[4];
+    matchedCell.textContent=matched.join(&#x27;, &#x27;);
+
+    processed++;
+  });
+
+  // Rebuild Excel export from updated rows.
+  if(processed){
+    alert(processed+&#x27; data manual berhasil diproses dan dicocokkan dengan DATA 2.&#x27;);
+  }else{
+    alert(&#x27;Belum ada nomor manual yang diisi.&#x27;);
+  }
+}
+
+function downloadExcel(){
+  if(!lastExportRows.length){alert(&#x27;Belum ada hasil pencocokan.&#x27;);return;}
+  if(typeof XLSX===&#x27;undefined&#x27;){
+    alert(&#x27;Modul Excel belum termuat. Pastikan koneksi internet aktif lalu coba lagi.&#x27;);
+    return;
+  }
+
+  const ws=XLSX.utils.json_to_sheet(lastExportRows);
+  ws[&#x27;!cols&#x27;]=[{wch:6},{wch:32},{wch:22},{wch:22},{wch:22},{wch:18}];
+
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,&#x27;Hasil Cocok&#x27;);
+  XLSX.writeFile(wb,&#x27;Hasil_Cocok_Result.xlsx&#x27;);
+}
+
+function clearBox(id){
+  document.getElementById(id).value=&#x27;&#x27;;
+}
+function clearAll(){
+  clearBox(&#x27;data1&#x27;);
+  clearBox(&#x27;data2&#x27;);
+  lastExportRows=[];
+  document.getElementById(&#x27;downloadBtn&#x27;).disabled=true;
+  document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data sudah dihapus.&lt;/div&gt;&#x27;;
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+            </div>
+        </div>
+
+
+        <div id="pageCheckerWithdrawFlop" class="view-page checker-integrated-page">
+            <div class="dashboard-panel checker-panel-shell">
+                <div class="panel-header">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <div>
+                        <h5>④ Withdraw Flop</h5>
+                        <p>Operational Checker terintegrasi dalam Operational System Auditor.</p>
+                    </div>
+                </div>
+                <iframe class="checker-iframe" title="④ Withdraw Flop" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;id&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;④ Withdraw Flop&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;!-- =========================================================
+     WITHDRAW FLOP CHECKER
+========================================================= --&gt;
+
+&lt;div id=&quot;pageWithdrawFlop&quot; class=&quot;view-page&quot;&gt;
+
+    &lt;div class=&quot;withdraw-flop-container&quot;&gt;
+
+        &lt;h2&gt;Withdraw Flop Checker&lt;/h2&gt;
+
+        &lt;!-- DATA EXCEL --&gt;
+        &lt;div class=&quot;wf-section&quot;&gt;
+            &lt;label&gt;&lt;b&gt;1. Paste Data Excel Withdraw&lt;/b&gt;&lt;/label&gt;
+
+            &lt;textarea
+                id=&quot;wfExcelData&quot;
+                placeholder=&quot;Paste data Excel di sini...
+
+Contoh:
+2/9/2026 23:57	libaaautowd	accept withdraw	total withdraw 2,000,000 :303429344	risky1
+2/9/2026 23:52	libaaautowd	accept withdraw	total withdraw 1,000,000 :303428107	hasugi4n
+2/9/2026 23:52	libaaautowd	accept withdraw	total withdraw 800,000 :303427535	hengky122&quot;
+            &gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+
+
+        &lt;!-- DATA WITHDRAW FLOP --&gt;
+        &lt;div class=&quot;wf-section&quot;&gt;
+            &lt;label&gt;&lt;b&gt;2. Paste Data Withdraw Flop&lt;/b&gt;&lt;/label&gt;
+
+            &lt;textarea
+                id=&quot;wfPasteData&quot;
+                placeholder=&quot;Paste data Withdraw Flop di sini...
+
+Contoh:
+shesya23 | supriyadi, 1110147089,BCA | 100,000
+risky1 | xxx, 123456,BCA | 2,000,000&quot;
+            &gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+
+
+        &lt;!-- BUTTON --&gt;
+        &lt;div class=&quot;wf-buttons&quot;&gt;
+
+            &lt;button onclick=&quot;checkWithdrawFlop()&quot;&gt;
+                🔍 Cek Withdraw
+            &lt;/button&gt;
+
+            &lt;button onclick=&quot;clearWithdrawFlop()&quot; class=&quot;wf-clear&quot;&gt;
+                🗑️ Clear
+            &lt;/button&gt;
+
+        &lt;/div&gt;
+
+
+        &lt;!-- FILTER HASIL --&gt;
+        &lt;div
+            id=&quot;wfFilterButtons&quot;
+            class=&quot;wf-filter-buttons&quot;
+            style=&quot;display:none;&quot;
+        &gt;
+            &lt;button
+                type=&quot;button&quot;
+                onclick=&quot;showWithdrawProblems()&quot;
+                id=&quot;wfProblemBtn&quot;
+                class=&quot;wf-filter-active&quot;
+            &gt;
+                🔴 Hide Data Sesuai
+            &lt;/button&gt;
+
+            &lt;button
+                type=&quot;button&quot;
+                onclick=&quot;showAllWithdrawResults()&quot;
+                id=&quot;wfAllBtn&quot;
+            &gt;
+                👁️ Tampilkan Semua
+            &lt;/button&gt;
+        &lt;/div&gt;
+
+
+        &lt;!-- SUMMARY --&gt;
+        &lt;div id=&quot;wfSummary&quot; class=&quot;wf-summary&quot;&gt;&lt;/div&gt;
+
+
+        &lt;!-- RESULT --&gt;
+        &lt;div id=&quot;wfResult&quot; class=&quot;wf-result&quot;&gt;&lt;/div&gt;
+
+    &lt;/div&gt;
+
+&lt;/div&gt;
+
+
+&lt;style&gt;
+
+.withdraw-flop-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.withdraw-flop-container h2 {
+    margin-bottom: 20px;
+}
+
+.wf-section {
+    margin-bottom: 18px;
+}
+
+.wf-section label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.wf-section textarea {
+    width: 100%;
+    min-height: 180px;
+    padding: 12px;
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: monospace;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.wf-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.wf-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.wf-clear {
+    background: #ddd;
+}
+
+.wf-filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.wf-filter-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #e9e9e9;
+}
+
+.wf-filter-active {
+    background: #ffdddd !important;
+    color: #b00000;
+}
+
+.wf-empty {
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    background: #f0fff3;
+    color: #16752b;
+    font-weight: bold;
+}
+
+.wf-summary {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    font-weight: bold;
+}
+
+.wf-result {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.wf-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.wf-table th,
+.wf-table td {
+    border: 1px solid #ddd;
+    padding: 9px;
+    text-align: left;
+}
+
+.wf-table th {
+    background: #f2f2f2;
+}
+
+.wf-ok {
+    background: #d9f7df;
+    color: #16752b;
+    font-weight: bold;
+}
+
+.wf-fail {
+    background: #ffdede;
+    color: #b00000;
+    font-weight: bold;
+}
+
+.wf-notfound {
+    background: #fff0c2;
+    color: #856404;
+    font-weight: bold;
+}
+
+&lt;/style&gt;
+
+
+&lt;script&gt;
+
+/* =========================================================
+   NORMALIZE USER ID
+========================================================= */
+
+function normalizeUserId(value) {
+
+    return String(value || &quot;&quot;)
+        .trim()
+        .toLowerCase();
+
+}
+
+
+/* =========================================================
+   NORMALIZE NOMINAL
+
+   2,000,000
+   2.000.000
+   2000000
+
+   semuanya menjadi 2000000
+========================================================= */
+
+function normalizeNominal(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return 0;
+    }
+
+    let text = String(value)
+        .trim()
+        .replace(/[^\d]/g, &quot;&quot;);
+
+    return Number(text) || 0;
+
+}
+
+
+/* =========================================================
+   PARSE DATA EXCEL
+========================================================= */
+
+function parseWithdrawExcel(rawData) {
+
+    const rows = rawData
+        .split(/\r?\n/)
+        .map(row =&gt; row.trim())
+        .filter(row =&gt; row !== &quot;&quot;);
+
+    const database = new Map();
+
+
+    rows.forEach(row =&gt; {
+
+        let columns = row.split(&quot;\t&quot;);
+
+
+        /*
+         * Fallback jika TAB hilang
+         */
+        if (columns.length &lt; 5) {
+
+            columns = row.split(/\s{2,}/);
+
+        }
+
+
+        if (columns.length &lt; 5) {
+            return;
+        }
+
+
+        /*
+         * USER ID selalu di kolom terakhir
+         */
+        const lastColumn =
+            columns[columns.length - 1].trim();
+
+
+        /*
+         * Cari:
+         *
+         * total withdraw 2,000,000
+         */
+        const withdrawMatch =
+            row.match(
+                /total\s+withdraw\s+([\d.,]+)/i
+            );
+
+
+        if (!withdrawMatch) {
+            return;
+        }
+
+
+        const nominal =
+            normalizeNominal(
+                withdrawMatch[1]
+            );
+
+
+        const userid =
+            normalizeUserId(lastColumn);
+
+
+        if (
+            !userid ||
+            !nominal
+        ) {
+            return;
+        }
+
+
+        /*
+         * Satu User ID bisa memiliki
+         * banyak transaksi.
+         */
+        if (!database.has(userid)) {
+
+            database.set(userid, []);
+
+        }
+
+
+        database
+            .get(userid)
+            .push({
+
+                nominal: nominal,
+
+                nominalText:
+                    withdrawMatch[1],
+
+                raw: row
+
+            });
+
+    });
+
+
+    return database;
+
+}
+
+
+/* =========================================================
+   PARSE DATA WITHDRAW FLOP
+========================================================= */
+
+function parseFlopData(rawData) {
+
+    const rows = rawData
+        .split(/\r?\n/)
+        .map(row =&gt; row.trim())
+        .filter(row =&gt; row !== &quot;&quot;);
+
+
+    const result = [];
+
+
+    rows.forEach(row =&gt; {
+
+        /*
+         * Format utama:
+         *
+         * userid | nama, nomor, bank | nominal
+         */
+        let parts = row.split(&quot;|&quot;);
+
+
+        /*
+         * Support TAB juga
+         */
+        if (parts.length &lt; 3) {
+
+            parts = row.split(&quot;\t&quot;);
+
+        }
+
+
+        if (parts.length &lt; 3) {
+            return;
+        }
+
+
+        const userid =
+            parts[0].trim();
+
+
+        const rekening =
+            parts[1].trim();
+
+
+        const nominalText =
+            parts
+                .slice(2)
+                .join(&quot; &quot;)
+                .trim();
+
+
+        const nominal =
+            normalizeNominal(
+                nominalText
+            );
+
+
+        if (
+            !userid ||
+            !nominal
+        ) {
+            return;
+        }
+
+
+        result.push({
+
+            userid: userid,
+
+            useridNormalized:
+                normalizeUserId(userid),
+
+            rekening: rekening,
+
+            nominal: nominal,
+
+            nominalText: nominalText,
+
+            raw: row
+
+        });
+
+    });
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   CEK WITHDRAW FLOP
+========================================================= */
+
+let withdrawFlopResults = [];
+
+function checkWithdrawFlop() {
+
+    const excelRaw =
+        document.getElementById(&quot;wfExcelData&quot;).value;
+
+    const flopRaw =
+        document.getElementById(&quot;wfPasteData&quot;).value;
+
+    if (!excelRaw.trim()) {
+        alert(&quot;Data Excel Withdraw masih kosong.&quot;);
+        return;
+    }
+
+    if (!flopRaw.trim()) {
+        alert(&quot;Data Withdraw Flop masih kosong.&quot;);
+        return;
+    }
+
+    const database =
+        parseWithdrawExcel(excelRaw);
+
+    const flopData =
+        parseFlopData(flopRaw);
+
+    if (flopData.length === 0) {
+        alert(&quot;Data Withdraw Flop tidak dapat dibaca.&quot;);
+        return;
+    }
+
+    let sesuai = 0;
+    let tidakSesuai = 0;
+    let tidakDitemukan = 0;
+    let totalNominalWithdraw = 0;
+
+    withdrawFlopResults = [];
+
+    flopData.forEach((item, index) =&gt; {
+
+        totalNominalWithdraw += item.nominal;
+
+        const records =
+            database.get(item.useridNormalized);
+
+        let status = &quot;&quot;;
+        let statusType = &quot;&quot;;
+        let excelNominal = &quot;-&quot;;
+
+        /*
+         * USER ID TIDAK DITEMUKAN
+         */
+        if (!records || records.length === 0) {
+
+            status = &quot;USER ID TIDAK DITEMUKAN&quot;;
+            statusType = &quot;notfound&quot;;
+            tidakDitemukan++;
+
+        }
+
+        /*
+         * USER ID DITEMUKAN
+         */
+        else {
+
+            const matched =
+                records.find(
+                    record =&gt;
+                        record.nominal === item.nominal
+                );
+
+            /*
+             * SESUAI
+             */
+            if (matched) {
+
+                status = &quot;SESUAI&quot;;
+                statusType = &quot;ok&quot;;
+                sesuai++;
+
+                excelNominal =
+                    matched.nominalText;
+
+            }
+
+            /*
+             * TIDAK SESUAI
+             */
+            else {
+
+                status = &quot;TIDAK SESUAI&quot;;
+                statusType = &quot;fail&quot;;
+                tidakSesuai++;
+
+                excelNominal =
+                    records
+                        .map(r =&gt; r.nominalText)
+                        .join(&quot; / &quot;);
+
+            }
+        }
+
+        withdrawFlopResults.push({
+            index: index + 1,
+            userid: item.userid,
+            rekening: item.rekening,
+            nominal: item.nominal,
+            excelNominal: excelNominal,
+            status: status,
+            statusType: statusType
+        });
+
+    });
+
+    /*
+     * SUMMARY SELALU MENGHITUNG SEMUA DATA
+     */
+    document
+        .getElementById(&quot;wfSummary&quot;)
+        .innerHTML = `
+
+        Total Data :
+        &lt;b&gt;${flopData.length}&lt;/b&gt;
+
+        &amp;nbsp; | &amp;nbsp;
+
+        &lt;span style=&quot;color:green;&quot;&gt;
+            Sesuai :
+            &lt;b&gt;${sesuai}&lt;/b&gt;
+        &lt;/span&gt;
+
+        &amp;nbsp; | &amp;nbsp;
+
+        &lt;span style=&quot;color:red;&quot;&gt;
+            Tidak Sesuai :
+            &lt;b&gt;${tidakSesuai}&lt;/b&gt;
+        &lt;/span&gt;
+
+        &amp;nbsp; | &amp;nbsp;
+
+        &lt;span style=&quot;color:#856404;&quot;&gt;
+            Tidak Ditemukan :
+            &lt;b&gt;${tidakDitemukan}&lt;/b&gt;
+        &lt;/span&gt;
+
+        &lt;br&gt;
+
+        Total Nominal Withdraw :
+        &lt;b&gt;
+            ${formatRupiah(totalNominalWithdraw)}
+        &lt;/b&gt;
+    `;
+
+    /*
+     * TAMPILKAN FILTER
+     */
+    document
+        .getElementById(&quot;wfFilterButtons&quot;)
+        .style.display = &quot;flex&quot;;
+
+    /*
+     * DEFAULT: HANYA DATA BERMASALAH
+     *
+     * Tidak ada logika DOUBLE di sini.
+     * Data double diperlakukan seperti data biasa.
+     */
+    showWithdrawProblems();
+}
+
+
+/* =========================================================
+   RENDER HASIL
+========================================================= */
+
+function renderWithdrawResults(showOnlyProblems) {
+
+    const resultBox =
+        document.getElementById(&quot;wfResult&quot;);
+
+    let filtered = withdrawFlopResults;
+
+    /*
+     * MODE HIDE:
+     * Hanya tampilkan:
+     * - TIDAK SESUAI
+     * - USER ID TIDAK DITEMUKAN
+     *
+     * Data SESUAI disembunyikan.
+     * Data DOUBLE tidak punya perlakuan khusus.
+     */
+    if (showOnlyProblems) {
+
+        filtered =
+            withdrawFlopResults.filter(
+                item =&gt;
+                    item.statusType === &quot;fail&quot; ||
+                    item.statusType === &quot;notfound&quot;
+            );
+    }
+
+    /*
+     * Jika tidak ada masalah
+     */
+    if (
+        showOnlyProblems &amp;&amp;
+        filtered.length === 0
+    ) {
+
+        resultBox.innerHTML = `
+            &lt;div class=&quot;wf-empty&quot;&gt;
+                ✅ Semua data sesuai.
+                Tidak ada data yang perlu dicek.
+            &lt;/div&gt;
+        `;
+
+        return;
+    }
+
+    let html = `
+
+        &lt;table class=&quot;wf-table&quot;&gt;
+
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;No&lt;/th&gt;
+                    &lt;th&gt;User ID&lt;/th&gt;
+                    &lt;th&gt;Data Rekening&lt;/th&gt;
+                    &lt;th&gt;Nominal Flop&lt;/th&gt;
+                    &lt;th&gt;Nominal Excel&lt;/th&gt;
+                    &lt;th&gt;Status&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+
+            &lt;tbody&gt;
+    `;
+
+    filtered.forEach(item =&gt; {
+
+        let rowClass = &quot;&quot;;
+
+        if (item.statusType === &quot;fail&quot;) {
+            rowClass = &quot;wf-fail&quot;;
+        }
+
+        else if (item.statusType === &quot;notfound&quot;) {
+            rowClass = &quot;wf-notfound&quot;;
+        }
+
+        html += `
+
+            &lt;tr class=&quot;${rowClass}&quot;&gt;
+
+                &lt;td&gt;
+                    ${item.index}
+                &lt;/td&gt;
+
+                &lt;td&gt;
+                    ${escapeHTML(item.userid)}
+                &lt;/td&gt;
+
+                &lt;td&gt;
+                    ${escapeHTML(item.rekening)}
+                &lt;/td&gt;
+
+                &lt;td&gt;
+                    ${formatRupiah(item.nominal)}
+                &lt;/td&gt;
+
+                &lt;td&gt;
+                    ${escapeHTML(item.excelNominal)}
+                &lt;/td&gt;
+
+                &lt;td&gt;
+                    &lt;b&gt;${item.status}&lt;/b&gt;
+                &lt;/td&gt;
+
+            &lt;/tr&gt;
+        `;
+    });
+
+    html += `
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    `;
+
+    resultBox.innerHTML = html;
+}
+
+
+/* =========================================================
+   HIDE DATA SESUAI
+========================================================= */
+
+function showWithdrawProblems() {
+
+    renderWithdrawResults(true);
+
+    document
+        .getElementById(&quot;wfProblemBtn&quot;)
+        .classList.add(&quot;wf-filter-active&quot;);
+
+    document
+        .getElementById(&quot;wfAllBtn&quot;)
+        .classList.remove(&quot;wf-filter-active&quot;);
+}
+
+
+/* =========================================================
+   TAMPILKAN SEMUA
+========================================================= */
+
+function showAllWithdrawResults() {
+
+    renderWithdrawResults(false);
+
+    document
+        .getElementById(&quot;wfAllBtn&quot;)
+        .classList.add(&quot;wf-filter-active&quot;);
+
+    document
+        .getElementById(&quot;wfProblemBtn&quot;)
+        .classList.remove(&quot;wf-filter-active&quot;);
+}
+
+
+/* =========================================================
+   FORMAT NOMINAL
+========================================================= */
+
+function formatRupiah(number) {
+
+    return new Intl
+        .NumberFormat(&quot;id-ID&quot;)
+        .format(number);
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&amp;/g,
+            &quot;&amp;amp;&quot;
+        )
+
+        .replace(
+            /&lt;/g,
+            &quot;&amp;lt;&quot;
+        )
+
+        .replace(
+            /&gt;/g,
+            &quot;&amp;gt;&quot;
+        )
+
+        .replace(
+            /&quot;/g,
+            &quot;&amp;quot;&quot;
+        )
+
+        .replace(
+            /&#x27;/g,
+            &quot;&amp;#039;&quot;
+        );
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearWithdrawFlop() {
+
+    document
+        .getElementById(
+            &quot;wfExcelData&quot;
+        )
+        .value = &quot;&quot;;
+
+
+    document
+        .getElementById(
+            &quot;wfPasteData&quot;
+        )
+        .value = &quot;&quot;;
+
+
+    document
+        .getElementById(
+            &quot;wfSummary&quot;
+        )
+        .innerHTML = &quot;&quot;;
+
+
+    document
+        .getElementById(
+            &quot;wfResult&quot;
+        )
+        .innerHTML = &quot;&quot;;
+
+    document
+        .getElementById(
+            &quot;wfFilterButtons&quot;
+        )
+        .style.display = &quot;none&quot;;
+
+    withdrawFlopResults = [];
+
+}
+
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+            </div>
+        </div>
+
         <div class="footer-text">
             <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
-            <div>v2.5.0 • <span style="color:#10b981;">System Active ●</span></div>
+            <div>v2.6.0 • Integrated Checker • <span style="color:#10b981;">System Active ●</span></div>
         </div>
 
     </div>
@@ -2772,6 +4887,38 @@ function parlayCalculate(){
 
 parlayRender();
 parlayCalculate();
+
+
+/* =========================================================
+   THEME SWITCH
+   ========================================================= */
+(function initTheme(){
+    const savedTheme = localStorage.getItem("auditorTheme") || "dark";
+    applyTheme(savedTheme);
+})();
+
+function applyTheme(theme){
+    const safeTheme = theme === "light" ? "light" : "dark";
+    document.body.setAttribute("data-theme", safeTheme);
+
+    const btn = document.getElementById("themeToggleBtn");
+    if(!btn) return;
+
+    if(safeTheme === "light"){
+        btn.innerHTML = '<i class="fa-solid fa-moon"></i><span>Mode Dark</span>';
+        btn.title = "Beralih ke Mode Dark";
+    }else{
+        btn.innerHTML = '<i class="fa-solid fa-sun"></i><span>Mode Biasa</span>';
+        btn.title = "Beralih ke Mode Biasa";
+    }
+}
+
+function toggleTheme(){
+    const current = document.body.getAttribute("data-theme") || "dark";
+    const next = current === "dark" ? "light" : "dark";
+    localStorage.setItem("auditorTheme", next);
+    applyTheme(next);
+}
 
 </script>
 </body>
