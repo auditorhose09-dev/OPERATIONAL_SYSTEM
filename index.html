@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -2467,6 +2468,7 @@ button.process{background:#546e7a;color:#fff} button.secondary{background:#e8eef
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px} .stat{background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;padding:9px;color:#78909c;font-size:11px} .stat b{display:block;color:#37474f;font-size:16px;margin-top:2px}
 .table-wrap{overflow:auto;border:1px solid #d9e2e7;border-radius:8px} table:not(.schedule-table){width:100%;border-collapse:collapse} table:not(.schedule-table) th{background:#546e7a;color:#fff;padding:8px;font-size:11px;white-space:nowrap} table:not(.schedule-table) td{padding:8px;background:#fff;color:#37474f;border-bottom:1px solid #e4eaed;font-size:11px} table:not(.schedule-table) tbody tr:nth-child(even) td{background:#f8fafb}
 .ok{background:#e8f5e9!important;color:#2e7d32!important;font-weight:700} .duration-danger{background:#ffebee!important;color:#c62828!important;font-weight:800} .danger{background:#ffebee!important;color:#c62828!important;font-weight:800}
+.missing-input td{background:#ffebee!important;color:#c62828!important;font-weight:800}.missing-input td:nth-child(5),.missing-input td:nth-child(6),.missing-input td:nth-child(7){background:#ffcdd2!important;color:#b71c1c!important}.missing-input td:first-child{border-left:4px solid #dc2626}
 .empty{padding:15px;background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;color:#78909c}
 @media(max-width:900px){.grid{grid-template-columns:1fr}} @media(max-width:700px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}}
 &lt;/style&gt;
@@ -2475,6 +2477,10 @@ button.process{background:#546e7a;color:#fff} button.secondary{background:#e8eef
 &lt;div class=&quot;wrap&quot;&gt;
 &lt;h1&gt;Cek Durasi Input Nomor&lt;/h1&gt;
 &lt;div class=&quot;sub&quot;&gt;Bandingkan &lt;b&gt;jam jadwal tetap&lt;/b&gt; dengan &lt;b&gt;jam input aktual&lt;/b&gt;. Urutan/baris tidak harus sama; pencocokan dilakukan berdasarkan nama pasaran.&lt;/div&gt;
+&lt;div class=&quot;sync-note&quot; style=&quot;margin-top:8px;&quot;&gt;
+&lt;b&gt;Catatan Total Pasaran: khusus situs idn&lt;/b&gt;&lt;br&gt;
+Selasa dan Jumat = &lt;b&gt;13 pasaran&lt;/b&gt;. Selasa dan Jumat = &lt;b&gt;12 pasaran&lt;/b&gt;.
+&lt;/div&gt;
 &lt;div class=&quot;grid&quot;&gt;
 &lt;div class=&quot;card&quot;&gt;
 &lt;h2&gt;① JADWAL PASARAN — JAM TETAP&lt;/h2&gt;
@@ -2636,7 +2642,12 @@ if(!line)return;
 const dt=parseDateTime(line);
 if(!dt || !dt.time)return;
 const name=extractMarket(line,dt.date);
-if(name)rows.push({name,date:dt.date,time:dt.time,line:i+1,raw:original});
+if(name){
+  const outMatch=line.match(/nomor\s+keluar\s*(?:\(DRAFT\))?\s*:\s*([^\t|]*)/i);
+  const outText=outMatch ? outMatch[1].trim() : &#x27;&#x27;;
+  const hasNumber=/\d{4}/.test(outText);
+  rows.push({name,date:dt.date,time:dt.time,line:i+1,raw:original,hasNumber});
+}
 });
 return rows;
 }
@@ -2645,41 +2656,134 @@ return rows;
 function check(){
 const result=document.getElementById(&#x27;result&#x27;);
 try{
-const sch=parseSchedule(), act=parseActual(document.getElementById(&#x27;actual&#x27;).value);
-if(!act.length){result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data Excel belum terbaca. Pastikan ada tanggal + jam dan teks &quot;input nomor&quot;.&lt;/div&gt;&#x27;;return;}
-const map=new Map(); sch.forEach(r=&gt;map.set(norm(r.name),r));
-const rows=act.map(a=&gt;{
-const s=map.get(norm(a.name));
-if(!s)return {...a,status:&#x27;NAMA TIDAK DITEMUKAN&#x27;,schedule:&#x27;-&#x27;,scheduleEnd:&#x27;&#x27;,duration:null};
-const duration=signedDiff(a.time,s.end);
-return {...a,status:duration&gt;600?&#x27;DANGER&#x27;:&#x27;OK&#x27;,schedule:s.start,scheduleEnd:s.end,duration};
-});
-const matched=rows.filter(r=&gt;r.duration!==null).length;
-const danger=rows.filter(r=&gt;r.duration&gt;600).length;
-const notFound=rows.filter(r=&gt;r.duration===null).length;
-const body=rows.map((r,i)=&gt;{
-const isDanger=r.duration!==null&amp;&amp;r.duration&gt;600;
-const cls=isDanger?&#x27;danger&#x27;:(r.duration===null?&#x27;danger&#x27;:&#x27;ok&#x27;);
-return `&lt;tr class=&quot;${cls}&quot;&gt;
-&lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;${esc(r.name)}&lt;/td&gt;&lt;td&gt;${esc(r.date)}&lt;/td&gt;
-&lt;td&gt;${esc(r.schedule)}${r.scheduleEnd?&#x27; - &#x27;+esc(r.scheduleEnd):&#x27;&#x27;}&lt;/td&gt;
-&lt;td&gt;${esc(r.time)}&lt;/td&gt;
-&lt;td class=&quot;${isDanger?&#x27;duration-danger&#x27;:&#x27;&#x27;}&quot;&gt;${r.duration===null?&#x27;-&#x27;:esc(fmtSelisih(r.duration))}&lt;/td&gt;
-&lt;td&gt;${r.duration===null?&#x27;⚠ TIDAK DITEMUKAN&#x27;:(isDanger?&#x27;⚠ DANGER &gt;10 MENIT&#x27;:&#x27;OK&#x27;)}&lt;/td&gt;
-&lt;/tr&gt;`;
-}).join(&#x27;&#x27;);
-result.innerHTML=`&lt;div class=&quot;stats&quot;&gt;
-&lt;div class=&quot;stat&quot;&gt;Jadwal tetap terbaca&lt;b&gt;${sch.length}&lt;/b&gt;&lt;/div&gt;
-&lt;div class=&quot;stat&quot;&gt;Data Excel terbaca&lt;b&gt;${act.length}&lt;/b&gt;&lt;/div&gt;
-&lt;div class=&quot;stat&quot;&gt;Cocok&lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;
-&lt;div class=&quot;stat&quot;&gt;Danger &amp;gt;10 menit&lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Tidak ditemukan:&lt;/b&gt; ${notFound} baris. Nama dicocokkan setelah spasi/tanda baca dihilangkan dan alias format Excel diterapkan.&lt;/div&gt;
-&lt;div class=&quot;table-wrap&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
-&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Pasaran Excel&lt;/th&gt;&lt;th&gt;Tanggal&lt;/th&gt;&lt;th&gt;Jam Tetap&lt;/th&gt;&lt;th&gt;Jam Input&lt;/th&gt;&lt;th&gt;Selisih&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;
-&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;${body}&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;`;
+  const sch=parseSchedule();
+  const act=parseActual(document.getElementById(&#x27;actual&#x27;).value);
+
+  if(!sch.length){
+    result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Jadwal pasaran belum terbaca.&lt;/div&gt;&#x27;;
+    return;
+  }
+
+  // Kelompokkan data Excel berdasarkan nama pasaran.
+  const actualMap=new Map();
+  act.forEach(a=&gt;{
+    const key=norm(a.name);
+    if(!actualMap.has(key))actualMap.set(key,[]);
+    actualMap.get(key).push(a);
+  });
+
+  // Ambil data input yang paling dekat dengan JAM AKHIR jadwal.
+  function pickActual(list,schedule){
+    if(!list || !list.length)return null;
+    return list.reduce((best,item)=&gt;{
+      if(!best)return item;
+      const dBest=Math.abs(signedDiff(best.time,schedule.end));
+      const dItem=Math.abs(signedDiff(item.time,schedule.end));
+      return dItem&lt;dBest?item:best;
+    },null);
+  }
+
+  let matched=0,danger=0,missing=0;
+  const usedActual=new Set();
+
+  // PENTING:
+  // Semua pasaran yang ada di JADWAL TETAP selalu dibuatkan baris hasil,
+  // walaupun pasaran tersebut tidak ditemukan di data Excel.
+  const rows=sch.map((s,i)=&gt;{
+    const candidates=actualMap.get(norm(s.name))||[];
+    const a=pickActual(candidates,s);
+
+    if(!a){
+      missing++;
+      return `
+        &lt;tr class=&quot;danger missing-input&quot;&gt;
+          &lt;td&gt;${i+1}&lt;/td&gt;
+          &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+          &lt;td&gt;—&lt;/td&gt;
+          &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+          &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+          &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+          &lt;td class=&quot;danger-text&quot;&gt;⚠ TIDAK ADA INPUT NOMOR&lt;/td&gt;
+        &lt;/tr&gt;`;
+    }
+
+    usedActual.add(a);
+
+    const duration=signedDiff(a.time,s.end);
+    const noNumber=!a.hasNumber;
+    const isDanger=duration&gt;600;
+
+    if(noNumber)missing++;
+    else matched++;
+    if(isDanger &amp;&amp; !noNumber)danger++;
+
+    const rowClass=(isDanger || noNumber)?&#x27;danger&#x27;:&#x27;&#x27;;
+    const statusClass=(isDanger || noNumber)?&#x27;danger-text&#x27;:&#x27;ok-text&#x27;;
+    const statusText=noNumber
+      ? &#x27;⚠ TIDAK ADA INPUT NOMOR&#x27;
+      : (isDanger ? &#x27;⚠ DANGER &gt;10 MENIT&#x27; : &#x27;OK&#x27;);
+
+    return `
+      &lt;tr class=&quot;${rowClass}&quot;&gt;
+        &lt;td&gt;${i+1}&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;${esc(a.date)}&lt;/td&gt;
+        &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+        &lt;td&gt;${esc(a.time)}&lt;/td&gt;
+        &lt;td class=&quot;${isDanger?&#x27;duration-danger&#x27;:&#x27;&#x27;}&quot;&gt;&lt;b&gt;${esc(fmtSelisih(duration))}&lt;/b&gt;&lt;/td&gt;
+        &lt;td class=&quot;${statusClass}&quot;&gt;${statusText}&lt;/td&gt;
+      &lt;/tr&gt;`;
+  }).join(&#x27;&#x27;);
+
+  // Jika ada data Excel yang pasaran-nya tidak ada di jadwal tetap,
+  // tetap tampilkan agar tidak ada data yang hilang.
+  const extraRows=act.filter(a=&gt;!usedActual.has(a)).map((a,i)=&gt;{
+    missing++;
+    return `
+      &lt;tr class=&quot;danger missing-input&quot;&gt;
+        &lt;td&gt;${sch.length+i+1}&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;${esc(a.name)}&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;${esc(a.date)}&lt;/td&gt;
+        &lt;td&gt;—&lt;/td&gt;
+        &lt;td&gt;${esc(a.time)}&lt;/td&gt;
+        &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+        &lt;td class=&quot;danger-text&quot;&gt;⚠ PASARAN TIDAK ADA DI JADWAL&lt;/td&gt;
+      &lt;/tr&gt;`;
+  }).join(&#x27;&#x27;);
+
+  result.innerHTML=`
+    &lt;div class=&quot;stats&quot;&gt;
+      &lt;div class=&quot;stat&quot;&gt;Jadwal tetap terbaca&lt;b&gt;${sch.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Data Excel terbaca&lt;b&gt;${act.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Input ditemukan&lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Tidak ada input&lt;b&gt;${missing}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Danger &gt;10 menit&lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;sync-note&quot;&gt;
+      &lt;b&gt;Sinkronisasi pasaran:&lt;/b&gt;
+      Semua pasaran dari tabel &lt;b&gt;JADWAL PASARAN — JAM TETAP&lt;/b&gt; tetap ditampilkan.
+      Jika nama pasaran terbaca tetapi &lt;b&gt;nomor input kosong&lt;/b&gt;, waktu input tetap digunakan
+      untuk menghitung &lt;b&gt;durasi&lt;/b&gt;. Baris otomatis diberi tanda &lt;b style=&quot;color:#c62828&quot;&gt;MERAH&lt;/b&gt;
+      dengan status &lt;b style=&quot;color:#c62828&quot;&gt;TIDAK ADA INPUT NOMOR&lt;/b&gt;.
+    &lt;/div&gt;
+
+    &lt;div class=&quot;table-wrap&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;
+          &lt;th&gt;No&lt;/th&gt;
+          &lt;th&gt;Pasaran&lt;/th&gt;
+          &lt;th&gt;Tanggal&lt;/th&gt;
+          &lt;th&gt;Jam Tetap&lt;/th&gt;
+          &lt;th&gt;Jam Input&lt;/th&gt;
+          &lt;th&gt;Selisih&lt;/th&gt;
+          &lt;th&gt;Status&lt;/th&gt;
+        &lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;${rows}${extraRows}&lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;`;
 }catch(e){
-result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;⚠ Error: &#x27;+esc(e.message||e)+&#x27;&lt;/div&gt;&#x27;;
+  result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;⚠ Error: &#x27;+esc(e.message||e)+&#x27;&lt;/div&gt;&#x27;;
 }
 }
 function clearBox(id){document.getElementById(id).value=&#x27;&#x27;;document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data sudah dihapus.&lt;/div&gt;&#x27;;}
@@ -2728,12 +2832,17 @@ th{background:#f2f4f7}.ok{background:#ecfdf3;color:#027a48;font-weight:bold}
 .no{background:#fef3f2;color:#b42318;font-weight:bold}.warn{background:#fffaeb;color:#b54708;font-weight:bold}
 .hint{font-size:12px;color:#667085;line-height:1.5;margin:9px 0 0}
 .empty{text-align:center;padding:20px;color:#667085}
+.result-note{margin:0 0 12px;padding:10px 12px;background:#eef6ff;border-left:4px solid #2563eb;border-radius:6px;color:#334155;font-size:12px;line-height:1.5}
 .manual-input{width:130px;padding:6px 8px;border:1px solid #f0a000;border-radius:6px;font:13px Consolas,monospace}
 .manual-input:focus{outline:none;border-color:#25215f;box-shadow:0 0 0 2px #25215f22}
 .process-wrap{display:flex;justify-content:center;margin-top:14px}
 .process-btn{background:#0b7a4b;color:#fff;border:0;border-radius:8px;padding:11px 20px;font-weight:bold;cursor:pointer}
 .process-btn:hover{opacity:.92}
 .manual-note{font-size:12px;color:#667085;margin:8px 0 0}
+.rule-note{margin:10px 0 0;padding:10px 12px;border:1px solid #b7d7c5;border-left:4px solid #0b7a4b;background:#f0fdf4;border-radius:7px;color:#166534;font-size:12px;line-height:1.5}
+.rule-note b{color:#0b7a4b}
+.manual-input{width:130px;padding:6px 8px;border:1px solid #f0a000;border-radius:6px;font:13px Consolas,monospace;background:#fffdf5}
+.manual-input::placeholder{color:#a16207}
 @media(max-width:850px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.wrap{padding:12px}}
 &lt;/style&gt;
 &lt;/head&gt;
@@ -2741,6 +2850,7 @@ th{background:#f2f4f7}.ok{background:#ecfdf3;color:#027a48;font-weight:bold}
 &lt;div class=&quot;wrap&quot;&gt;
 &lt;h1&gt;Checker Result Togel&lt;/h1&gt;
 &lt;div class=&quot;sub&quot;&gt;Cocokkan nomor berdasarkan nama pasaran. Data boleh berbeda urutan, format nama pasaran, dan bisa langsung di-paste dari Excel.&lt;/div&gt;
+&lt;div class=&quot;rule-note&quot;&gt;&lt;b&gt;Catatan Total Pasaran:&lt;/b&gt; Selasa dan Jumat = &lt;b&gt;13 pasaran&lt;/b&gt;. Selain Selasa dan Jumat = &lt;b&gt;12 pasaran&lt;/b&gt;.&lt;br&gt;Jika nama pasaran terbaca tetapi nomor tidak terinput pada DATA 1, nama pasaran tetap ditampilkan dan kolom &lt;b&gt;Nomor Data 1&lt;/b&gt; dapat diisi manual.&lt;/div&gt;
 
 &lt;div class=&quot;grid&quot;&gt;
 &lt;div class=&quot;card&quot;&gt;
@@ -2752,7 +2862,7 @@ th{background:#f2f4f7}.ok{background:#ecfdf3;color:#027a48;font-weight:bold}
 &lt;button class=&quot;primary&quot; onclick=&quot;check()&quot;&gt;Cocokkan Data&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; onclick=&quot;clearBox(&#x27;data1&#x27;)&quot;&gt;Hapus Data 1&lt;/button&gt;
 &lt;/div&gt;
-&lt;p class=&quot;hint&quot;&gt;Bisa paste 2 format sekaligus: format member (nomor keluar : 5372,,) atau format Excel (Periode ... nomor keluar (DRAFT) : 5372). Nomor 3 digit otomatis dianggap 4 digit.&lt;/p&gt;
+&lt;p class=&quot;hint&quot;&gt;Bisa paste 2 format sekaligus: format member (nomor keluar : 5372,,) atau format Excel (Periode ... nomor keluar (DRAFT) : 5372). Nomor 3 digit otomatis dianggap 4 digit. Jika nomor kosong/tidak terinput, nama pasaran tetap dipertahankan dan dapat diisi manual.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;card&quot;&gt;
@@ -2840,90 +2950,119 @@ function parse(text){
   const out=[];
 
   lines(text).forEach((line,idx)=&gt;{
-    /*
-      FORMAT 1:
-      4/9/2026 23:51 | vapaaoptgl7 | input nomor SEOUL | nomor keluar : 5372,, | all member
-
-      FORMAT 2:
-      04-09-2026 23:50:23 | Master Togel | input nomor seoul |
-      Periode : 2256 ; nomor keluar (DRAFT) : 5372 | All Downline
-
-      Jadi Data 1 bebas memakai salah satu format tersebut.
-    */
-
-    // Ambil nama pasaran dari teks setelah &quot;input nomor&quot;
-    // dan sebelum kolom/teks &quot;nomor keluar&quot; atau &quot;Periode&quot;.
+    // Ambil nama pasaran dari teks setelah &quot;input nomor&quot;.
+    // Tetap simpan baris walaupun nomor keluar kosong agar bisa diisi manual.
     const nameMatch = line.match(/input\s+nomor\s+(.+?)(?=\s+nomor\s+keluar|\s+periode\s*:|$)/i);
     if(!nameMatch) return;
 
     const name = normalizeName(nameMatch[1]);
+    if(!name) return;
 
-    // Ambil semua angka setelah &quot;nomor keluar :&quot; atau
-    // &quot;nomor keluar (DRAFT) :&quot;.
     const resultMatch = line.match(/nomor\s+keluar(?:\s*\(DRAFT\))?\s*:\s*(.*)$/i);
-    if(!resultMatch) return;
+    const resultText = resultMatch ? resultMatch[1] : &quot;&quot;;
 
-    // Hanya ambil angka result, bukan tanggal/periode.
-    // Mendukung 3 digit, 4 digit, 5 digit, dan multi-result.
-    const nums = (resultMatch[1].match(/\b\d{1,5}\b/g)||[])
+    const nums = (resultText.match(/\b\d{1,5}\b/g)||[])
       .map(n=&gt;n.padStart(4,&#x27;0&#x27;));
 
-    if(name &amp;&amp; nums.length){
-      out.push({
-        name,
-        nums,
-        line:idx+1,
-        raw:line
-      });
-    }
+    out.push({
+      name,
+      nums,
+      line:idx+1,
+      raw:line
+    });
   });
 
   return out;
+}
+
+function getResultNote(){
+  return `&lt;div class=&quot;result-note&quot;&gt;
+    &lt;b&gt;Catatan Ketentuan Pasaran:&lt;/b&gt;
+    Hari &lt;b&gt;Selasa dan Jumat&lt;/b&gt; total pasaran seharusnya &lt;b&gt;13 pasaran&lt;/b&gt;.
+    Selain hari Selasa dan Jumat, total pasaran seharusnya &lt;b&gt;12 pasaran&lt;/b&gt;.
+  &lt;/div&gt;`;
+}
+
+function uniqueNumbers(arr){
+  return [...new Set(arr||[])];
 }
 
 function check(){
   const d1=parse(document.getElementById(&#x27;data1&#x27;).value);
   const d2=parse(document.getElementById(&#x27;data2&#x27;).value);
 
-  if(!d1.length||!d2.length){
-    document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data belum terbaca. Pastikan kedua data memiliki &quot;input nomor ... nomor keluar&quot;.&lt;/div&gt;&#x27;;
+  if(!d1.length &amp;&amp; !d2.length){
+    document.getElementById(&#x27;result&#x27;).innerHTML=getResultNote()+
+      &#x27;&lt;div class=&quot;empty&quot;&gt;Data belum terbaca.&lt;/div&gt;&#x27;;
     document.getElementById(&#x27;downloadBtn&#x27;).disabled=true;
     lastExportRows=[];
     return;
   }
 
+  // Gabungkan semua pasaran dari DATA 1 dan DATA 2.
+  // Pasaran yang hanya muncul di salah satu data tetap ditampilkan.
+  const names=[];
+  const seen=new Set();
+  [...d2,...d1].forEach(r=&gt;{
+    if(!seen.has(r.name)){
+      seen.add(r.name);
+      names.push(r.name);
+    }
+  });
+
   const map1=new Map();
   d1.forEach(r=&gt;{
     if(!map1.has(r.name)) map1.set(r.name,[]);
-    r.nums.forEach(n=&gt;{
-      if(!map1.get(r.name).includes(n)) map1.get(r.name).push(n);
-    });
+    map1.set(r.name, uniqueNumbers([...map1.get(r.name), ...r.nums]));
   });
 
-  let klop=0,partial=0,tidakKlop=0,kosong=0;
+  const map2=new Map();
+  d2.forEach(r=&gt;{
+    if(!map2.has(r.name)) map2.set(r.name,[]);
+    map2.set(r.name, uniqueNumbers([...map2.get(r.name), ...r.nums]));
+  });
 
-  const rows=d2.map((r,i)=&gt;{
-    const ref=map1.get(r.name);
+  let klop=0,tidakKlop=0,kosong=0;
 
-    if(!ref){
-      kosong++;
-      return {...r,status:&#x27;KOSONG&#x27;,matched:[],refNums:[]};
-    }
+  const rows=names.map((name,i)=&gt;{
+    const nums1=map1.get(name)||[];
+    const nums2=map2.get(name)||[];
+    const hasData1=nums1.length&gt;0;
+    const hasData2=nums2.length&gt;0;
 
-    const matched=r.nums.filter(n=&gt;ref.includes(n));
-    const allMatch=matched.length===r.nums.length;
+    // KLOP hanya jika kedua sisi memiliki nomor DAN seluruh nomor identik.
+    const sameLength=nums1.length===nums2.length;
+    const sameNumbers=sameLength &amp;&amp; nums1.every(n=&gt;nums2.includes(n));
+    const isKlop=hasData1 &amp;&amp; hasData2 &amp;&amp; sameNumbers;
 
-    if(allMatch){
+    const matched=hasData1 &amp;&amp; hasData2
+      ? nums2.filter(n=&gt;nums1.includes(n))
+      : [];
+
+    let status;
+    if(isKlop){
+      status=&#x27;KLOP&#x27;;
       klop++;
-      return {...r,status:&#x27;KLOP&#x27;,matched,refNums:ref};
-    }
-    if(matched.length&gt;0){
-      partial++;
-      return {...r,status:&#x27;SEBAGIAN&#x27;,matched,refNums:ref};
+    }else{
+      status=&#x27;TIDAK KLOP&#x27;;
+      tidakKlop++;
     }
 
-    tidakKlop++;
-    return {...r,status:&#x27;TIDAK KLOP&#x27;,matched:[],refNums:ref};
+    if(!hasData1 || !hasData2) kosong++;
+
+    const row2=d2.find(r=&gt;r.name===name);
+    const row1=d1.find(r=&gt;r.name===name);
+
+    return {
+      name,
+      nums:nums2,
+      refNums:nums1,
+      matched,
+      status,
+      line:row2?.line || row1?.line || &#x27;&#x27;,
+      missingData1:!hasData1,
+      missingData2:!hasData2
+    };
   });
 
   lastExportRows=rows.map((r,i)=&gt;({
@@ -2936,28 +3075,45 @@ function check(){
   }));
 
   const body=rows.map((r,i)=&gt;{
-    const cls=r.status===&#x27;KLOP&#x27;?&#x27;ok&#x27;:(r.status===&#x27;SEBAGIAN&#x27;||r.status===&#x27;KOSONG&#x27;?&#x27;warn&#x27;:&#x27;no&#x27;);
-    const manual = r.status===&#x27;KOSONG&#x27;
-      ? `&lt;input class=&quot;manual-input&quot; id=&quot;manual-${i}&quot; data-name=&quot;${esc(r.name)}&quot; placeholder=&quot;Isi nomor&quot;&gt;`
-      : esc(r.refNums.join(&#x27;, &#x27;)||&#x27;&#x27;);
+    const cls=r.status===&#x27;KLOP&#x27;?&#x27;ok&#x27;:&#x27;no&#x27;;
+
+    // Jika salah satu sisi tidak mempunyai nomor, tampilkan input manual
+    // tepat pada kolom sisi yang kosong.
+    const data2Cell=r.missingData2
+      ? `&lt;input class=&quot;manual-input&quot; id=&quot;manual-d2-${i}&quot; data-row=&quot;${i}&quot; data-target=&quot;data2&quot; data-name=&quot;${esc(r.name)}&quot; placeholder=&quot;Isi nomor manual&quot; inputmode=&quot;numeric&quot;&gt;`
+      : esc(r.nums.join(&#x27;, &#x27;));
+
+    const data1Cell=r.missingData1
+      ? `&lt;input class=&quot;manual-input&quot; id=&quot;manual-d1-${i}&quot; data-row=&quot;${i}&quot; data-target=&quot;data1&quot; data-name=&quot;${esc(r.name)}&quot; placeholder=&quot;Isi nomor manual&quot; inputmode=&quot;numeric&quot;&gt;`
+      : esc(r.refNums.join(&#x27;, &#x27;));
+
+    const info=r.missingData1 &amp;&amp; r.missingData2
+      ? &#x27;Nomor Data 1 &amp; Data 2 kosong&#x27;
+      : r.missingData1
+        ? &#x27;Nomor Data 1 kosong / tidak ada&#x27;
+        : r.missingData2
+          ? &#x27;Nomor Data 2 kosong / tidak ada&#x27;
+          : `Data 2 baris ${r.line}`;
+
     return `&lt;tr&gt;
       &lt;td&gt;${i+1}&lt;/td&gt;
-      &lt;td&gt;${esc(r.name)}&lt;/td&gt;
-      &lt;td&gt;${esc(r.nums.join(&#x27;, &#x27;))}&lt;/td&gt;
-      &lt;td&gt;${manual}&lt;/td&gt;
+      &lt;td&gt;&lt;b&gt;${esc(r.name)}&lt;/b&gt;&lt;/td&gt;
+      &lt;td&gt;${data2Cell}&lt;/td&gt;
+      &lt;td&gt;${data1Cell}&lt;/td&gt;
       &lt;td&gt;${esc(r.matched.join(&#x27;, &#x27;)||&#x27;&#x27;)}&lt;/td&gt;
       &lt;td class=&quot;${cls}&quot; id=&quot;status-${i}&quot;&gt;${esc(r.status)}&lt;/td&gt;
-      &lt;td&gt;Data 2 baris ${r.line}&lt;/td&gt;
+      &lt;td&gt;${esc(info)}&lt;/td&gt;
     &lt;/tr&gt;`;
   }).join(&#x27;&#x27;);
 
   document.getElementById(&#x27;result&#x27;).innerHTML=`
+    ${getResultNote()}
     &lt;div class=&quot;stats&quot;&gt;
       &lt;div class=&quot;stat&quot;&gt;Data 1&lt;b&gt;${d1.length}&lt;/b&gt;&lt;/div&gt;
       &lt;div class=&quot;stat&quot;&gt;Data 2&lt;b&gt;${d2.length}&lt;/b&gt;&lt;/div&gt;
       &lt;div class=&quot;stat&quot;&gt;KLOP&lt;b&gt;${klop}&lt;/b&gt;&lt;/div&gt;
-      &lt;div class=&quot;stat&quot;&gt;SEBAGIAN&lt;b&gt;${partial}&lt;/b&gt;&lt;/div&gt;
-      &lt;div class=&quot;stat&quot;&gt;KOSONG / TIDAK KLOP&lt;b&gt;${kosong+tidakKlop}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;TIDAK KLOP&lt;b&gt;${tidakKlop}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;DATA KOSONG&lt;b&gt;${kosong}&lt;/b&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;table-wrap&quot;&gt;
     &lt;table&gt;
@@ -2978,62 +3134,76 @@ function processManual(){
     return;
   }
 
+  // Ambil kondisi awal dari hasil pencocokan, lalu gunakan nomor manual
+  // sebagai pengganti sisi data yang kosong.
+  const d1=parse(document.getElementById(&#x27;data1&#x27;).value);
   const d2=parse(document.getElementById(&#x27;data2&#x27;).value);
-  const map2=new Map();
 
+  const map1=new Map();
+  d1.forEach(r=&gt;{
+    if(!map1.has(r.name)) map1.set(r.name,[]);
+    map1.set(r.name, uniqueNumbers([...map1.get(r.name), ...r.nums]));
+  });
+
+  const map2=new Map();
   d2.forEach(r=&gt;{
     if(!map2.has(r.name)) map2.set(r.name,[]);
-    r.nums.forEach(n=&gt;{
-      if(!map2.get(r.name).includes(n)) map2.get(r.name).push(n);
-    });
+    map2.set(r.name, uniqueNumbers([...map2.get(r.name), ...r.nums]));
   });
 
   let processed=0;
 
   document.querySelectorAll(&#x27;.manual-input&#x27;).forEach(input=&gt;{
     const name=input.dataset.name;
+    const target=input.dataset.target;
     const value=input.value.trim();
-
     if(!value) return;
 
-    const manualNums=(value.match(/\b\d{1,5}\b/g)||[])
-      .map(n=&gt;n.padStart(4,&#x27;0&#x27;));
-
+    const manualNums=uniqueNumbers(
+      (value.match(/\b\d{1,5}\b/g)||[]).map(n=&gt;n.padStart(4,&#x27;0&#x27;))
+    );
     if(!manualNums.length) return;
 
-    const ref=map2.get(name)||[];
-    const matched=manualNums.filter(n=&gt;ref.includes(n));
-    const status=matched.length===manualNums.length ? &#x27;KLOP MANUAL&#x27; :
-                 matched.length&gt;0 ? &#x27;SEBAGIAN MANUAL&#x27; : &#x27;TIDAK KLOP&#x27;;
+    if(target===&#x27;data1&#x27;){
+      map1.set(name, uniqueNumbers([...(map1.get(name)||[]), ...manualNums]));
+    }else{
+      map2.set(name, uniqueNumbers([...(map2.get(name)||[]), ...manualNums]));
+    }
 
-    const rowIndex=input.id.replace(&#x27;manual-&#x27;,&#x27;&#x27;);
+    const nums1=map1.get(name)||[];
+    const nums2=map2.get(name)||[];
+    const matched=nums2.filter(n=&gt;nums1.includes(n));
+    const isKlop=nums1.length&gt;0 &amp;&amp; nums2.length&gt;0 &amp;&amp;
+      nums1.length===nums2.length &amp;&amp;
+      nums1.every(n=&gt;nums2.includes(n));
+
+    const status=isKlop ? &#x27;KLOP MANUAL&#x27; : &#x27;TIDAK KLOP&#x27;;
+
+    const rowIndex=Number(input.dataset.row);
     const dataRow=lastExportRows[rowIndex];
 
     if(dataRow){
-      dataRow[&quot;Nomor Data 1&quot;]=manualNums.join(&#x27;, &#x27;);
+      dataRow[&quot;Nomor Data 1&quot;]=nums1.join(&#x27;, &#x27;);
+      dataRow[&quot;Nomor Data 2&quot;]=nums2.join(&#x27;, &#x27;);
       dataRow[&quot;Nomor Cocok&quot;]=matched.join(&#x27;, &#x27;);
       dataRow[&quot;Status&quot;]=status;
     }
 
-    const statusEl=document.getElementById(&#x27;status-&#x27;+rowIndex);
-    if(statusEl){
+    const row=input.closest(&#x27;tr&#x27;);
+    if(row){
+      row.children[2].textContent=nums2.join(&#x27;, &#x27;);
+      row.children[3].textContent=nums1.join(&#x27;, &#x27;);
+      row.children[4].textContent=matched.join(&#x27;, &#x27;);
+      const statusEl=row.children[5];
       statusEl.textContent=status;
-      statusEl.className=status.startsWith(&#x27;KLOP&#x27;)?&#x27;ok&#x27;:
-                         status.startsWith(&#x27;SEBAGIAN&#x27;)?&#x27;warn&#x27;:&#x27;no&#x27;;
+      statusEl.className=isKlop?&#x27;ok&#x27;:&#x27;no&#x27;;
     }
-
-    const cell=input.parentElement;
-    cell.textContent=manualNums.join(&#x27;, &#x27;);
-
-    const matchedCell=cell.parentElement.children[4];
-    matchedCell.textContent=matched.join(&#x27;, &#x27;);
 
     processed++;
   });
 
-  // Rebuild Excel export from updated rows.
   if(processed){
-    alert(processed+&#x27; data manual berhasil diproses dan dicocokkan dengan DATA 2.&#x27;);
+    alert(processed+&#x27; data manual berhasil diproses.&#x27;);
   }else{
     alert(&#x27;Belum ada nomor manual yang diisi.&#x27;);
   }
