@@ -2182,252 +2182,501 @@ body[data-theme="light"] #pageParlay .parlay-hint{
                         <p>Operational Checker terintegrasi dalam Operational System Auditor.</p>
                     </div>
                 </div>
-                <iframe class="checker-iframe" title="① Durasi Hitung Nomor" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;id&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0&quot;&gt;&lt;title&gt;① Durasi Hitung Nomor&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;!DOCTYPE html&gt;
+                <iframe class="checker-iframe" title="① Durasi Hitung Nomor" srcdoc="&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;id&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;UTF-8&quot;&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-&lt;title&gt;Checker Durasi Hitung Nomor&lt;/title&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;Cek Durasi Input Nomor&lt;/title&gt;
 &lt;style&gt;
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#263238}
-.wrap{max-width:1400px;margin:auto;padding:24px}
-h1{margin:0 0 6px}.subtitle{color:#68737d;font-size:14px;margin-bottom:22px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.card{background:white;border:1px solid #dfe4e8;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-h2{font-size:17px;margin:0 0 8px}
-.hint{font-size:12px;color:#78838c;margin-bottom:12px;line-height:1.5}
-textarea{width:100%;height:330px;resize:vertical;border:1px solid #cfd6dc;border-radius:8px;padding:12px;font:13px Consolas,monospace;line-height:1.5;background:#fbfcfd}
-.actions{display:flex;gap:10px;margin:18px 0}
-button{border:0;border-radius:8px;padding:11px 18px;cursor:pointer;font-weight:600}
-.primary{background:#2563eb;color:white}.secondary{background:#e9eef3;color:#344454}
-.result-card{margin-top:18px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.stat{background:#f7f9fb;border:1px solid #e1e6ea;border-radius:8px;padding:8px 12px;font-size:13px}
-.table-wrap{overflow:auto;border:1px solid #e0e5e9;border-radius:9px}
-table{width:100%;border-collapse:collapse;min-width:900px}
-th{background:#3f5366;color:white;padding:11px;text-align:left;font-size:13px}
-td{padding:10px;border-bottom:1px solid #edf0f2;font-size:13px;white-space:nowrap}
-.danger td{background:#fff1f2}.danger td:first-child{border-left:4px solid #dc2626}
-.missing td{background:#fff8e6}
-.danger-text{color:#b42318;font-weight:700}.ok-text{color:#25603b;font-weight:600}
-.duration-danger{background:#ffcdd2!important;color:#b71c1c!important;font-weight:800}
-.empty{text-align:center;padding:28px;color:#7a858e}
-@media(max-width:850px){.grid{grid-template-columns:1fr}.wrap{padding:14px}}
+*{box-sizing:border-box} body{margin:0;background:#f3f6f8;color:#263238;font-family:Arial,sans-serif;font-size:13px}
+.wrap{max-width:1450px;margin:auto;padding:20px} h1{margin:0 0 5px;font-size:24px}
+.sub{color:#607d8b;margin-bottom:16px} .grid{display:grid;grid-template-columns:minmax(650px,1.35fr) minmax(420px,.9fr);gap:16px}
+.card{background:#fff;border:1px solid #d9e2e7;border-radius:10px;padding:14px;box-shadow:0 2px 8px rgba(38,50,56,.07)}
+h2{font-size:14px;color:#37474f;margin:2px 0 11px} .schedule-box{max-height:690px;overflow:auto;border:1px solid #d7e0e5;border-radius:8px}
+.schedule-table{width:100%;min-width:650px;border-collapse:collapse;table-layout:fixed}
+.schedule-table th{position:sticky;top:0;z-index:2;background:#455a64;color:#fff;font-size:11px;padding:8px 7px;border:1px solid #546e7a;text-align:center}
+.schedule-table td{background:#fff;color:#37474f;font-size:11px;padding:6px 7px;border:1px solid #e4eaed;line-height:1.15}
+.schedule-table tbody tr:nth-child(even) td{background:#f7f9fa}
+.schedule-table td:first-child{width:31%;font-weight:700} .schedule-table td:nth-child(2){width:30%;font-size:10px;text-align:center;color:#78909c}
+.schedule-table td:nth-child(3),.schedule-table td:nth-child(4){width:19.5%;text-align:center;font-weight:700}
+.redtime{color:#c62828!important} .greentime{color:#2e7d32!important}
+textarea{width:100%;height:250px;background:#fbfcfd;color:#263238;border:1px solid #cbd7dd;border-radius:8px;padding:10px;font:12px Consolas,monospace;resize:vertical}
+textarea:focus{outline:none;border-color:#78909c;box-shadow:0 0 0 3px rgba(120,144,156,.14)}
+.buttons{display:flex;gap:8px;margin-top:9px} button{border:0;border-radius:7px;padding:9px 14px;font-weight:700;cursor:pointer}
+button.process{background:#546e7a;color:#fff} button.secondary{background:#e8eef1;color:#455a64}
+.hint{font-size:11px;color:#78909c;margin:8px 0 0} .sync-note{margin-top:8px;padding:9px 10px;background:#f1f6f8;border-left:3px solid #78909c;border-radius:5px;color:#546e7a;font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px} .stat{background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;padding:9px;color:#78909c;font-size:11px} .stat b{display:block;color:#37474f;font-size:16px;margin-top:2px}
+.table-wrap{overflow:auto;border:1px solid #d9e2e7;border-radius:8px} table:not(.schedule-table){width:100%;border-collapse:collapse} table:not(.schedule-table) th{background:#546e7a;color:#fff;padding:8px;font-size:11px;white-space:nowrap} table:not(.schedule-table) td{padding:8px;background:#fff;color:#37474f;border-bottom:1px solid #e4eaed;font-size:11px} table:not(.schedule-table) tbody tr:nth-child(even) td{background:#f8fafb}
+.ok{background:#e8f5e9!important;color:#2e7d32!important;font-weight:700} .duration-danger{background:#ffebee!important;color:#c62828!important;font-weight:800} .danger{background:#ffebee!important;color:#c62828!important;font-weight:800}
+.missing-input td{background:#ffebee!important;color:#c62828!important;font-weight:800}.missing-input td:nth-child(5),.missing-input td:nth-child(6),.missing-input td:nth-child(7){background:#ffcdd2!important;color:#b71c1c!important}.missing-input td:first-child{border-left:4px solid #dc2626}
+.empty{padding:15px;background:#f7f9fa;border:1px solid #dce5e9;border-radius:7px;color:#78909c}
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;padding:10px;background:#f7f9fa;border:1px solid #dce5e9;border-radius:8px}
+.filter-bar label{font-size:11px;font-weight:700;color:#546e7a}
+.filter-bar select,.filter-bar input{height:34px;border:1px solid #cbd7dd;border-radius:7px;background:#fff;color:#37474f;padding:6px 9px;font-size:11px}
+.filter-bar input{min-width:210px}
+.holiday-row td{background:#f7f9fa!important;color:#78909c!important;font-weight:700}
+.optional-row td{background:#fff!important;color:#546e7a!important}
+.holiday-badge{color:#78909c;font-weight:800}
+.optional-badge{color:#607d8b;font-weight:800}
+.result-hidden{display:none!important}
+@media(max-width:900px){.grid{grid-template-columns:1fr}} @media(max-width:700px){.wrap{padding:12px}.stats{grid-template-columns:repeat(2,1fr)}}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class=&quot;wrap&quot;&gt;
-&lt;h1&gt;Checker Durasi Hitung Nomor&lt;/h1&gt;
-&lt;p class=&quot;subtitle&quot;&gt;Cocokkan Data 1 — Input Nomor dengan Data 2 — Hitung Nomor berdasarkan nama pasaran.&lt;/p&gt;
-
+&lt;h1&gt;Cek Durasi Input Nomor&lt;/h1&gt;
+&lt;div class=&quot;sub&quot;&gt;Bandingkan &lt;b&gt;jam jadwal tetap&lt;/b&gt; dengan &lt;b&gt;jam input aktual&lt;/b&gt;. Urutan/baris tidak harus sama; pencocokan dilakukan berdasarkan nama pasaran.&lt;/div&gt;
+&lt;div class=&quot;sync-note&quot; style=&quot;margin-top:8px;&quot;&gt;
+&lt;b&gt;Catatan Total Pasaran: khusus situs idn&lt;/b&gt;&lt;br&gt;
+Selasa dan Jumat = &lt;b&gt;13 pasaran&lt;/b&gt;. Selasa dan Jumat = &lt;b&gt;12 pasaran&lt;/b&gt;.
+&lt;/div&gt;
 &lt;div class=&quot;grid&quot;&gt;
 &lt;div class=&quot;card&quot;&gt;
-&lt;h2&gt;Data 1 — Input Nomor&lt;/h2&gt;
-&lt;div class=&quot;hint&quot;&gt;Mendukung tanggal &lt;b&gt;4/9/2026 23:51&lt;/b&gt; dan &lt;b&gt;04-09-2026 23:50:23&lt;/b&gt;.&lt;/div&gt;
-&lt;textarea id=&quot;data1&quot; placeholder=&quot;4/9/2026 23:51	vapaaoptgl7	input nomor SEOUL	nomor keluar : 5372,,	all member
-4/9/2026 22:27	vapaaoptgl1	input nomor PATTAYA	nomor keluar : 5475,,	all member
-
-04-09-2026 23:50:23	Master Togel	input nomor seoul	Periode : 2256 ; nomor keluar (DRAFT) : 5372	All Downline
-04-09-2026 23:33:45	Master Togel	input nomor kingkong 4d malam	Periode : 2009 ; nomor keluar (DRAFT) : 0629	All Downline&quot;&gt;&lt;/textarea&gt;
+&lt;h2&gt;① JADWAL PASARAN — JAM TETAP&lt;/h2&gt;
+&lt;div class=&quot;schedule-box&quot;&gt;&lt;table class=&quot;schedule-table&quot;&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;PASARAN&lt;/th&gt;&lt;th&gt;JADWAL&lt;/th&gt;&lt;th&gt;JAM MULAI&lt;/th&gt;&lt;th&gt;JAM AKHIR&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;SEOUL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KINGKONG 4D MALAM&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HONGKONG LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:59&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 23:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;23:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;23:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PATTAYA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;22:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 22:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;22:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;22:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MANILA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 5D 21:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TAIPEI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;21:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;21:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SHANGHAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PYONGYANG&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DELAWARE DAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;20:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DUBAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PCSO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:50&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;20:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 19:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;19:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BUSAN&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;19:05&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MAGNUM4D&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:40&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HANOI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;18:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;LONDON&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:55&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;18:10&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SINGAPORE 4D&lt;/td&gt;&lt;td&gt;RABU / SABTU / MINGGU&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SINGAPORE TOTO&lt;/td&gt;&lt;td&gt;SENIN / KAMIS&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:40&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NAGOYA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KINGKONG 4D SORE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;17:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;17:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;GUANGZHOU&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;16:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;16:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 16:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;16:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;16:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BEIJING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;15:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;15:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 5D 15:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;15:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;15:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KUALA LUMPUR&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;14:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:55&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PHUKET&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;14:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SYDNEY LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:49&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;14:05&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;SENEGAL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BULLSEYE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 13:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;13:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;MADRID&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;12:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;13:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;HOI AN&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;12:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;12:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 12:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;12:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CHIANGMAI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:40&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:55&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;PHNOMPENH LOTTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:35&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:50&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOKYO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;11:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;DELAWARE EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;10:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;11:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CAROLINA EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;10:07&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;10:22&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KENTUCKY EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;09:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;10:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW YORK EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;09:20&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;09:35&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 09:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;09:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CALIFORNIA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;08:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FLORIDA EVENING&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;08:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;08:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 06:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;05:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;06:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BRUSSELS&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;05:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;05:35&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;YORDANIA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;04:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;05:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;VIENTIANE&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;04:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;04:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;COLOMBO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;03:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;04:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW DELHI&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;03:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;OREGON 03:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KYOTO&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;03:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BOMBAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;02:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;02:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;CAROLINA DAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:45&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;02:00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ISTANBUL&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;NEW YORK MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:10&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:25&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;ATHENA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;01:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;01:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;BURMA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:30&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:45&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;FLORIDA MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:15&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:30&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;KENTUCKY MIDDAY&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:05&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:20&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;IOWA&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:15&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;TOTO MACAU 00:00&lt;/td&gt;&lt;td&gt;SETIAP HARI&lt;/td&gt;&lt;td class=&#x27;redtime&#x27;&gt;00:00&lt;/td&gt;&lt;td class=&#x27;greentime&#x27;&gt;00:15&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;hint&quot;&gt;Jadwal sudah ditetapkan dan tidak perlu dipaste ulang.&lt;/div&gt;
+&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Sinkronisasi:&lt;/b&gt; nama pasaran dinormalisasi sehingga spasi, tanda baca, dan format singkat dari Excel tetap bisa dicocokkan.&lt;/div&gt;
 &lt;/div&gt;
-
 &lt;div class=&quot;card&quot;&gt;
-&lt;h2&gt;Data 2 — Hitung Nomor&lt;/h2&gt;
-&lt;div class=&quot;hint&quot;&gt;Mendukung &lt;b&gt;pasar :&lt;/b&gt; dan &lt;b&gt;Pasaran :&lt;/b&gt;.&lt;/div&gt;
-&lt;textarea id=&quot;data2&quot; placeholder=&quot;4/9/2026 23:54	vapaaoptgl7	hitung nomor 4d	periode : 2256 ;pasar : SEOUL	all member
-4/9/2026 22:32	vapaaoptgl1	hitung nomor 4d	periode : 2143 ;pasar : PATTAYA	all member
-
-04-09-2026 23:54:46	Master Togel	hitung nomor 4d	Periode : 2256 ; Pasaran : SEOUL	All Downline
-04-09-2026 23:34:06	Master Togel	hitung nomor 4d	Periode : 2009 ; Pasaran : KINGKONG 4D MALAM	All Downline&quot;&gt;&lt;/textarea&gt;
+&lt;h2&gt;② DATA INPUT AKTUAL DARI EXCEL&lt;/h2&gt;
+&lt;textarea id=&quot;actual&quot; placeholder=&quot;Paste langsung dari Excel, contoh:
+1/9/2026 0:28	libaaoptgl6	input nomor KENTUCKYMID	nomor keluar : 1234
+1/9/2026 1:32	libaaoptgl6	input nomor NEWYORKMID	nomor keluar : 5678
+1/9/2026 10:24	libaaoptgl5	input nomor CAROLINAEVE	nomor keluar : 9999
+&lt;br&gt;
+Bisa juga memakai format 30-08-2026 23:35:12.
+Baris tidak harus urut.&quot;&gt;&lt;/textarea&gt;
+&lt;div class=&quot;buttons&quot;&gt;&lt;button class=&quot;process&quot; onclick=&quot;check()&quot;&gt;⚡ PROSES &amp; HITUNG DURASI&lt;/button&gt;&lt;button class=&quot;secondary&quot; onclick=&quot;clearBox(&#x27;actual&#x27;)&quot;&gt;Hapus Data&lt;/button&gt;&lt;/div&gt;
+&lt;p class=&quot;hint&quot;&gt;Excel boleh menggunakan TAB, spasi, atau tanda |. Nama pasaran boleh tanpa spasi.&lt;/p&gt;
+&lt;div class=&quot;sync-note&quot;&gt;&lt;b&gt;Contoh otomatis:&lt;/b&gt; KENTUCKYMID → KENTUCKY MIDDAY, NEWYORKMID → NEW YORK MIDDAY, NEWYORKEVE → NEW YORK EVENING, PP-LOTTO → PHNOMPENH LOTTO, OREGON12 → OREGON 12:00.&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-
-&lt;div class=&quot;actions&quot;&gt;
-&lt;button class=&quot;primary&quot; id=&quot;btnCheck&quot;&gt;HITUNG DURASI&lt;/button&gt;
-&lt;button class=&quot;secondary&quot; id=&quot;btnClear&quot;&gt;BERSIHKAN&lt;/button&gt;
+&lt;div class=&quot;card&quot; style=&quot;margin-top:14px&quot;&gt;
+&lt;h2&gt;FILTER HASIL &amp;amp; TANGGAL PEMERIKSAAN&lt;/h2&gt;
+&lt;div class=&quot;filter-bar&quot;&gt;
+  &lt;label for=&quot;checkDate&quot;&gt;Tanggal:&lt;/label&gt;
+  &lt;input type=&quot;date&quot; id=&quot;checkDate&quot;&gt;
+  &lt;button class=&quot;secondary&quot; onclick=&quot;useLatestDate()&quot;&gt;Gunakan Tanggal Terbaru&lt;/button&gt;
+  &lt;label for=&quot;resultFilter&quot;&gt;Tampilkan:&lt;/label&gt;
+  &lt;select id=&quot;resultFilter&quot; onchange=&quot;applyResultFilter()&quot;&gt;
+    &lt;option value=&quot;all&quot;&gt;Semua&lt;/option&gt;
+    &lt;option value=&quot;input&quot;&gt;Sudah Input Nomor&lt;/option&gt;
+    &lt;option value=&quot;missing&quot;&gt;Tidak Ada Input&lt;/option&gt;
+    &lt;option value=&quot;danger&quot;&gt;Durasi &amp;gt;10 Menit&lt;/option&gt;
+    &lt;option value=&quot;holiday&quot;&gt;LIBUR&lt;/option&gt;
+    &lt;option value=&quot;optional&quot;&gt;OPSIONAL&lt;/option&gt;
+    &lt;option value=&quot;extra&quot;&gt;Pasaran Tidak Ada di Jadwal&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;label for=&quot;marketFilter&quot;&gt;Cari Pasaran:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;marketFilter&quot; placeholder=&quot;Ketik nama pasaran...&quot; oninput=&quot;applyResultFilter()&quot;&gt;
 &lt;/div&gt;
-
-&lt;div class=&quot;card result-card&quot;&gt;
-&lt;h2&gt;Hasil&lt;/h2&gt;
-&lt;div id=&quot;stats&quot; class=&quot;stats&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;table-wrap&quot;&gt;
-&lt;table&gt;
-&lt;thead&gt;&lt;tr&gt;&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Pasaran&lt;/th&gt;&lt;th&gt;Waktu Input Nomor&lt;/th&gt;&lt;th&gt;Waktu Hitung Nomor&lt;/th&gt;&lt;th&gt;Selisih&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-&lt;tbody id=&quot;resultBody&quot;&gt;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Belum ada hasil.&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
-&lt;/table&gt;
+&lt;div class=&quot;hint&quot;&gt;Tanggal dipakai untuk menentukan status LIBUR/OPSIONAL. Jika tidak diisi, tanggal terbaru dari data Excel akan dipakai otomatis.&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;card&quot; style=&quot;margin-top:14px&quot;&gt;
+&lt;h2&gt;HASIL — SINKRONISASI BERDASARKAN NAMA&lt;/h2&gt;
+&lt;div id=&quot;result&quot;&gt;&lt;div class=&quot;empty&quot;&gt;Paste Data Excel lalu klik &quot;PROSES &amp; HITUNG DURASI&quot;.&lt;/div&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-
 &lt;script&gt;
-&quot;use strict&quot;;
+function esc(s){return String(s??&#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,m=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#039;&#x27;}[m]));}
 
-function normalizeMarket(name){
-  let s=String(name||&quot;&quot;)
-    .normalize(&quot;NFKD&quot;)
-    .replace(/[\u0300-\u036f]/g,&quot;&quot;)
-    .replace(/[^a-zA-Z0-9]/g,&quot;&quot;)
-    .toUpperCase();
 
-  const alias={
-    &quot;FLORIDAMID&quot;:&quot;FLORIDAMIDDAY&quot;,
-    &quot;FLORIDAEVE&quot;:&quot;FLORIDAEVENING&quot;,
-    &quot;NEWYORKMID&quot;:&quot;NEWYORKMIDDAY&quot;,
-    &quot;NEWYORKEVE&quot;:&quot;NEWYORKEVENING&quot;,
-    &quot;KENTUCKYMID&quot;:&quot;KENTUCKYMIDDAY&quot;,
-    &quot;KENTUCKYEVE&quot;:&quot;KENTUCKYEVENING&quot;,
-    &quot;CAROLINAEVE&quot;:&quot;CAROLINAEVENING&quot;,
-    &quot;DELAWAREEVE&quot;:&quot;DELAWAREEVENING&quot;,
-    &quot;PPLOTTO&quot;:&quot;PHNOMPENHLOTTO&quot;
-  };
-  return alias[s] || s;
+const aliases = {
+KENTUCKYMID:&quot;KENTUCKYMIDDAY&quot;,
+NEWYORKMID:&quot;NEWYORKMIDDAY&quot;,
+NEWYORKEVE:&quot;NEWYORKEVENING&quot;,
+KENTUCKYEVE:&quot;KENTUCKYEVENING&quot;,
+CAROLINAEVE:&quot;CAROLINAEVENING&quot;,
+DELAWAREEVE:&quot;DELAWAREEVENING&quot;,
+DELAWAREDAY:&quot;DELAWAREDAY&quot;,
+FLORIDAEVE:&quot;FLORIDAEVENING&quot;,
+FLORIDAMID:&quot;FLORIDAMIDDAY&quot;,
+PPLOTTO:&quot;PHNOMPENHLOTTO&quot;,
+OREGON12:&quot;OREGON1200&quot;,
+OREGON09:&quot;OREGON0900&quot;,
+OREGON06:&quot;OREGON0600&quot;,
+OREGON03:&quot;OREGON0300&quot;,
+KUALALUMPUR:&quot;KUALALUMPUR&quot;,
+HOIAN:&quot;HOIAN&quot;,
+NEWDELHI:&quot;NEWDELHI&quot;,
+CAROLINADAY:&quot;CAROLINADAY&quot;,
+KINGKONG4DMALAM:&quot;KINGKONG4DMALAM&quot;,
+KINGKONG4DSORE:&quot;KINGKONG4DSORE&quot;,
+MAGNUM4D:&quot;MAGNUM4D&quot;
+};
+
+
+function norm(s){
+const compact=String(s||&#x27;&#x27;).normalize(&#x27;NFKD&#x27;)
+.replace(/[\u0300-\u036f]/g,&#x27;&#x27;)
+.toUpperCase()
+.replace(/[^A-Z0-9]/g,&#x27;&#x27;);
+return aliases[compact] || compact;
 }
+
+
+function cleanName(s){return String(s||&#x27;&#x27;).trim().replace(/\s+/g,&#x27; &#x27;).toUpperCase();}
+
+
+function parseTime(s){
+const m=String(s||&#x27;&#x27;).trim().match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+if(!m)return null;
+const h=Number(m[1]), mi=Number(m[2]), se=Number(m[3]||0);
+if(h&gt;23||mi&gt;59||se&gt;59)return null;
+return `${String(h).padStart(2,&#x27;0&#x27;)}:${m[2]}:${String(se).padStart(2,&#x27;0&#x27;)}`;
+}
+
+
+function sec(t){const p=t.split(&#x27;:&#x27;).map(Number);return p[0]*3600+p[1]*60+(p[2]||0);}
+function signedDiff(actual,fixedEnd){
+let d=sec(actual)-sec(fixedEnd);
+if(d&gt;43200)d-=86400;
+if(d&lt;-43200)d+=86400;
+return d;
+}
+function fmtSelisih(d){
+d=Math.abs(Math.round(d));
+const jam=Math.floor(d/3600), menit=Math.floor((d%3600)/60), detik=d%60;
+if(jam&gt;0)return `${jam} jam ${menit} menit ${detik} detik`;
+return `${menit} menit ${detik} detik`;
+}
+
+
+function parseSchedule(){
+const rows=[];
+document.querySelectorAll(&#x27;.schedule-table tbody tr&#x27;).forEach((tr,i)=&gt;{
+const c=tr.querySelectorAll(&#x27;td&#x27;); if(c.length&lt;4)return;
+const name=cleanName(c[0].textContent), start=parseTime(c[2].textContent), end=parseTime(c[3].textContent);
+if(name&amp;&amp;start&amp;&amp;end)rows.push({name,start,end,line:i+1,raw:tr.textContent.trim()});
+});
+return rows;
+}
+function dateKey(dateStr){
+const s=String(dateStr||&#x27;&#x27;).trim();
+if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+const m=s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+if(!m)return &#x27;&#x27;;
+return `${m[3]}-${String(m[2]).padStart(2,&#x27;0&#x27;)}-${String(m[1]).padStart(2,&#x27;0&#x27;)}`;
+}
+function dayIndex(dateStr){
+const iso=dateKey(dateStr);
+if(!iso)return null;
+const d=new Date(iso+&#x27;T00:00:00&#x27;);
+return isNaN(d.getTime())?null:d.getDay();
+}
+function marketDayState(market,dateStr){
+const key=norm(market);
+const day=dayIndex(dateStr);
+if(day===null)return {type:&#x27;active&#x27;,label:&#x27;AKTIF&#x27;};
+if(key===&#x27;MAGNUM4D&#x27;){
+  if(day===2)return {type:&#x27;optional&#x27;,label:&#x27;OPSIONAL&#x27;};
+  if(day===1 || day===4 || day===5)return {type:&#x27;holiday&#x27;,label:&#x27;LIBUR&#x27;};
+  return {type:&#x27;active&#x27;,label:&#x27;AKTIF&#x27;};
+}
+if(key===&#x27;SINGAPORE4D&#x27;){
+  return (day===3 || day===6 || day===0)
+    ? {type:&#x27;active&#x27;,label:&#x27;AKTIF&#x27;}
+    : {type:&#x27;holiday&#x27;,label:&#x27;LIBUR&#x27;};
+}
+if(key===&#x27;SINGAPORETOTO&#x27;){
+  return (day===1 || day===4)
+    ? {type:&#x27;active&#x27;,label:&#x27;AKTIF&#x27;}
+    : {type:&#x27;holiday&#x27;,label:&#x27;LIBUR&#x27;};
+}
+return {type:&#x27;active&#x27;,label:&#x27;AKTIF&#x27;};
+}
+function latestDateFromActual(act){
+let best=&#x27;&#x27;;
+act.forEach(a=&gt;{
+  const k=dateKey(a.date);
+  if(k &amp;&amp; (!best || k&gt;best))best=k;
+});
+return best;
+}
+function setCheckDate(iso){
+const el=document.getElementById(&#x27;checkDate&#x27;);
+if(el &amp;&amp; iso)el.value=iso;
+}
+function useLatestDate(){
+const act=parseActual(document.getElementById(&#x27;actual&#x27;).value);
+const latest=latestDateFromActual(act);
+if(latest)setCheckDate(latest);
+check();
+}
+function getCheckDate(act){
+const selected=(document.getElementById(&#x27;checkDate&#x27;).value||&#x27;&#x27;).trim();
+if(selected)return selected;
+const latest=latestDateFromActual(act);
+if(latest){setCheckDate(latest);return latest;}
+const now=new Date();
+return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(now.getDate()).padStart(2,&#x27;0&#x27;)}`;
+}
+function applyResultFilter(){
+const filter=document.getElementById(&#x27;resultFilter&#x27;)?.value||&#x27;all&#x27;;
+const search=(document.getElementById(&#x27;marketFilter&#x27;)?.value||&#x27;&#x27;).trim().toUpperCase();
+document.querySelectorAll(&#x27;#result tbody tr&#x27;).forEach(tr=&gt;{
+  const statuses=(tr.dataset.status||&#x27;&#x27;).split(/\s+/);
+  const market=(tr.dataset.market||&#x27;&#x27;).toUpperCase();
+  const filterOk=filter===&#x27;all&#x27; || statuses.includes(filter);
+  const searchOk=!search || market.includes(search);
+  tr.classList.toggle(&#x27;result-hidden&#x27;,!(filterOk &amp;&amp; searchOk));
+});
+}
+
 
 function parseDateTime(line){
-  const m=String(line).match(/(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?/);
-  if(!m)return null;
-  return new Date(
-    Number(m[3]),Number(m[2])-1,Number(m[1]),
-    Number(m[4]),Number(m[5]),Number(m[6]||0)
-  );
+// Mendukung 1/9/2026 0:28, 01/09/2026 00:28:12, 30-08-2026 23:35:12
+const m=line.match(/(\d{1,2}[\\/\\-]\d{1,2}[\\/\\-]\d{4})\s+(\d{1,2}:\d{2}(?::\d{2})?)/);
+if(!m)return null;
+return {date:m[1],time:parseTime(m[2])};
 }
 
-function lines(text){
-  return String(text||&quot;&quot;).split(/\r?\n/).map(x=&gt;x.trim())
-    .filter(x=&gt;x &amp;&amp; !/^\|?\s*-{2,}/.test(x));
+
+function extractMarket(line, dateStr){
+const m=line.match(/input\s+nomor\s+(.+?)(?=\s*(?:\t|\||nomor\s+keluar\b|periode\b|$))/i);
+let name=m ? cleanName(m[1]) : &#x27;&#x27;;
+
+// KHUSUS SINGAPORE:
+// Format nomor keluar menentukan jenis pasaran:
+// - 3 nomor 4 digit (contoh 9248,2243,5264) = SINGAPORE 4D
+// - 1 nomor 4 digit (contoh 5264) = SINGAPORE TOTO
+// Jika format nomor tidak terbaca, gunakan hari pada tanggal sebagai fallback:
+// Rabu/Sabtu/Minggu = 4D, Senin/Kamis = TOTO.
+if(name.replace(/[^A-Z0-9]/g,&#x27;&#x27;) === &#x27;SINGAPORE&#x27;){
+  const outMatch=line.match(/nomor\s+keluar\s*:\s*([^\t|]+)/i);
+  const outText=outMatch ? outMatch[1] : &#x27;&#x27;;
+  const numbers=outText.match(/\d{4}/g) || [];
+  const uniqueNumbers=[...new Set(numbers)];
+
+  if(uniqueNumbers.length &gt;= 3){
+    return &#x27;SINGAPORE 4D&#x27;;
+  }
+  if(uniqueNumbers.length === 1){
+    return &#x27;SINGAPORE TOTO&#x27;;
+  }
+
+  // Fallback berdasarkan hari: 0=Minggu, 1=Senin, ..., 3=Rabu, 4=Kamis, 6=Sabtu
+  const dm=String(dateStr||&#x27;&#x27;).match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(dm){
+    const d=new Date(Number(dm[3]),Number(dm[2])-1,Number(dm[1]));
+    const day=d.getDay();
+    if(day===0 || day===3 || day===6) return &#x27;SINGAPORE 4D&#x27;;
+    if(day===1 || day===4) return &#x27;SINGAPORE TOTO&#x27;;
+  }
 }
 
-function parseData1(text){
-  const map=new Map();
-  lines(text).forEach((line,i)=&gt;{
-    const date=parseDateTime(line);
-    if(!date)return;
-
-    const m=line.match(/input\s+nomor\s+(.+?)(?=\s*(?:\t|\||Periode\b|nomor\s+keluar\b))/i);
-    if(!m)return;
-
-    const market=m[1].trim();
-    const key=normalizeMarket(market);
-    if(!key)return;
-
-    if(!map.has(key))map.set(key,[]);
-    map.get(key).push({market,date,line:i+1});
-  });
-  return map;
+// Fallback: ambil teks setelah input nomor sampai akhir kolom/baris.
+if(!name){
+  const f=line.match(/input\s+nomor\s+(.+)$/i);
+  name=f ? cleanName(f[1].split(/\t|\||nomor\s+keluar|periode/i)[0]) : &#x27;&#x27;;
+}
+return name;
 }
 
-function parseData2(text){
-  const rows=[];
-  lines(text).forEach((line,i)=&gt;{
-    const date=parseDateTime(line);
-    if(!date)return;
 
-    const m=line.match(/(?:Pasaran|Pasar)\s*:\s*(.+?)(?=\s*(?:\t|\||All\s+Downline\b|$))/i);
-    if(!m)return;
-
-    const market=m[1].trim();
-    const key=normalizeMarket(market);
-    if(!key)return;
-
-    rows.push({market,key,date,line:i+1});
-  });
-  return rows;
+function parseActual(text){
+const rows=[];
+String(text||&#x27;&#x27;).split(/\r?\n/).forEach((original,i)=&gt;{
+const line=original.replace(/\u00A0/g,&#x27; &#x27;).trim();
+if(!line)return;
+const dt=parseDateTime(line);
+if(!dt || !dt.time)return;
+const name=extractMarket(line,dt.date);
+if(name){
+  const outMatch=line.match(/nomor\s+keluar\s*(?:\(DRAFT\))?\s*:\s*([^\t|]*)/i);
+  const outText=outMatch ? outMatch[1].trim() : &#x27;&#x27;;
+  const hasNumber=/\d{4}/.test(outText);
+  rows.push({name,date:dt.date,time:dt.time,line:i+1,raw:original,hasNumber});
+}
+});
+return rows;
 }
 
-function bestMatch(list,date){
-  if(!list||!list.length)return null;
-  return list.reduce((best,item)=&gt;
-    Math.abs(date-item.date)&lt;Math.abs(date-best.date)?item:best
-  );
-}
-
-function duration(sec){
-  const a=Math.abs(sec);
-  const h=Math.floor(a/3600);
-  const m=Math.floor((a%3600)/60);
-  const s=a%60;
-  let p=[];
-  if(h)p.push(h+&quot; jam&quot;);
-  if(m||h)p.push(m+&quot; menit&quot;);
-  p.push(s+&quot; detik&quot;);
-  return (sec&lt;0?&quot;-&quot;:&quot;&quot;)+p.join(&quot; &quot;);
-}
-
-function esc(v){
-  return String(v).replace(/&amp;/g,&quot;&amp;amp;&quot;).replace(/&lt;/g,&quot;&amp;lt;&quot;)
-    .replace(/&gt;/g,&quot;&amp;gt;&quot;).replace(/&quot;/g,&quot;&amp;quot;&quot;).replace(/&#x27;/g,&quot;&amp;#039;&quot;);
-}
-
-function fmt(d){
-  const p=n=&gt;String(n).padStart(2,&quot;0&quot;);
-  return p(d.getDate())+&quot;-&quot;+p(d.getMonth()+1)+&quot;-&quot;+d.getFullYear()+&quot; &quot;+
-    p(d.getHours())+&quot;:&quot;+p(d.getMinutes())+&quot;:&quot;+p(d.getSeconds());
-}
 
 function check(){
-  const map1=parseData1(document.getElementById(&quot;data1&quot;).value);
-  const rows2=parseData2(document.getElementById(&quot;data2&quot;).value);
-  const body=document.getElementById(&quot;resultBody&quot;);
-  const stats=document.getElementById(&quot;stats&quot;);
+const result=document.getElementById(&#x27;result&#x27;);
+try{
+  const sch=parseSchedule();
+  const act=parseActual(document.getElementById(&#x27;actual&#x27;).value);
+  const referenceDate=getCheckDate(act);
 
-  body.innerHTML=&quot;&quot;;
-  stats.innerHTML=&quot;&quot;;
+  if(!sch.length){
+    result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Jadwal pasaran belum terbaca.&lt;/div&gt;&#x27;;
+    return;
+  }
 
-  let matched=0,danger=0,missing=0;
-
-  rows2.forEach((r,i)=&gt;{
-    const m=bestMatch(map1.get(r.key),r.date);
-
-    if(!m){
-      missing++;
-      body.innerHTML+=`&lt;tr class=&quot;missing&quot;&gt;
-        &lt;td&gt;${i+1}&lt;/td&gt;&lt;td&gt;&lt;b&gt;${esc(r.market)}&lt;/b&gt;&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;
-        &lt;td&gt;${fmt(r.date)}&lt;/td&gt;&lt;td&gt;-&lt;/td&gt;
-        &lt;td class=&quot;danger-text&quot;&gt;TIDAK DITEMUKAN DI DATA 1&lt;/td&gt;&lt;/tr&gt;`;
-      return;
-    }
-
-    matched++;
-    const sec=Math.round((r.date-m.date)/1000);
-    const bad=sec&gt;600;
-    if(bad)danger++;
-
-    body.innerHTML+=`&lt;tr class=&quot;${bad?&quot;danger&quot;:&quot;&quot;}&quot;&gt;
-      &lt;td&gt;${i+1}&lt;/td&gt;
-      &lt;td&gt;&lt;b&gt;${esc(r.market)}&lt;/b&gt;&lt;/td&gt;
-      &lt;td&gt;${fmt(m.date)}&lt;/td&gt;
-      &lt;td&gt;${fmt(r.date)}&lt;/td&gt;
-      &lt;td class=&quot;${bad?&quot;duration-danger&quot;:&quot;&quot;}&quot;&gt;&lt;b&gt;${duration(sec)}&lt;/b&gt;&lt;/td&gt;
-      &lt;td class=&quot;${bad?&quot;danger-text&quot;:&quot;ok-text&quot;}&quot;&gt;${bad?&quot;DANGER — &gt; 10 MENIT&quot;:sec&lt;0?&quot;DATA 2 LEBIH AWAL&quot;:&quot;NORMAL&quot;}&lt;/td&gt;
-    &lt;/tr&gt;`;
+  const actualMap=new Map();
+  act.forEach(a=&gt;{
+    const key=norm(a.name);
+    if(!actualMap.has(key))actualMap.set(key,[]);
+    actualMap.get(key).push(a);
   });
 
-  if(!rows2.length)
-    body.innerHTML=&#x27;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Data 2 tidak berhasil dibaca.&lt;/td&gt;&lt;/tr&gt;&#x27;;
+  function pickActual(list,schedule){
+    if(!list || !list.length)return null;
+    return list.reduce((best,item)=&gt;{
+      if(!best)return item;
+      const dBest=Math.abs(signedDiff(best.time,schedule.end));
+      const dItem=Math.abs(signedDiff(item.time,schedule.end));
+      return dItem&lt;dBest?item:best;
+    },null);
+  }
 
-  let total1=0;
-  for(const a of map1.values())total1+=a.length;
+  let matched=0,danger=0,missing=0,holidayCount=0,optionalMissing=0;
+  const usedActual=new Set();
 
-  stats.innerHTML=
-    `&lt;div class=&quot;stat&quot;&gt;Data 1 terbaca: &lt;b&gt;${total1}&lt;/b&gt;&lt;/div&gt;`+
-    `&lt;div class=&quot;stat&quot;&gt;Data 2 terbaca: &lt;b&gt;${rows2.length}&lt;/b&gt;&lt;/div&gt;`+
-    `&lt;div class=&quot;stat&quot;&gt;Tersinkron: &lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;`+
-    `&lt;div class=&quot;stat&quot;&gt;Danger: &lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;`+
-    `&lt;div class=&quot;stat&quot;&gt;Tidak ditemukan: &lt;b&gt;${missing}&lt;/b&gt;&lt;/div&gt;`;
+  const rows=sch.map((s,i)=&gt;{
+    const state=marketDayState(s.name,referenceDate);
+    const candidates=actualMap.get(norm(s.name))||[];
+    const a=pickActual(candidates,s);
+
+    // LIBUR: tidak dianggap missing dan tidak diberi warna merah.
+    if(state.type===&#x27;holiday&#x27;){
+      holidayCount++;
+      if(a)usedActual.add(a);
+      const inputTime=a ? esc(a.time) : &#x27;—&#x27;;
+      const inputDate=a ? esc(a.date) : esc(referenceDate);
+      return `
+        &lt;tr class=&quot;holiday-row&quot; data-status=&quot;holiday&quot; data-market=&quot;${esc(s.name)}&quot;&gt;
+          &lt;td&gt;${i+1}&lt;/td&gt;
+          &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+          &lt;td&gt;${inputDate}&lt;/td&gt;
+          &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+          &lt;td&gt;${inputTime}&lt;/td&gt;
+          &lt;td&gt;—&lt;/td&gt;
+          &lt;td class=&quot;holiday-badge&quot;&gt;LIBUR${a?&#x27; — ADA INPUT&#x27;:&#x27;&#x27;}&lt;/td&gt;
+        &lt;/tr&gt;`;
+    }
+
+    // MAGNUM4D Selasa: opsional. Ada input = tetap dihitung; tidak ada input = netral.
+    if(state.type===&#x27;optional&#x27; &amp;&amp; !a){
+      optionalMissing++;
+      return `
+        &lt;tr class=&quot;optional-row&quot; data-status=&quot;optional missing&quot; data-market=&quot;${esc(s.name)}&quot;&gt;
+          &lt;td&gt;${i+1}&lt;/td&gt;
+          &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+          &lt;td&gt;${esc(referenceDate)}&lt;/td&gt;
+          &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+          &lt;td&gt;—&lt;/td&gt;
+          &lt;td&gt;—&lt;/td&gt;
+          &lt;td class=&quot;optional-badge&quot;&gt;OPSIONAL — TIDAK ADA INPUT&lt;/td&gt;
+        &lt;/tr&gt;`;
+    }
+
+    if(!a){
+      missing++;
+      return `
+        &lt;tr class=&quot;danger missing-input&quot; data-status=&quot;missing&quot; data-market=&quot;${esc(s.name)}&quot;&gt;
+          &lt;td&gt;${i+1}&lt;/td&gt;
+          &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+          &lt;td&gt;—&lt;/td&gt;
+          &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+          &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+          &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+          &lt;td class=&quot;danger-text&quot;&gt;⚠ TIDAK ADA INPUT NOMOR&lt;/td&gt;
+        &lt;/tr&gt;`;
+    }
+
+    usedActual.add(a);
+
+    const duration=signedDiff(a.time,s.end);
+    const noNumber=!a.hasNumber;
+    const isDanger=duration&gt;600;
+
+    if(noNumber){
+      if(state.type===&#x27;optional&#x27;)optionalMissing++;
+      else missing++;
+    }else matched++;
+    if(isDanger &amp;&amp; !noNumber)danger++;
+
+    const statusTokens=[];
+    if(noNumber)statusTokens.push(&#x27;missing&#x27;);
+    else statusTokens.push(&#x27;input&#x27;);
+    if(isDanger &amp;&amp; !noNumber)statusTokens.push(&#x27;danger&#x27;);
+    if(state.type===&#x27;optional&#x27;)statusTokens.push(&#x27;optional&#x27;);
+
+    const rowClass=(isDanger || noNumber)?&#x27;danger&#x27;:(state.type===&#x27;optional&#x27;?&#x27;optional-row&#x27;:&#x27;&#x27;);
+    const statusClass=(isDanger || noNumber)?&#x27;danger-text&#x27;:&#x27;ok-text&#x27;;
+    let statusText=noNumber
+      ? (state.type===&#x27;optional&#x27; ? &#x27;OPSIONAL — NOMOR BELUM TERBACA&#x27; : &#x27;⚠ TIDAK ADA INPUT NOMOR&#x27;)
+      : (isDanger ? (state.type===&#x27;optional&#x27; ? &#x27;⚠ DANGER &gt;10 MENIT — OPSIONAL&#x27; : &#x27;⚠ DANGER &gt;10 MENIT&#x27;)
+                  : (state.type===&#x27;optional&#x27; ? &#x27;OK — OPSIONAL&#x27; : &#x27;OK&#x27;));
+
+    return `
+      &lt;tr class=&quot;${rowClass}&quot; data-status=&quot;${statusTokens.join(&#x27; &#x27;)}&quot; data-market=&quot;${esc(s.name)}&quot;&gt;
+        &lt;td&gt;${i+1}&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;${esc(s.name)}&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;${esc(a.date)}&lt;/td&gt;
+        &lt;td&gt;${esc(s.start)} - ${esc(s.end)}&lt;/td&gt;
+        &lt;td&gt;${esc(a.time)}&lt;/td&gt;
+        &lt;td class=&quot;${isDanger?&#x27;duration-danger&#x27;:&#x27;&#x27;}&quot;&gt;&lt;b&gt;${esc(fmtSelisih(duration))}&lt;/b&gt;&lt;/td&gt;
+        &lt;td class=&quot;${statusClass}&quot;&gt;${statusText}&lt;/td&gt;
+      &lt;/tr&gt;`;
+  }).join(&#x27;&#x27;);
+
+  // Data Excel yang tidak punya pasangan di jadwal tetap tetap ditampilkan.
+  const extraRows=act.filter(a=&gt;!usedActual.has(a)).map((a,i)=&gt;{
+    missing++;
+    return `
+      &lt;tr class=&quot;danger missing-input&quot; data-status=&quot;extra missing&quot; data-market=&quot;${esc(a.name)}&quot;&gt;
+        &lt;td&gt;${sch.length+i+1}&lt;/td&gt;
+        &lt;td&gt;&lt;b&gt;${esc(a.name)}&lt;/b&gt;&lt;/td&gt;
+        &lt;td&gt;${esc(a.date)}&lt;/td&gt;
+        &lt;td&gt;—&lt;/td&gt;
+        &lt;td&gt;${esc(a.time)}&lt;/td&gt;
+        &lt;td class=&quot;duration-danger&quot;&gt;—&lt;/td&gt;
+        &lt;td class=&quot;danger-text&quot;&gt;⚠ PASARAN TIDAK ADA DI JADWAL&lt;/td&gt;
+      &lt;/tr&gt;`;
+  }).join(&#x27;&#x27;);
+
+  result.innerHTML=`
+    &lt;div class=&quot;stats&quot;&gt;
+      &lt;div class=&quot;stat&quot;&gt;Jadwal tetap terbaca&lt;b&gt;${sch.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Data Excel terbaca&lt;b&gt;${act.length}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Input ditemukan&lt;b&gt;${matched}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Tidak ada input&lt;b&gt;${missing}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Danger &gt;10 menit&lt;b&gt;${danger}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;LIBUR&lt;b&gt;${holidayCount}&lt;/b&gt;&lt;/div&gt;
+      &lt;div class=&quot;stat&quot;&gt;Opsional kosong&lt;b&gt;${optionalMissing}&lt;/b&gt;&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;sync-note&quot;&gt;
+      &lt;b&gt;Tanggal pemeriksaan:&lt;/b&gt; ${esc(referenceDate)}.
+      &lt;b&gt;MAGNUM4D:&lt;/b&gt; Senin/Kamis/Jumat = LIBUR, Selasa = OPSIONAL.
+      &lt;b&gt;SINGAPORE:&lt;/b&gt; Selasa &amp;amp; Jumat = LIBUR.
+      Baris LIBUR dibuat netral tanpa warna merah.
+    &lt;/div&gt;
+
+    &lt;div class=&quot;table-wrap&quot;&gt;
+      &lt;table&gt;
+        &lt;thead&gt;&lt;tr&gt;
+          &lt;th&gt;No&lt;/th&gt;
+          &lt;th&gt;Pasaran&lt;/th&gt;
+          &lt;th&gt;Tanggal&lt;/th&gt;
+          &lt;th&gt;Jam Tetap&lt;/th&gt;
+          &lt;th&gt;Jam Input&lt;/th&gt;
+          &lt;th&gt;Selisih&lt;/th&gt;
+          &lt;th&gt;Status&lt;/th&gt;
+        &lt;/tr&gt;&lt;/thead&gt;
+        &lt;tbody&gt;${rows}${extraRows}&lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;`;
+
+  applyResultFilter();
+}catch(e){
+  result.innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;⚠ Error: &#x27;+esc(e.message||e)+&#x27;&lt;/div&gt;&#x27;;
 }
-
-function clearAll(){
-  data1.value=&quot;&quot;;
-  data2.value=&quot;&quot;;
-  stats.innerHTML=&quot;&quot;;
-  resultBody.innerHTML=&#x27;&lt;tr&gt;&lt;td colspan=&quot;6&quot; class=&quot;empty&quot;&gt;Belum ada hasil.&lt;/td&gt;&lt;/tr&gt;&#x27;;
 }
-
-btnCheck.addEventListener(&quot;click&quot;,check);
-btnClear.addEventListener(&quot;click&quot;,clearAll);
+function clearBox(id){
+document.getElementById(id).value=&#x27;&#x27;;
+if(document.getElementById(&#x27;resultFilter&#x27;))document.getElementById(&#x27;resultFilter&#x27;).value=&#x27;all&#x27;;
+if(document.getElementById(&#x27;marketFilter&#x27;))document.getElementById(&#x27;marketFilter&#x27;).value=&#x27;&#x27;;
+document.getElementById(&#x27;result&#x27;).innerHTML=&#x27;&lt;div class=&quot;empty&quot;&gt;Data sudah dihapus.&lt;/div&gt;&#x27;;
+}
 &lt;/script&gt;
 &lt;/body&gt;
-&lt;/html&gt;&lt;/body&gt;&lt;/html&gt;"></iframe>
+&lt;/html&gt;"></iframe>
             </div>
         </div>
 
