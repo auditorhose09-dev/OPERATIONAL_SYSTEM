@@ -13,7 +13,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <style>
 :root {
     --bg-dark: #0b0e14;
@@ -851,6 +850,498 @@ body[data-theme="light"] #pageParlay .parlay-hint{
     .theme-toggle-btn{padding:7px 9px}
 }
 
+
+/* =========================================================
+   PROFESSIONAL UI POLISH — VISUAL ONLY
+   Tidak mengubah fungsi / script checker yang sudah ada.
+   ========================================================= */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    line-height:1.45;
+    background:
+        radial-gradient(circle at 82% 8%, rgba(214,179,106,.065), transparent 28%),
+        radial-gradient(circle at 18% 92%, rgba(59,130,246,.05), transparent 26%),
+        var(--bg-dark);
+}
+
+/* scrollbar */
+*{
+    scrollbar-width:thin;
+    scrollbar-color:#536575 transparent;
+}
+*::-webkit-scrollbar{width:8px;height:8px}
+*::-webkit-scrollbar-track{background:transparent}
+*::-webkit-scrollbar-thumb{background:#536575;border-radius:999px}
+*::-webkit-scrollbar-thumb:hover{background:#6b7e8f}
+
+/* Login lebih premium */
+#loginPage{
+    background:
+        radial-gradient(circle at 50% 35%, rgba(214,179,106,.09) 0%, transparent 30%),
+        radial-gradient(circle at 20% 80%, rgba(59,130,246,.06) 0%, transparent 28%),
+        linear-gradient(145deg,#101922 0%,#091018 52%,#05090d 100%)!important;
+}
+.login-card{
+    border:1px solid rgba(214,179,106,.24)!important;
+    box-shadow:0 28px 80px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.025) inset!important;
+}
+.login-brand-icon{
+    background:linear-gradient(145deg,rgba(214,179,106,.16),rgba(214,179,106,.045));
+    box-shadow:0 12px 34px rgba(0,0,0,.24),0 0 24px rgba(214,179,106,.12);
+}
+.login-title{font-size:21px;letter-spacing:.8px}
+.login-quote{max-width:340px;margin-left:auto;margin-right:auto}
+
+/* Sidebar */
+#sidebar{
+    background:
+        linear-gradient(180deg,rgba(255,255,255,.018),transparent 22%),
+        var(--bg-sidebar)!important;
+    border-right:1px solid rgba(255,255,255,.07)!important;
+    box-shadow:18px 0 45px rgba(0,0,0,.12);
+}
+.brand-logo{padding:2px 6px 20px}
+.brand-logo i{
+    width:42px;height:42px;display:grid;place-items:center;
+    border-radius:12px;
+    background:rgba(214,179,106,.09);
+    border:1px solid rgba(214,179,106,.18);
+    box-shadow:0 8px 25px rgba(0,0,0,.18);
+}
+.brand-title{font-size:13px;letter-spacing:.8px}
+.user-profile-card{
+    padding:12px!important;
+    border-radius:12px!important;
+    box-shadow:0 10px 24px rgba(0,0,0,.10);
+}
+.user-avatar{
+    border:2px solid rgba(214,179,106,.25);
+    box-shadow:0 0 0 3px rgba(214,179,106,.05);
+}
+.sidebar-label{font-size:9px;letter-spacing:1.35px;margin-top:18px}
+.nav-link-btn{
+    min-height:42px;
+    border-radius:10px!important;
+    padding:10px 12px!important;
+    position:relative;
+}
+.nav-link-btn i{width:18px;text-align:center;font-size:13px}
+.nav-link-btn:hover{
+    transform:translateX(2px);
+    background:rgba(255,255,255,.052)!important;
+}
+.nav-link-btn.active{
+    background:linear-gradient(135deg,#d6b36a 0%,#c6953f 100%)!important;
+    color:#111922!important;
+    box-shadow:0 8px 20px rgba(214,179,106,.16);
+}
+.nav-link-btn.active-outline-amber{
+    border-color:rgba(214,179,106,.48)!important;
+    background:rgba(214,179,106,.055)!important;
+}
+.btn-logout-sidebar{border-radius:10px!important}
+
+/* Main area */
+#content{
+    padding:18px 28px 22px!important;
+    background:transparent!important;
+}
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:900;
+    margin:-18px -28px 22px;
+    padding:12px 28px!important;
+    min-height:64px;
+    background:rgba(24,34,44,.88);
+    border-bottom:1px solid rgba(255,255,255,.065);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+.topbar>div:first-child i{
+    width:36px;height:36px;display:grid;place-items:center;
+    margin-right:0!important;
+    border:1px solid var(--border-color);
+    border-radius:10px;
+    background:rgba(255,255,255,.025);
+}
+.topbar-right{gap:12px!important}
+.clock-display{
+    height:36px;
+    padding:0 12px;
+    border:1px solid var(--border-color);
+    border-radius:10px;
+    background:rgba(255,255,255,.025);
+}
+.user-badge-header{
+    min-height:40px;
+    padding:4px 10px 4px 6px;
+    border:1px solid var(--border-color);
+    border-radius:11px;
+    background:rgba(255,255,255,.025);
+}
+.theme-toggle-btn{min-height:36px;border-radius:10px!important}
+
+/* Welcome */
+#content>.mb-4{
+    padding:4px 2px 2px;
+    margin-bottom:18px!important;
+}
+#content>.mb-4 h4{font-size:21px;letter-spacing:-.25px}
+#content>.mb-4 p{margin-top:4px!important}
+
+/* Cards & panels */
+.stat-card-group{gap:13px!important}
+.stat-box{
+    position:relative;
+    min-width:0;
+    padding:16px 15px!important;
+    border-radius:13px!important;
+    overflow:hidden;
+    box-shadow:0 10px 28px rgba(0,0,0,.08);
+    transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.stat-box::after{
+    content:"";
+    position:absolute;inset:auto -20px -32px auto;
+    width:84px;height:84px;border-radius:50%;
+    background:rgba(255,255,255,.018);
+    pointer-events:none;
+}
+.stat-box:hover{
+    transform:translateY(-2px);
+    border-color:#4b5f70!important;
+    box-shadow:0 14px 34px rgba(0,0,0,.12);
+}
+.stat-box .icon-box{
+    width:44px!important;height:44px!important;
+    border-radius:11px!important;
+    box-shadow:0 8px 18px rgba(0,0,0,.12) inset;
+}
+.stat-box .details{min-width:0}
+.stat-box .details h6{font-size:9px!important;line-height:1.35;letter-spacing:.45px}
+.stat-box .details h3{font-size:21px!important;letter-spacing:-.4px}
+.dashboard-panel{
+    border-radius:14px!important;
+    padding:20px!important;
+    box-shadow:0 12px 34px rgba(0,0,0,.085);
+}
+.panel-header{
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(255,255,255,.055);
+}
+.panel-header i{
+    width:42px;height:42px;display:grid;place-items:center;
+    border-radius:11px;
+    background:rgba(214,179,106,.08);
+    border:1px solid rgba(214,179,106,.14);
+    font-size:18px!important;
+}
+.panel-header h5{font-size:15px!important}
+.panel-header p{margin-top:4px!important}
+.input-card-group{gap:13px!important}
+.input-box-card{
+    border-radius:12px!important;
+    padding:15px!important;
+    box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.input-box-card textarea,.form-control,.form-select{
+    border-radius:9px!important;
+    transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.form-control:focus,.form-select:focus,textarea:focus{
+    outline:none!important;
+}
+
+/* Button system */
+.btn-primary-amber,.btn-secondary-dark,.btn-reset-card,.btn-login-submit{
+    border-radius:9px!important;
+}
+.btn-primary-amber{
+    background:linear-gradient(135deg,#dfbf77 0%,#c9973f 100%)!important;
+    box-shadow:0 8px 18px rgba(214,179,106,.12);
+}
+.btn-primary-amber:hover{filter:brightness(1.055);transform:translateY(-1px)}
+.btn-secondary-dark:hover,.btn-reset-card:hover{transform:translateY(-1px)}
+button,.btn,.nav-link-btn{transition:all .2s ease}
+button:focus-visible,.btn:focus-visible,.nav-link-btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+    outline:2px solid rgba(214,179,106,.72)!important;
+    outline-offset:2px!important;
+}
+
+/* Tables */
+.table-responsive-custom{
+    border-radius:12px!important;
+    box-shadow:0 10px 26px rgba(0,0,0,.07);
+}
+.table th{
+    padding:13px 11px!important;
+    letter-spacing:.6px!important;
+    white-space:nowrap;
+}
+.table td{padding:11px 12px!important}
+.table tbody tr:last-child td{border-bottom:0}
+.status-badge{padding:5px 10px!important;letter-spacing:.2px}
+.empty-table-placeholder{padding:46px!important}
+.empty-table-placeholder i{opacity:.6}
+
+/* Modal: konsisten dark/light, tanpa sentuh fungsi Bootstrap */
+.modal-content{
+    background:var(--bg-card)!important;
+    color:var(--text-light)!important;
+    border:1px solid var(--border-color)!important;
+    border-radius:15px!important;
+    box-shadow:0 24px 70px rgba(0,0,0,.38)!important;
+}
+.modal-header,.modal-footer{border-color:var(--border-color)!important}
+body[data-theme="light"] .btn-close{filter:none!important}
+
+/* Top dashboard ticker motivasi */
+.motivation-ticker{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    margin-top:-6px;
+    margin-bottom:16px;
+    min-height:38px;
+    display:flex;
+    align-items:center;
+    border:1px solid rgba(214,179,106,.18);
+    border-radius:10px;
+    background:linear-gradient(90deg,rgba(214,179,106,.11),rgba(18,27,36,.96),rgba(214,179,106,.08));
+    box-shadow:0 8px 22px rgba(0,0,0,.055);
+}
+.motivation-ticker::before,
+.motivation-ticker::after{
+    content:"";
+    position:absolute;top:0;bottom:0;width:54px;z-index:2;pointer-events:none;
+}
+.motivation-ticker::before{left:0;background:linear-gradient(90deg,var(--bg-dark),transparent)}
+.motivation-ticker::after{right:0;background:linear-gradient(270deg,var(--bg-dark),transparent)}
+.motivation-track{
+    display:flex;
+    align-items:center;
+    width:max-content;
+    min-width:max-content;
+    white-space:nowrap;
+    animation:auditorTicker 30s linear infinite;
+    will-change:transform;
+}
+.motivation-track span{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding-right:70px;
+    color:#f2f6f9;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:.15px;
+}
+.motivation-track i{color:var(--accent-gold)}
+.motivation-ticker:hover .motivation-track{animation-play-state:paused}
+@keyframes auditorTicker{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+}
+.footer-text{
+    padding:10px 2px 2px!important;
+    border-top:1px solid rgba(255,255,255,.055);
+    align-items:center;
+    gap:16px;
+}
+
+/* Light mode polish */
+body[data-theme="light"]{
+    background:
+        radial-gradient(circle at 82% 8%,rgba(168,117,0,.045),transparent 28%),
+        #f3f5f7!important;
+}
+body[data-theme="light"] .topbar{
+    background:rgba(255,255,255,.90)!important;
+    border-bottom-color:#d8e0e7!important;
+    box-shadow:0 10px 30px rgba(15,23,42,.05)!important;
+}
+body[data-theme="light"] #headerUsername{color:#17202a!important}
+body[data-theme="light"] .topbar>div:first-child i,
+body[data-theme="light"] .clock-display,
+body[data-theme="light"] .user-badge-header{background:#fff!important}
+body[data-theme="light"] .panel-header{border-bottom-color:#e6ebf0!important}
+body[data-theme="light"] .motivation-ticker{
+    background:linear-gradient(90deg,#fff7e3,#ffffff,#fff7e3);
+    border-color:rgba(146,94,0,.28);
+    box-shadow:0 8px 20px rgba(15,23,42,.06);
+}
+body[data-theme="light"] .motivation-track span{color:#263442!important}
+body[data-theme="light"] .motivation-ticker::before{background:linear-gradient(90deg,#f3f5f7,transparent)}
+body[data-theme="light"] .motivation-ticker::after{background:linear-gradient(270deg,#f3f5f7,transparent)}
+body[data-theme="light"] .footer-text{border-top-color:#d8e0e7!important}
+
+/* Responsive: tampilan tetap fungsional tanpa menambah JS */
+@media(max-width:1400px){
+    .stat-card-group{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:1100px){
+    #sidebar{width:230px!important}
+    #content{margin-left:230px!important;padding-left:20px!important;padding-right:20px!important}
+    .topbar{margin-left:-20px!important;margin-right:-20px!important;padding-left:20px!important;padding-right:20px!important}
+    .stat-card-group{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:780px){
+    #sidebar{
+        position:relative!important;
+        width:100%!important;
+        height:auto!important;
+        max-height:none!important;
+    }
+    #content{margin-left:0!important;padding:16px!important}
+    .topbar{
+        position:sticky!important;
+        margin:-16px -16px 18px!important;
+        padding:10px 16px!important;
+        flex-wrap:wrap;
+        gap:8px;
+    }
+    .topbar-right{width:100%;justify-content:flex-end;flex-wrap:wrap}
+    .stat-card-group{grid-template-columns:1fr!important}
+    .input-card-group{grid-template-columns:1fr!important}
+    .action-bar-bottom{flex-wrap:wrap}
+    .action-bar-bottom .btn{flex:1 1 180px}
+    .footer-text{flex-direction:column;align-items:flex-start!important}
+}
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{scroll-behavior:auto!important;transition:none!important}
+    .motivation-track{animation:none!important;white-space:normal;min-width:0;width:auto;padding:10px 14px}
+    .motivation-track span:nth-child(2){display:none}
+}
+
+
+
+/* =========================================================
+   HIGH-CONTRAST TEXT FIX — VISUAL ONLY
+   Memperjelas label/teks tanpa mengubah fungsi elemen.
+   ========================================================= */
+body:not([data-theme="light"]) .text-muted,
+body:not([data-theme="light"]) .form-label.text-muted,
+body:not([data-theme="light"]) .small.text-muted,
+body:not([data-theme="light"]) .card-subtitle,
+body:not([data-theme="light"]) .panel-header p,
+body:not([data-theme="light"]) .stat-box .details h6,
+body:not([data-theme="light"]) .clock-display,
+body:not([data-theme="light"]) #headerRole,
+body:not([data-theme="light"]) .footer-text{
+    color:#bcc8d2!important;
+}
+body:not([data-theme="light"]) .sidebar-label{color:#91a1af!important}
+body:not([data-theme="light"]) .text-warning{color:#f1ca73!important}
+body:not([data-theme="light"]) .text-info{color:#67d9ef!important}
+body:not([data-theme="light"]) .text-success{color:#57d990!important}
+body:not([data-theme="light"]) .text-danger{color:#ff7f91!important}
+body:not([data-theme="light"]) input::placeholder,
+body:not([data-theme="light"]) textarea::placeholder{color:#8998a6!important;opacity:1}
+
+body[data-theme="light"] .text-muted,
+body[data-theme="light"] .form-label.text-muted,
+body[data-theme="light"] .small.text-muted,
+body[data-theme="light"] .card-subtitle,
+body[data-theme="light"] .panel-header p,
+body[data-theme="light"] .stat-box .details h6,
+body[data-theme="light"] .clock-display,
+body[data-theme="light"] #headerRole,
+body[data-theme="light"] .footer-text{
+    color:#506171!important;
+}
+body[data-theme="light"] .sidebar-label{color:#61717f!important}
+body[data-theme="light"] .text-warning{color:#8a5d00!important}
+body[data-theme="light"] .text-info{color:#0b6878!important}
+body[data-theme="light"] .text-success{color:#087443!important}
+body[data-theme="light"] .text-danger{color:#b42335!important}
+body[data-theme="light"] input::placeholder,
+body[data-theme="light"] textarea::placeholder{color:#738294!important;opacity:1}
+body[data-theme="light"] .motivation-track i{color:#8a5d00!important}
+
+
+
+/* =========================================================
+   BERANDA — DASHBOARD GUIDE / MODULE OVERVIEW
+   Hanya lapisan UI. Tidak mengubah logika checker yang ada.
+   ========================================================= */
+.home-dashboard{width:100%;padding-bottom:8px}
+.home-hero{
+    position:relative;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(260px,.65fr);
+    gap:22px;
+    align-items:stretch;
+    padding:26px;
+    margin-bottom:20px;
+    border:1px solid rgba(214,179,106,.28);
+    border-radius:18px;
+    background:
+        radial-gradient(circle at 88% 12%,rgba(214,179,106,.13),transparent 28%),
+        linear-gradient(135deg,rgba(31,45,58,.98),rgba(20,30,40,.98));
+    box-shadow:0 14px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.home-hero:after{
+    content:"";position:absolute;right:-90px;bottom:-120px;width:270px;height:270px;border-radius:50%;
+    border:1px solid rgba(214,179,106,.12);box-shadow:0 0 0 34px rgba(214,179,106,.025),0 0 0 68px rgba(214,179,106,.018);pointer-events:none
+}
+.home-kicker{display:inline-flex;align-items:center;gap:8px;color:#f0d79e;font-size:11px;font-weight:800;letter-spacing:1.25px;text-transform:uppercase;margin-bottom:10px}
+.home-title{font-size:26px;line-height:1.25;font-weight:850;color:#f5f8fb;margin:0 0 9px}
+.home-desc{max-width:760px;margin:0;color:#c1ccd6;font-size:13px;line-height:1.75}
+.home-flow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.home-flow-step{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid #3a4c5c;border-radius:999px;background:rgba(8,14,20,.28);color:#cfd8e0;font-size:11px;font-weight:700}
+.home-flow-step b{display:inline-flex;width:19px;height:19px;align-items:center;justify-content:center;border-radius:50%;background:rgba(214,179,106,.15);color:#f0d79e;font-size:10px}
+.home-overview{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:center}
+.home-overview-item{padding:14px;border:1px solid #3a4b58;border-radius:12px;background:rgba(10,16,23,.36)}
+.home-overview-item strong{display:block;color:#fff;font-size:20px;line-height:1;margin-bottom:6px}
+.home-overview-item span{color:#aebbc6;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.65px}
+.home-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:24px 2px 12px}
+.home-section-head h5{margin:0;color:#f2f6f9;font-size:15px;font-weight:800}
+.home-section-head p{margin:3px 0 0;color:#9eacb8;font-size:11px}
+.home-section-tag{white-space:nowrap;color:#d6b36a;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.home-tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.home-tool-card{
+    position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:205px;padding:17px;
+    border:1px solid #354654;border-radius:14px;background:linear-gradient(145deg,#1e2a35,#19242e);
+    box-shadow:0 8px 22px rgba(0,0,0,.10);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease
+}
+.home-tool-card:hover{transform:translateY(-2px);border-color:rgba(214,179,106,.48);box-shadow:0 12px 28px rgba(0,0,0,.16)}
+.home-tool-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}
+.home-tool-icon{width:42px;height:42px;flex:0 0 42px;display:flex;align-items:center;justify-content:center;border-radius:11px;background:rgba(214,179,106,.10);border:1px solid rgba(214,179,106,.22);color:#f0d79e;font-size:17px}
+.home-tool-num{font-size:10px;font-weight:800;letter-spacing:.8px;color:#718290}
+.home-tool-card h6{margin:0 0 7px;color:#f1f5f8;font-size:13px;font-weight:800;line-height:1.35}
+.home-tool-card p{margin:0;color:#aebbc6;font-size:11.5px;line-height:1.65}
+.home-tool-card .home-purpose{margin-top:10px;padding-top:10px;border-top:1px dashed #3a4b58;color:#c9d3dc;font-size:10.5px;line-height:1.55}
+.home-tool-card .home-purpose b{color:#d6b36a}
+.home-open-btn{margin-top:auto;padding-top:13px;border:0;background:transparent;color:#e8d09b;font-size:10.5px;font-weight:800;text-align:left;cursor:pointer;letter-spacing:.2px}
+.home-open-btn:hover{color:#fff1c7}
+.home-open-btn i{margin-left:5px;font-size:9px;transition:transform .18s ease}.home-open-btn:hover i{transform:translateX(3px)}
+.home-setting-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-bottom:18px}
+.home-setting-card{display:flex;gap:14px;align-items:flex-start;padding:16px;border:1px solid #354654;border-radius:13px;background:#1b2731}
+.home-setting-card .home-tool-icon{width:38px;height:38px;flex-basis:38px}
+.home-setting-card h6{margin:0 0 5px;color:#f1f5f8;font-size:12px;font-weight:800}
+.home-setting-card p{margin:0;color:#aebbc6;font-size:11px;line-height:1.6}
+.home-system-note{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid rgba(16,185,129,.22);border-radius:12px;background:rgba(16,185,129,.055);color:#b9c8d2;font-size:11px;line-height:1.65}
+.home-system-note i{color:#39d98a;margin-top:2px}.home-system-note b{color:#dce7ed}
+
+body[data-theme="light"] .home-hero{background:radial-gradient(circle at 88% 12%,rgba(168,117,0,.10),transparent 28%),linear-gradient(135deg,#ffffff,#f3f6f8);border-color:rgba(168,117,0,.22);box-shadow:0 14px 36px rgba(30,41,59,.08)}
+body[data-theme="light"] .home-title,body[data-theme="light"] .home-overview-item strong,body[data-theme="light"] .home-section-head h5,body[data-theme="light"] .home-tool-card h6,body[data-theme="light"] .home-setting-card h6{color:#17202a!important}
+body[data-theme="light"] .home-desc,body[data-theme="light"] .home-tool-card p,body[data-theme="light"] .home-setting-card p,body[data-theme="light"] .home-section-head p{color:#5f6f7e!important}
+body[data-theme="light"] .home-flow-step{background:#fff;border-color:#d9e1e7;color:#526170}
+body[data-theme="light"] .home-overview-item{background:#ffffff;border-color:#d9e1e7}body[data-theme="light"] .home-overview-item span{color:#64748b}
+body[data-theme="light"] .home-tool-card{background:linear-gradient(145deg,#ffffff,#f7f9fb);border-color:#d8e0e7;box-shadow:0 8px 22px rgba(30,41,59,.05)}
+body[data-theme="light"] .home-tool-card .home-purpose{border-top-color:#d8e0e7;color:#526170}
+body[data-theme="light"] .home-setting-card{background:#ffffff;border-color:#d8e0e7}
+body[data-theme="light"] .home-system-note{background:#f0fdf4;border-color:#bbf7d0;color:#526170}
+body[data-theme="light"] .home-system-note b{color:#17202a}
+
+@media(max-width:1180px){.home-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-hero{grid-template-columns:1fr .55fr}}
+@media(max-width:760px){.home-hero{grid-template-columns:1fr;padding:19px}.home-overview{grid-template-columns:repeat(4,1fr)}.home-tool-grid,.home-setting-grid{grid-template-columns:1fr}.home-title{font-size:21px}.home-section-head{align-items:flex-start;flex-direction:column;gap:4px}}
+@media(max-width:520px){.home-overview{grid-template-columns:1fr 1fr}.home-flow-step{width:100%}.home-tool-card{min-height:0}}
+
 </style>
 </head>
 <body>
@@ -916,7 +1407,7 @@ body[data-theme="light"] #pageParlay .parlay-hint{
         <div class="sidebar-label">DASHBOARD</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a class="nav-link-btn active" onclick="showPage('pageReconciliation', this)">
+                <a class="nav-link-btn active" onclick="showPage('pageHome', this)">
                     <i class="fa-solid fa-house"></i> Beranda
                 </a>
             </li>
@@ -939,32 +1430,32 @@ body[data-theme="light"] #pageParlay .parlay-hint{
         <div class="sidebar-label">TOOLS CHECKER</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageDeposit', this)">
+                <a class="nav-link-btn" data-page-nav="pageDeposit" onclick="showPage('pageDeposit', this)">
                     <i class="fa-solid fa-money-bill-transfer"></i> Checker Manual Deposit
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageTO', this)">
+                <a class="nav-link-btn" data-page-nav="pageTO" onclick="showPage('pageTO', this)">
                     <i class="fa-solid fa-chart-line"></i> Checker Deposit VS TO
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageBonus', this)">
+                <a class="nav-link-btn" data-page-nav="pageBonus" onclick="showPage('pageBonus', this)">
                     <i class="fa-solid fa-gift"></i> Bonus mahjong
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageParlay', this)">
+                <a class="nav-link-btn" data-page-nav="pageParlay" onclick="showPage('pageParlay', this)">
                     <i class="fa-solid fa-futbol"></i> Kalkulator Parlay
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn active-outline-amber" onclick="showPage('pageReconciliation', this)">
+                <a class="nav-link-btn active-outline-amber" data-page-nav="pageReconciliation" onclick="showPage('pageReconciliation', this)">
                     <i class="fa-solid fa-chart-pie"></i> Pengecekan Deposit Balance
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageAccountValidator', this)">
+                <a class="nav-link-btn" data-page-nav="pageAccountValidator" onclick="showPage('pageAccountValidator', this)">
                     <i class="fa-solid fa-building-columns"></i> Validator Rekening & E-Wallet
                 </a>
             </li>
@@ -974,22 +1465,22 @@ body[data-theme="light"] #pageParlay .parlay-hint{
         <div class="sidebar-label">OPERATIONAL CHECKER</div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageCheckerDurasiHitung', this)">
+                <a class="nav-link-btn" data-page-nav="pageCheckerDurasiHitung" onclick="showPage('pageCheckerDurasiHitung', this)">
                     <i class="fa-solid fa-stopwatch"></i> Durasi Hitung Nomor
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageCheckerDurasiInput', this)">
+                <a class="nav-link-btn" data-page-nav="pageCheckerDurasiInput" onclick="showPage('pageCheckerDurasiInput', this)">
                     <i class="fa-solid fa-clock"></i> Durasi Input Nomor
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageCheckerResultTogel', this)">
+                <a class="nav-link-btn" data-page-nav="pageCheckerResultTogel" onclick="showPage('pageCheckerResultTogel', this)">
                     <i class="fa-solid fa-list-check"></i> Result Togel
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link-btn" onclick="showPage('pageCheckerWithdrawFlop', this)">
+                <a class="nav-link-btn" data-page-nav="pageCheckerWithdrawFlop" onclick="showPage('pageCheckerWithdrawFlop', this)">
                     <i class="fa-solid fa-money-bill-transfer"></i> Withdraw Flop Checker
                 </a>
             </li>
@@ -1029,14 +1520,158 @@ body[data-theme="light"] #pageParlay .parlay-hint{
             </div>
         </div>
 
+        <!-- MOTIVASI BERJALAN — TOP DASHBOARD -->
+        <div class="motivation-ticker" aria-label="Motivasi kerja">
+            <div class="motivation-track">
+                <span><i class="fa-solid fa-bolt"></i> Tetap fokus, teliti, dan konsisten — pekerjaan yang rapi hari ini membuat proses esok lebih ringan • Selesaikan satu per satu, jaga kualitas, dan tetap semangat menuju waktu istirahat yang ditunggu ✨ • Kerja cerdas, cek dua kali, hasilkan yang terbaik.</span>
+                <span aria-hidden="true"><i class="fa-solid fa-bolt"></i> Tetap fokus, teliti, dan konsisten — pekerjaan yang rapi hari ini membuat proses esok lebih ringan • Selesaikan satu per satu, jaga kualitas, dan tetap semangat menuju waktu istirahat yang ditunggu ✨ • Kerja cerdas, cek dua kali, hasilkan yang terbaik.</span>
+            </div>
+        </div>
+
         <!-- WELCOME TEXT (BERANDA) -->
         <div class="mb-4">
             <h4 class="fw-bold text-white m-0">Selamat datang, <span style="color:var(--accent-gold);" id="welcomeUsername">SYALALA88</span> 👋</h4>
             <p class="text-muted small m-0">Selamat Bekerja Dan Menanti Waktu Penantian Cuti ✨</p>
         </div>
 
+
+        <!-- BERANDA / DASHBOARD GUIDE -->
+        <div id="pageHome" class="view-page active home-dashboard">
+            <section class="home-hero">
+                <div>
+                    <div class="home-kicker"><i class="fa-solid fa-layer-group"></i> Operational Dashboard Guide</div>
+                    <h2 class="home-title">Pusat Ringkasan & Cara Kerja Modul</h2>
+                    <p class="home-desc">Beranda ini berfungsi sebagai panduan cepat untuk memahami fungsi setiap menu sebelum melakukan pemeriksaan. Pilih modul sesuai kebutuhan, siapkan data sumber, jalankan proses, lalu tinjau hasil atau unduh laporan bila tersedia.</p>
+                    <div class="home-flow">
+                        <span class="home-flow-step"><b>1</b> Pilih modul</span>
+                        <span class="home-flow-step"><b>2</b> Paste / upload data</span>
+                        <span class="home-flow-step"><b>3</b> Jalankan proses</span>
+                        <span class="home-flow-step"><b>4</b> Cek hasil & tindak lanjut</span>
+                    </div>
+                </div>
+                <div class="home-overview" aria-label="Ringkasan modul">
+                    <div class="home-overview-item"><strong>6</strong><span>Tools Checker</span></div>
+                    <div class="home-overview-item"><strong>4</strong><span>Operational Checker</span></div>
+                    <div class="home-overview-item"><strong>2</strong><span>Pengaturan</span></div>
+                    <div class="home-overview-item"><strong>1</strong><span>Satu Dashboard</span></div>
+                </div>
+            </section>
+
+            <div class="home-section-head">
+                <div><h5><i class="fa-solid fa-screwdriver-wrench me-2" style="color:var(--accent-gold)"></i>Tools Checker</h5><p>Modul pemeriksaan data transaksi, bonus, turnover, parlay, dan rekening.</p></div>
+                <div class="home-section-tag">6 MODUL</div>
+            </div>
+
+            <div class="home-tool-grid">
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><span class="home-tool-num">01</span></div>
+                    <h6>Checker Manual Deposit</h6>
+                    <p>Mencocokkan daftar UserID dan nominal deposit dengan data History Koin yang dipaste atau diupload.</p>
+                    <div class="home-purpose"><b>Hasil:</b> status transaksi, admin, tanggal/jam, jumlah deposit per hari, serta opsi download Excel.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageDeposit', document.querySelector('[data-page-nav=pageDeposit]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-chart-line"></i></div><span class="home-tool-num">02</span></div>
+                    <h6>Checker Deposit VS TO</h6>
+                    <p>Membandingkan data History Koin dengan data Turnover untuk melihat hubungan deposit/coin dan aktivitas permainan member.</p>
+                    <div class="home-purpose"><b>Hasil:</b> deposit, turnover, player menang/kalah, status pemeriksaan, dan export Excel.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageTO', document.querySelector('[data-page-nav=pageTO]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-gift"></i></div><span class="home-tool-num">03</span></div>
+                    <h6>Bonus Mahjong</h6>
+                    <p>Membaca data tabel yang dipaste dari Excel lalu memeriksa data bonus Mahjong secara massal.</p>
+                    <div class="home-purpose"><b>Hasil:</b> data permainan, ticket, total win, taruhan, bonus dibagi, bonus seharusnya, dan status kesesuaian.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageBonus', document.querySelector('[data-page-nav=pageBonus]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-futbol"></i></div><span class="home-tool-num">04</span></div>
+                    <h6>Kalkulator Parlay</h6>
+                    <p>Menghitung estimasi bayaran berdasarkan nominal stake, odds setiap tim, serta status menang atau kalah.</p>
+                    <div class="home-purpose"><b>Cara pakai:</b> masukkan stake & odds, tentukan status setiap tim, lalu tekan Hitung Bayaran.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageParlay', document.querySelector('[data-page-nav=pageParlay]'))">BUKA KALKULATOR <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-chart-pie"></i></div><span class="home-tool-num">05</span></div>
+                    <h6>Pengecekan Deposit Balance</h6>
+                    <p>Mencocokkan data Excel deposit dengan Bonus Mahjong, input manual member, dan Bonus Harian Slot.</p>
+                    <div class="home-purpose"><b>Hasil:</b> deposit balance/tidak balance serta kecocokan bonus slot dalam satu tabel rekonsiliasi.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageReconciliation', document.querySelector('[data-page-nav=pageReconciliation]'))">BUKA REKONSILIASI <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-building-columns"></i></div><span class="home-tool-num">06</span></div>
+                    <h6>Validator Rekening & E-Wallet</h6>
+                    <p>Memvalidasi nomor rekening atau akun e-wallet dan menampilkan nama pemilik melalui APIVALIDASI V4.</p>
+                    <div class="home-purpose"><b>Catatan:</b> API Key dimasukkan pada modul validator dan disimpan hanya di session browser.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageAccountValidator', document.querySelector('[data-page-nav=pageAccountValidator]'))">BUKA VALIDATOR <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+            </div>
+
+            <div class="home-section-head">
+                <div><h5><i class="fa-solid fa-shield-halved me-2" style="color:var(--accent-gold)"></i>Operational Checker</h5><p>Modul audit operasional untuk durasi proses, result, dan withdraw flop.</p></div>
+                <div class="home-section-tag">4 MODUL</div>
+            </div>
+
+            <div class="home-tool-grid">
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-stopwatch"></i></div><span class="home-tool-num">07</span></div>
+                    <h6>Durasi Hitung Nomor</h6>
+                    <p>Mencocokkan waktu Input Nomor dengan waktu Hitung Nomor berdasarkan nama pasaran.</p>
+                    <div class="home-purpose"><b>Hasil:</b> waktu input, waktu hitung, selisih durasi, dan status untuk membantu menemukan keterlambatan proses.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageCheckerDurasiHitung', document.querySelector('[data-page-nav=pageCheckerDurasiHitung]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-clock"></i></div><span class="home-tool-num">08</span></div>
+                    <h6>Durasi Input Nomor</h6>
+                    <p>Membandingkan jam jadwal tetap setiap pasaran dengan jam input aktual berdasarkan tanggal pemeriksaan.</p>
+                    <div class="home-purpose"><b>Hasil:</b> status ketepatan waktu dengan aturan jadwal, termasuk penanganan hari libur/opsional yang sudah tertanam di modul.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageCheckerDurasiInput', document.querySelector('[data-page-nav=pageCheckerDurasiInput]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-list-check"></i></div><span class="home-tool-num">09</span></div>
+                    <h6>Result Togel</h6>
+                    <p>Mencocokkan hasil terbaru dengan data Excel/pembanding berdasarkan nama pasaran walaupun urutan data berbeda.</p>
+                    <div class="home-purpose"><b>Hasil:</b> status KLOP/TIDAK KLOP, dukungan input manual untuk nomor kosong, dan download hasil Excel.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageCheckerResultTogel', document.querySelector('[data-page-nav=pageCheckerResultTogel]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+
+                <article class="home-tool-card">
+                    <div class="home-tool-top"><div class="home-tool-icon"><i class="fa-solid fa-money-bill-wave"></i></div><span class="home-tool-num">10</span></div>
+                    <h6>Withdraw Flop Checker</h6>
+                    <p>Membandingkan data Excel withdraw dengan daftar Withdraw Flop untuk menemukan data yang perlu diperiksa.</p>
+                    <div class="home-purpose"><b>Hasil:</b> ringkasan pencocokan dan filter untuk menyembunyikan data yang sudah sesuai atau menampilkan seluruh hasil.</div>
+                    <button type="button" class="home-open-btn" onclick="showPage('pageCheckerWithdrawFlop', document.querySelector('[data-page-nav=pageCheckerWithdrawFlop]'))">BUKA CHECKER <i class="fa-solid fa-arrow-right"></i></button>
+                </article>
+            </div>
+
+            <div class="home-section-head">
+                <div><h5><i class="fa-solid fa-gear me-2" style="color:var(--accent-gold)"></i>Pengaturan Akun</h5><p>Fitur administrasi lokal yang mendukung akses ke dashboard.</p></div>
+                <div class="home-section-tag">AKSES & USER</div>
+            </div>
+
+            <div class="home-setting-grid">
+                <div class="home-setting-card">
+                    <div class="home-tool-icon"><i class="fa-solid fa-lock"></i></div>
+                    <div><h6>Ubah Password</h6><p>Mengganti password akun yang sedang login. Perubahan disimpan pada penyimpanan lokal perangkat/browser yang digunakan.</p></div>
+                </div>
+                <div class="home-setting-card">
+                    <div class="home-tool-icon"><i class="fa-solid fa-users-gear"></i></div>
+                    <div><h6>Manajemen User Admin</h6><p>Khusus Master Admin untuk melihat, menambah akun Auditor, dan menghapus akun non-master yang tersimpan di perangkat.</p></div>
+                </div>
+            </div>
+
+            <div class="home-system-note"><i class="fa-solid fa-circle-info"></i><div><b>Kesimpulan:</b> gunakan Beranda sebagai peta kerja. Tentukan jenis data yang sedang diperiksa, buka modul yang sesuai, ikuti format input pada modul tersebut, lalu jadikan status hasil sebagai bahan pengecekan lanjutan. Beranda tidak memproses data dan tidak mengubah hasil checker.</div></div>
+        </div>
+
         <!-- PAGE RECONCILIATION / MAIN DASHBOARD -->
-        <div id="pageReconciliation" class="view-page active">
+        <div id="pageReconciliation" class="view-page">
             
             <!-- STATISTIC CARDS -->
             <div class="stat-card-group">
@@ -4184,8 +4819,8 @@ function clearWithdrawFlop() {
             </div>
         </div>
 
-        <div class="footer-text">
-            <div>© 2025 Operational System Auditor. All Rights Reserved.</div>
+<div class="footer-text">
+            <div>© 2026 Operational System Auditor. All Rights Reserved.</div>
             <div>v2.6.0 • Integrated Checker • <span style="color:#10b981;">System Active ●</span></div>
         </div>
 
